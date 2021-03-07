@@ -9,5 +9,23 @@
 </template>
 
 <script>
-export default {}
+import { EventBus } from '~/plugins/event'
+export default {
+  mounted () {
+    EventBus.$on('logged-in', (settings) => {
+      if (settings) {
+        if (settings.redirect) {
+          this.$router.push(settings.redirect)
+        }
+      }
+    })
+    EventBus.$on('logged-out', (settings) => {
+      if (window) {
+        window.location.href = '/' // refresh browser page will reset store state
+      }
+    })
+
+    this.$store.dispatch('tryAutoLogin')
+  }
+}
 </script>

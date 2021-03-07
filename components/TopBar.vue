@@ -124,7 +124,7 @@ export default {
   },
   computed: {
     user () {
-      return this.$store.state.userData ? this.$store.state.userData.user : false
+      return this.$store.state.userData
     }
   },
   mounted () {},
@@ -142,7 +142,6 @@ a
   text-decoration: none
   text-transform: uppercase
   font-weight: bold
-  line-height: 0px
 .main-label
   font-size: 1.2em
 </style>

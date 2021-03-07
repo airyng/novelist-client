@@ -93,9 +93,16 @@ export default {
     validate () {
       this.$refs.form.validate()
     },
-    submitForm () {
+    async submitForm () {
       this.ajaxSending = true
-
+      try {
+        await this.$store.dispatch('login', this.formData)
+      } catch (e) {
+        this.formErrors.email = e.response.data.error.email || []
+        this.formErrors.password = e.response.data.error.password || []
+      } finally {
+        this.ajaxSending = false
+      }
       // axios.get('/sanctum/csrf-cookie').then((response) => {
       //   axios.post('/api/addToken', this.formData)
       //     .then((response) => {
