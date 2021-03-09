@@ -43,6 +43,7 @@
                   :key="index"
                   :to="item.path"
                   :class="item.classes || 'px-3'"
+                  class="align-self-center"
                 >
                   {{ item.title }}
                 </nuxt-link>
@@ -55,7 +56,7 @@
               <template v-if="!isMobileScreen">
                 <nuxt-link
                   class="px-2"
-                  :to="{name: 'add-game'}"
+                  to="/games/add"
                 >
                   <v-btn dark>
                     + Новелла
@@ -63,14 +64,14 @@
                 </nuxt-link>
 
                 <nuxt-link
-                  class="px-2"
-                  to="/my-games"
+                  class="px-2 align-self-center"
+                  to="profile/my-games"
                 >
                   Мои новеллы
                 </nuxt-link>
               </template>
 
-              <nuxt-link class="px-2" to="/profile">
+              <nuxt-link class="px-2 align-self-center" to="/profile">
                 {{ user.name }}
               </nuxt-link>
 

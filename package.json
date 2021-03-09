@@ -16,7 +16,8 @@
     "@nuxtjs/pwa": "^3.3.5",
     "cookie-universal-nuxt": "^2.1.4",
     "core-js": "^3.8.3",
-    "nuxt": "^2.14.12"
+    "nuxt": "^2.14.12",
+    "sweetalert": "^2.1.2"
   },
   "devDependencies": {
     "@nuxtjs/dotenv": "^1.4.1",
