@@ -5,8 +5,8 @@
     class="constructor"
     :style="backgroundStyle"
   >
-    <v-container v-if="windowSize.x >= 960" fluid>
-      <constructor-sidebar
+    <v-container v-if="!isMobileScreen" fluid>
+      <ConstructorSidebar
         :previous-scene="previousScene"
         :scenes="scenes"
         :main-info="mainInfo"
@@ -18,7 +18,7 @@
         @OnSaveStarted="OnSaveStarted"
       />
 
-      <constructor-scene-settings-sidebar
+      <ConstructorSceneSettingsSidebar
         :active-scene="activeScene"
         @OnCallToRemoveScene="removeScene"
       />
@@ -55,7 +55,7 @@
             offset-md="2"
             class="scene-action-col"
           >
-            <scene-action
+            <ConstructorSceneAction
               class="pb-0"
               :scenes="scenes"
               :action="action"
@@ -63,6 +63,7 @@
               :action-text-max-length="settings.actionTextMaxLength"
               @OnGoToScene="goToScene"
               @onAddSceneAndGo="addSceneAndGo"
+              @updatedScene="onUpdatedScene"
             />
           </v-col>
 
@@ -88,7 +89,7 @@
         На данный момент конструктор не доступен для мобильных устройств. Данная функция находится в разработке. Приносим извинения за временные неудобства!
       </h4>
     </v-container>
-    <project-saver
+    <ConstructorProjectSaver
       :id="projectID"
       ref="projectSaver"
       :main-info="mainInfo"
@@ -97,7 +98,7 @@
       @saved="onProjectSaved"
     />
 
-    <project-loader
+    <ConstructorProjectLoader
       @onRestoreState="onRestoreState"
     />
   </div>
@@ -106,8 +107,10 @@
 <script>
 
 import { SuccessMessage } from '@/plugins/toast' // ErrorMessage
+import { screen } from '@/mixins/screen'
 
 export default {
+  mixins: [screen],
   data () {
     return {
       windowSize: { x: 0, y: 0 },
@@ -157,6 +160,9 @@ export default {
     this.boot()
   },
   methods: {
+    onUpdatedScene (activeScene) {
+      this.activeScene = activeScene
+    },
     getWindowSize () {
       this.windowSize = this.$root.windowSize
     },

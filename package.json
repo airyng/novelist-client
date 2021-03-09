@@ -17,7 +17,10 @@
     "cookie-universal-nuxt": "^2.1.4",
     "core-js": "^3.8.3",
     "nuxt": "^2.14.12",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "vis-data": "^7.1.2",
+    "vis-network": "^9.0.3",
+    "vis-util": "^5.0.2"
   },
   "devDependencies": {
     "@nuxtjs/dotenv": "^1.4.1",

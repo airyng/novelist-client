@@ -1,240 +1,265 @@
 <template>
-    <v-row>
-        <v-col sm="10" class="d-flex">
-
-            <!-- Кнопки перемещения очередности -->
-            <div 
-                v-if="activeScene.actions.length > 1"
-                class="d-flex flex-column mt-1 mr-1"
-            >
-                <v-icon 
-                    class="curs-pointer" 
-                    :class="{disabled: activeScene.actions.indexOf(action) <= 0}"
-                    rounded
-                    @click="changeActionOrder(action, 'up')"
-                >mdi-arrow-up-drop-circle-outline</v-icon>
-                <v-icon 
-                    class="curs-pointer" 
-                    rounded
-                    :class="{disabled: activeScene.actions.indexOf(action) >= activeScene.actions.length - 1}"
-                    @click="changeActionOrder(action, 'down')"
-                >mdi-arrow-down-drop-circle-outline</v-icon>
-            </div>
-            <!-- Кнопки перемещения очередности - конец -->
-
-            <v-text-field
-                name="actionText"
-                label="Действие/Ответ"
-                filled
-                :counter="actionTextMaxLength"
-                v-model="action.actionText"
-                background-color="#444"
-                dark
-            ></v-text-field>
-        </v-col>
-        <v-col sm="2">
-                        
-            <v-tooltip top v-if="typeof action.to == 'number'">
-                <template v-slot:activator="{ on, attrs }">
-                    <v-chip
-                        close
-                        color="purple"
-                        text-color="white"
-                        @click:close="clearActionToParam(action)"
-                        @click="OnGoToScene(action.to)"
-                        v-bind="attrs"
-                        v-on="on"
-                    >
-                        {{ getSceneById(action.to).title }}
-                    </v-chip>
-                </template>
-                <span>Переход на {{ getSceneById(action.to).title }}</span>
-            </v-tooltip>
-
-            <v-tooltip top v-if="action.to == 'quit'">
-                <template v-slot:activator="{ on, attrs }">
-                    <v-chip
-                        close
-                        color="black"
-                        text-color="white"
-                        @click:close="clearActionToParam(action)"
-                        v-bind="attrs"
-                        v-on="on"
-                    >
-                        Выход
-                    </v-chip>
-                </template>
-                <span>Выход из новеллы</span>
-            </v-tooltip>
-            
-            <v-menu left bottom>
-                <template v-slot:activator="{ on, attrs }">
-                
-                    <v-btn
-                        rounded fab dark small
-                        class="text-center justify-center"
-                        v-bind="attrs"
-                        v-on="on"
-                    >
-                        <v-icon rounded>mdi-dots-horizontal</v-icon>
-                    </v-btn>
-                </template>
-                
-
-                <v-list>
-
-                    <v-list-item
-                        @click="openScenePicker(action)"
-                    >
-                        <v-list-item-title>
-                            Переход на сцену
-                        </v-list-item-title>
-                    </v-list-item>
-                        
-                    
-                    <v-list-item
-                        @click="setQuitAction(action)"
-                    >
-                        <v-list-item-title>
-                            Выход
-                        </v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
-
-            <v-btn
-                v-if="activeScene.actions.length > 1"
-                rounded fab dark small
-                class="text-center justify-center"
-                @click="removeAction(action)"
-            >
-                <v-icon rounded>mdi-close</v-icon>
-            </v-btn>
-        </v-col>
-
-        <custom-dialog
-            :toggler="scenePickerDialog"
-            @onDialogStateChanged="onScenePickerDialogStateChanged"
-            title="Выберите сцену"
+  <v-row v-if="localAction && localActiveScene">
+    <v-col sm="10" class="d-flex">
+      <!-- Кнопки перемещения очередности -->
+      <div
+        v-if="localActiveScene.actions.length > 1"
+        class="d-flex flex-column mt-1 mr-1"
+      >
+        <v-icon
+          class="curs-pointer"
+          :class="{disabled: localActiveScene.actions.indexOf(action) <= 0}"
+          rounded
+          @click="changeActionOrder(action, 'up')"
         >
-            <scene-picker 
-                :currentScene="activeScene"
-                :scenes="scenes"
-                :action="pickedAction"
-                @callToAddingScene="onAddSceneAndGo"
-                @OnScenePicked="setAction"
-            ></scene-picker>
-        </custom-dialog>
-    </v-row>
+          mdi-arrow-up-drop-circle-outline
+        </v-icon>
+        <v-icon
+          class="curs-pointer"
+          rounded
+          :class="{disabled: localActiveScene.actions.indexOf(action) >= localActiveScene.actions.length - 1}"
+          @click="changeActionOrder(action, 'down')"
+        >
+          mdi-arrow-down-drop-circle-outline
+        </v-icon>
+      </div>
+      <!-- Кнопки перемещения очередности - конец -->
+
+      <!-- Вероятно изменение текста не будет работать! нужно как-то обновлять сответствующий пропс -->
+      <v-text-field
+        v-model="localAction.actionText"
+        name="actionText"
+        label="Действие/Ответ"
+        filled
+        :counter="actionTextMaxLength"
+        background-color="#444"
+        dark
+      />
+    </v-col>
+    <v-col sm="2">
+      <v-tooltip v-if="typeof action.to == 'number'" top>
+        <template #activator="{ on, attrs }">
+          <v-chip
+            close
+            color="purple"
+            text-color="white"
+            v-bind="attrs"
+            @click:close="clearActionToParam(action)"
+            @click="OnGoToScene(action.to)"
+            v-on="on"
+          >
+            {{ getSceneById(action.to).title }}
+          </v-chip>
+        </template>
+        <span>Переход на {{ getSceneById(action.to).title }}</span>
+      </v-tooltip>
+
+      <v-tooltip v-if="action.to == 'quit'" top>
+        <template #activator="{ on, attrs }">
+          <v-chip
+            close
+            color="black"
+            text-color="white"
+            v-bind="attrs"
+            @click:close="clearActionToParam(action)"
+            v-on="on"
+          >
+            Выход
+          </v-chip>
+        </template>
+        <span>Выход из новеллы</span>
+      </v-tooltip>
+
+      <v-menu left bottom>
+        <template #activator="{ on, attrs }">
+          <v-btn
+            rounded
+            fab
+            dark
+            small
+            class="text-center justify-center"
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon rounded>
+              mdi-dots-horizontal
+            </v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item
+            @click="openScenePicker(action)"
+          >
+            <v-list-item-title>
+              Переход на сцену
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item
+            @click="setQuitAction(action)"
+          >
+            <v-list-item-title>
+              Выход
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <v-btn
+        v-if="localActiveScene.actions.length > 1"
+        rounded
+        fab
+        dark
+        small
+        class="text-center justify-center"
+        @click="removeAction(action)"
+      >
+        <v-icon rounded>
+          mdi-close
+        </v-icon>
+      </v-btn>
+    </v-col>
+
+    <CustomDialog
+      :toggler="scenePickerDialog"
+      title="Выберите сцену"
+      @onDialogStateChanged="onScenePickerDialogStateChanged"
+    >
+      <ConstructorScenePicker
+        :current-scene="localActiveScene"
+        :scenes="scenes"
+        :action="pickedAction"
+        @callToAddingScene="onAddSceneAndGo"
+        @OnScenePicked="setAction"
+      />
+    </CustomDialog>
+  </v-row>
 </template>
 
 <script>
 export default {
-    props: {
-        actionTextMaxLength: {
-            required: true
-        },
-        activeScene: {
-            required: true
-        },
-        action: {
-            required: true
-        },
-        scenes: {
-            required: true
-        }
-    },
-    data() {
-        return {
-            scenePickerDialog: false,
-            pickedAction: false, // экшн, который будет передан в компонент для настройки
-        }
-    },
-    methods: {
-        setQuitAction (action) {
-            var data = {type: 'quit', action: action}
-            this.setAction( data )
-        },
-        changeActionOrder (action, direction) {
-
-            var index = this.activeScene.actions.indexOf(action)
-
-            if(direction == 'up'){
-                // нельзя уйти выше первого значения
-                if(index <= 0) return
-
-                this.activeScene.actions = this.moveArrElem(this.activeScene.actions, index, index - 1)
-            }
-
-            if(direction == 'down'){
-                // нельзя уйти ниже последнего значения
-                if(index >= this.activeScene.actions.length - 1) return
-
-                this.activeScene.actions = this.moveArrElem(this.activeScene.actions, index, index + 1)
-            }
-            
-        },
-        moveArrElem (arr, old_index, new_index) {
-            if (new_index >= arr.length) {
-                var k = new_index - arr.length + 1
-                while (k--) {
-                    arr.push(undefined)
-                }
-            }
-            arr.splice(new_index, 0, arr.splice(old_index, 1)[0])
-            return arr // for testing
-        },
-        clearActionToParam ( action ) {
-            action.to = false
-        },
-        OnGoToScene ( scene ) {
-            this.$emit('OnGoToScene', scene)
-        },
-        openScenePicker ( action ) { // передаем выбранный экшн
-            this.scenePickerDialog = true
-            this.pickedAction = action
-        },
-        closeScenePicker () {
-            this.scenePickerDialog = false
-        },
-        onScenePickerDialogStateChanged ( data ) {
-            this.scenePickerDialog = data
-        },
-        setAction ( data ) { // {type: [string], action: [object], scene: [object]}
-
-            if(data.type == 'scene') {
-                for(var action in this.activeScene.actions){
-                    if(this.activeScene.actions[action].id == data.action.id){
-                        this.activeScene.actions[action].to = data.scene.id
-                    }
-                }
-                // закрываем диалоговое окно выбора сцены
-                // возможно стоит вынести в отдельный метод,
-                // если текущий метод будет еще где-то использоваться
-                this.closeScenePicker()
-            }
-
-            if(data.type == 'quit') {
-                for(var action in this.activeScene.actions){
-                    if(this.activeScene.actions[action].id == data.action.id){
-                        this.activeScene.actions[action].to = 'quit'
-                    }
-                }
-            }
-
-        },
-        onAddSceneAndGo ( data ) {
-            this.$emit('onAddSceneAndGo', data)
-            this.closeScenePicker()
-        },
-        removeAction ( action ) {
-            var index = this.activeScene.actions.indexOf(action)
-
-            if(index >= 0) this.activeScene.actions.splice(index, 1)
-        },
-        getSceneById ( id ) {
-            return this.scenes.filter( scene => scene.id == id ) [0]
-        },
+  props: {
+    actionTextMaxLength: { type: Number, required: true },
+    activeScene: { type: Object, required: true },
+    action: { type: Object, required: true },
+    scenes: { type: Array, required: true }
+  },
+  data () {
+    return {
+      scenePickerDialog: false,
+      pickedAction: false, // экшн, который будет передан в компонент для настройки
+      localAction: null,
+      localActiveScene: null
     }
+  },
+  watch: {
+    action () {
+      this.setDataFromProps()
+    },
+    activeScene () {
+      this.setDataFromProps()
+    }
+  },
+  mounted () {
+    this.setDataFromProps()
+  },
+  methods: {
+    setDataFromProps () {
+      if (this.localActiveScene !== this.activeScene) {
+        this.localActiveScene = { ...this.activeScene }
+      }
+      if (this.localAction !== this.action) {
+        this.localAction = { ...this.action }
+      }
+    },
+    setQuitAction (action) {
+      const data = { type: 'quit', action }
+      this.setAction(data)
+    },
+    changeActionOrder (action, direction) {
+      const index = this.localActiveScene.actions.indexOf(action)
+
+      if (direction === 'up') {
+        // нельзя уйти выше первого значения
+        if (index <= 0) { return }
+
+        this.localActiveScene.actions = this.moveArrElem(this.localActiveScene.actions, index, index - 1)
+      }
+
+      if (direction === 'down') {
+        // нельзя уйти ниже последнего значения
+        if (index >= this.localActiveScene.actions.length - 1) { return }
+
+        this.localActiveScene.actions = this.moveArrElem(this.localActiveScene.actions, index, index + 1)
+      }
+
+      this.$emit('updatedScene', this.localActiveScene)
+    },
+    moveArrElem (arr, oldIndex, newIndex) {
+      if (newIndex >= arr.length) {
+        let k = newIndex - arr.length + 1
+        while (k--) {
+          arr.push(undefined)
+        }
+      }
+      arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0])
+      return arr // for testing
+    },
+    clearActionToParam (action) {
+      action.to = false
+    },
+    OnGoToScene (scene) {
+      this.$emit('OnGoToScene', scene)
+    },
+    openScenePicker (action) { // передаем выбранный экшн
+      this.scenePickerDialog = true
+      this.pickedAction = action
+    },
+    closeScenePicker () {
+      this.scenePickerDialog = false
+    },
+    onScenePickerDialogStateChanged (data) {
+      this.scenePickerDialog = data
+    },
+    setAction (data) { // {type: [string], action: [object], scene: [object]}
+      if (data.type === 'scene') {
+        for (const action in this.localActiveScene.actions) {
+          if (this.localActiveScene.actions[action].id === data.action.id) {
+            this.localActiveScene.actions[action].to = data.scene.id
+          }
+        }
+        this.$emit('updatedScene', this.localActiveScene)
+        // закрываем диалоговое окно выбора сцены
+        // возможно стоит вынести в отдельный метод,
+        // если текущий метод будет еще где-то использоваться
+        this.closeScenePicker()
+      }
+
+      if (data.type === 'quit') {
+        for (const action in this.localActiveScene.actions) {
+          if (this.localActiveScene.actions[action].id === data.action.id) {
+            this.localActiveScene.actions[action].to = 'quit'
+          }
+        }
+        this.$emit('updatedScene', this.localActiveScene)
+      }
+    },
+    onAddSceneAndGo (data) {
+      this.$emit('onAddSceneAndGo', data)
+      this.closeScenePicker()
+    },
+    removeAction (action) {
+      const index = this.localActiveScene.actions.indexOf(action)
+
+      if (index >= 0) {
+        this.localActiveScene.actions.splice(index, 1)
+        this.$emit('updatedScene', this.localActiveScene)
+      }
+    },
+    getSceneById (id) {
+      return this.scenes.filter(scene => scene.id === id)[0]
+    }
+  }
 }
 </script>

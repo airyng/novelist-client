@@ -1,70 +1,74 @@
 <template>
-    <div>
-        <v-row justify="center">
-            <v-col class="col-12">
-                <v-textarea
-                    name="mainInfoTitle"
-                    label="Название новеллы"
-                    rows="1"
-                    :counter="settings.title.maxLength"
-                    v-model="mainInfo.title"
-                ></v-textarea>
-            </v-col>
-        </v-row>
+  <div v-if="localMainInfo">
+    <v-row justify="center">
+      <v-col class="col-12">
+        <v-textarea
+          v-model="localMainInfo.title"
+          name="mainInfoTitle"
+          label="Название новеллы"
+          rows="1"
+          :counter="settings.title.maxLength"
+        />
+      </v-col>
+    </v-row>
 
-        <v-row justify="center">
-            <v-col class="col-12">
-                <v-textarea
-                    name="mainInfoDescription"
-                    label="Описание/Аннотация"
-                    rows="6"
-                    :counter="settings.description.maxLength"
-                    v-model="mainInfo.description"
-                ></v-textarea>
-            </v-col>
-        </v-row>
+    <v-row justify="center">
+      <v-col class="col-12">
+        <v-textarea
+          v-model="localMainInfo.description"
+          name="mainInfoDescription"
+          label="Описание/Аннотация"
+          rows="6"
+          :counter="settings.description.maxLength"
+        />
+      </v-col>
+    </v-row>
 
-        <v-row justify="center">
-            <v-col cols="1">
-                <v-switch v-model="mainInfo.onTestDrive"></v-switch>
-            </v-col>
-            <v-col @click="e => mainInfo.onTestDrive = !mainInfo.onTestDrive" cols="11" class="curs-pointer d-flex align-items-center">
-                <span v-html="toggleLabel"></span>
-            </v-col>
-        </v-row>
-    </div>
+    <v-row justify="center">
+      <v-col cols="1">
+        <v-switch v-model="localMainInfo.onTestDrive" />
+      </v-col>
+      <v-col cols="11" class="curs-pointer d-flex align-items-center" @click="toggleMode">
+        <span v-if="localMainInfo.onTestDrive">Черновик / <b>Тест-Драйв</b></span>
+        <span v-else><b>Черновик</b> / Тест-Драйв</span>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
 export default {
-    props: {
-        mainInfo: {
-            required: true
-        },
-        settings: {
-            required: true
-        }
-    },
-    data() {
-        return {
-            gameStatusToggler: false,
-        }
-    },
-    mounted() {
-        this.gameStatusToggler = (this.mainInfo.status != 'draft')
-    },
-    computed: {
-        toggleLabel(){
-            if(this.mainInfo.onTestDrive)
-                return 'Черновик / <b>Тест-Драйв</b>'
-            else
-                return '<b>Черновик</b> / Тест-Драйв'
-        }
-    },
-    methods:{ 
-        callToCloseModals () {
-            this.$emit('callToCloseModals')
-        }
+  props: {
+    // mainInfo: { type: Object, required: true },
+    settings: { type: Object, required: true }
+  },
+  data () {
+    return {
+      gameStatusToggler: false,
+      localMainInfo: null
     }
+  },
+  watch: {
+    localMainInfo (val) {
+      this.$emit('input', val)
+    }
+  },
+  mounted () {
+    this.setDataFromProps()
+    this.gameStatusToggler = this.localMainInfo ? (this.localMainInfo.status !== 'draft') : false
+  },
+  methods: {
+    setDataFromProps () {
+      if (this.localMainInfo !== this.mainInfo) {
+        this.localMainInfo = { ...this.mainInfo }
+      }
+    },
+    toggleMode () {
+      this.localMainInfo.onTestDrive = !this.localMainInfo.onTestDrive
+    },
+    callToCloseModals () {
+      this.$emit('callToCloseModals')
+    }
+  }
 }
 </script>
