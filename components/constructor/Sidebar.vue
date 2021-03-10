@@ -56,7 +56,7 @@
         </v-tooltip>
       </template>
 
-      <scene-network
+      <ConstructorSceneNetwork
         v-if="sceneNetworkDialogActive"
         :scenes="scenes"
         @selectedSceneID="OnSelectedSceneID"
