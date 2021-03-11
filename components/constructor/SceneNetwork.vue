@@ -22,7 +22,7 @@ export default {
           // font: { color: "#eeeeee" },
         },
         edges: {
-          forceDirection: 'horizontal',
+          // forceDirection: 'horizontal',
           // roundness: 0.4,
           color: {
             color: '#6200ea',
@@ -41,7 +41,7 @@ export default {
         },
         layout: {
           hierarchical: {
-            direction: 'Left-Right'
+            direction: 'LR'
           }
         },
         physics: false
@@ -129,7 +129,7 @@ export default {
 
     sceneTransitionsEvent () {
       this.network.on('doubleClick', (params) => {
-        // this.$emit('selectedSceneID', params.nodes[0])
+        this.$emit('selectedSceneID', params.nodes[0])
       })
     }
   }

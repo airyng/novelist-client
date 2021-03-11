@@ -83,7 +83,7 @@
             </template>
 
             <template v-else>
-              <nuxt-link to="/signin">
+              <nuxt-link class="align-self-center" to="/signin">
                 Войти
               </nuxt-link>
             </template>

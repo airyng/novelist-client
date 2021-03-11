@@ -1,6 +1,7 @@
 <template>
   <div class="fullsize">
-    <ConstructorSceneNetwork />
+    <ConstructorSceneNetwork @selectedSceneID="onSceneSelected" />
+    <ConstructorSceneEditorPopup ref="sceneEditor" />
   </div>
 </template>
 
@@ -28,8 +29,6 @@ export default {
   methods: {
     boot () {
       this.addSceneAndGo()
-      // eslint-disable-next-line no-console
-      console.log('Constructor booted.')
     },
     addSceneAndGo (data = false) {
       const newScene = this.addNewScene()
@@ -47,6 +46,9 @@ export default {
       const newScene = this.$store.getters['constructorStorage/getEmptyScene']
       this.$store.dispatch('constructorStorage/addScene', newScene)
       return newScene
+    },
+    onSceneSelected (id) {
+      this.$refs.sceneEditor.setScene(id)
     }
   }
 }

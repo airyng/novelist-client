@@ -5,3 +5,114 @@
 .fullsize
   width: 100%
   height: 100%
+
+button:focus
+  outline: none
+
+a:hover
+  text-decoration: none
+
+
+.constructor, .game
+  width: 100%
+  height: calc(100vh - 48px)
+  overflow: hidden
+  background-size: cover
+  background-position: center
+  background-color: #ececec
+
+.constructor .big-white-txt-shadow
+  text-shadow: 2px 2px 0px white, -2px -2px 0px white, -2px 2px 0px white, 2px -2px 0px white
+  color: black
+
+.constructor .v-counter.theme--dark
+  color: black
+  text-shadow: 1px 1px 0px white, -1px -1px 0px white, -1px 1px 0px white, 1px -1px 0px white
+
+.dark-back
+  background-color: #777777!important
+
+.v-dialog
+  background-color: rgba(255,255,255)//,0.85)
+
+.back-item
+  background-size: cover
+  background-position: center
+
+  & > div
+    padding: 5px 0
+    border-radius: 0!important
+    background-color: rgba(0,0,0,.5)
+
+.v-toolbar__content .v-toolbar__title a
+  color: white
+
+header a
+  color: white!important
+  font-size: 1em
+  text-transform: uppercase
+  font-weight: bold
+
+.main-label
+  text-transform: none
+  font-size: 24px
+
+.curs-pointer
+  cursor: pointer
+
+.disabled
+  pointer-events: none
+  opacity: 0.6
+
+.color-picker-hide-controls .v-color-picker__controls
+  display: none
+
+.constructor
+  position: relative
+
+.constructor h1
+  background-color: white
+  position: relative
+
+
+.constructor h1:before,
+.constructor h1:after
+  content: ''
+  position: absolute
+  background: rgb(255,255,255)
+  height: 100%
+  top: 0
+
+
+.constructor h1:before
+  width: 500px
+  transform: translateX(calc(-100% + 1px))
+
+
+.constructor h1:after
+  width: 120px
+  transform: translateX(-1px)
+  background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5466561624649859) 45%, rgba(255,255,255,0) 90%, rgba(255,255,255,0) 100%)
+
+
+.constructor .floating-sidebar
+    position: absolute
+    width: 80px
+    top: 15%
+    z-index: 10
+
+.constructor .floating-sidebar.left
+    left: 10px
+    right: auto
+
+.constructor .floating-sidebar.right
+    right: 10px
+    left: auto
+
+.swal2-header
+  margin-right: 5px
+
+.text-substr
+  overflow: hidden
+  text-overflow: ellipsis
+  white-space: nowrap
