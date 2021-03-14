@@ -16,15 +16,11 @@ export const state = () => ({
       }
     }
   },
-  activeScene: false, // текущая сцена
-  previousScene: false, // предыдущая сцена
+  activeScene: null, // текущая сцена
+  previousScene: null, // предыдущая сцена
   scenes: [], // список сцен
   projectID: null, // ID новеллы
-  mainInfo: {
-    title: '',
-    description: '',
-    onTestDrive: false
-  }
+  mainInfo: null
 })
 
 export const getters = {
@@ -44,9 +40,10 @@ export const getters = {
     }
   },
   getNewAction (state) {
-    return () => {
+    return (scene) => {
+      if (!scene) { return false }
       return {
-        id: state.activeScene.actions.length + 1,
+        id: scene.actions.length + 1,
         actionText: '',
         to: false
       }
@@ -61,6 +58,18 @@ export const mutations = {
 }
 
 export const actions = {
+  setStateToDefault ({ commit }) {
+    const mainInfo = {
+      title: '',
+      description: '',
+      onTestDrive: false
+    }
+    commit('setProperty', ['activeScene', null])
+    commit('setProperty', ['previousScene', null])
+    commit('setProperty', ['scenes', []])
+    commit('setProperty', ['projectID', null])
+    commit('setProperty', ['mainInfo', mainInfo])
+  },
   goToScene ({ commit, state, getters }, elem) { // Переходим на новую сцену
     // сохраняем текущую сцену, в историю переходов
     // теперь будет предыдущей
@@ -72,6 +81,7 @@ export const actions = {
       commit('setProperty', ['activeScene', elem])
     }
   },
+
   addEmptyAction ({ commit, state, getters }) {
     if (state.settings.maxActionsLength > state.activeScene.actions.length) {
       const activeScene = JSON.parse(JSON.stringify(state.activeScene))
@@ -79,9 +89,28 @@ export const actions = {
       commit('setProperty', ['activeScene', activeScene])
     }
   },
+
   addScene ({ commit, state }, scene) {
     const scenes = [...state.scenes]
     scenes.push(scene)
     commit('setProperty', ['scenes', scenes])
+  },
+
+  updateScene ({ commit, state }, scene) {
+    const scenes = state.scenes.map((item) => {
+      if (item.id === scene.id) { item = scene }
+      return item
+    })
+    commit('setProperty', ['scenes', scenes])
+  },
+
+  addAction ({ dispatch, state, getters }, scene) {
+    if (state.settings.maxActionsLength > scene.actions.length) {
+      const _scene = JSON.parse(JSON.stringify(scene))
+      _scene.actions.push(getters.getNewAction(_scene))
+      dispatch('updateScene', _scene)
+    } else {
+      // To do: Show error message
+    }
   }
 }

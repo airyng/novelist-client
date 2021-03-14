@@ -1,14 +1,14 @@
 <template>
-  <v-row v-if="localAction && localActiveScene">
+  <v-row v-if="localAction && activeScene">
     <v-col sm="10" class="d-flex">
       <!-- Кнопки перемещения очередности -->
       <div
-        v-if="localActiveScene.actions.length > 1"
+        v-if="activeScene.actions.length > 1"
         class="d-flex flex-column mt-1 mr-1"
       >
         <v-icon
           class="curs-pointer"
-          :class="{disabled: localActiveScene.actions.indexOf(action) <= 0}"
+          :class="{disabled: activeScene.actions.indexOf(action) <= 0}"
           rounded
           @click="changeActionOrder(action, 'up')"
         >
@@ -17,7 +17,7 @@
         <v-icon
           class="curs-pointer"
           rounded
-          :class="{disabled: localActiveScene.actions.indexOf(action) >= localActiveScene.actions.length - 1}"
+          :class="{disabled: activeScene.actions.indexOf(action) >= activeScene.actions.length - 1}"
           @click="changeActionOrder(action, 'down')"
         >
           mdi-arrow-down-drop-circle-outline
@@ -107,7 +107,7 @@
       </v-menu>
 
       <v-btn
-        v-if="localActiveScene.actions.length > 1"
+        v-if="activeScene.actions.length > 1"
         rounded
         fab
         dark
@@ -127,7 +127,7 @@
       @onDialogStateChanged="onScenePickerDialogStateChanged"
     >
       <ConstructorScenePicker
-        :current-scene="localActiveScene"
+        :current-scene="activeScene"
         :scenes="scenes"
         :action="pickedAction"
         @callToAddingScene="onAddSceneAndGo"
@@ -140,61 +140,70 @@
 <script>
 export default {
   props: {
-    actionTextMaxLength: { type: Number, required: true },
-    activeScene: { type: Object, required: true },
-    action: { type: Object, required: true },
-    scenes: { type: Array, required: true }
+    scene: { type: Object, required: true },
+    action: { type: Object, required: true }
   },
   data () {
     return {
+      activeScene: null,
       scenePickerDialog: false,
-      pickedAction: false, // экшн, который будет передан в компонент для настройки
-      localAction: null,
-      localActiveScene: null
+      pickedAction: false // экшн, который будет передан в компонент для настройки
+    }
+  },
+  computed: {
+    actionTextMaxLength () {
+      return this.$store.state.constructorStorage.settings.actionTextMaxLength
+    },
+    localAction () {
+      return { ...this.action }
+    },
+    scenes () {
+      return this.$store.state.constructorStorage.scenes
     }
   },
   watch: {
-    action () {
-      this.setDataFromProps()
-    },
-    activeScene () {
-      this.setDataFromProps()
+    scene () {
+      this.getSceneFromStorage()
     }
   },
   mounted () {
-    this.setDataFromProps()
+    this.getSceneFromStorage()
   },
   methods: {
-    setDataFromProps () {
-      if (this.localActiveScene !== this.activeScene) {
-        this.localActiveScene = { ...this.activeScene }
-      }
-      if (this.localAction !== this.action) {
-        this.localAction = { ...this.action }
-      }
+    getSceneFromStorage () {
+      // this.activeScene = { ...this.$store.getters['constructorStorage/getSceneById'](this.sceneid) }
+      this.activeScene = { ...this.scene }
     },
+    // setDataFromProps () {
+    // if (this.localActiveScene !== this.activeScene) {
+    //   this.localActiveScene = { ...this.activeScene }
+    // }
+    //   if (this.localAction !== this.action) {
+    //     this.localAction = { ...this.action }
+    //   }
+    // },
     setQuitAction (action) {
       const data = { type: 'quit', action }
       this.setAction(data)
     },
     changeActionOrder (action, direction) {
-      const index = this.localActiveScene.actions.indexOf(action)
+      const index = this.activeScene.actions.indexOf(action)
 
       if (direction === 'up') {
         // нельзя уйти выше первого значения
         if (index <= 0) { return }
 
-        this.localActiveScene.actions = this.moveArrElem(this.localActiveScene.actions, index, index - 1)
+        this.activeScene.actions = this.moveArrElem(this.activeScene.actions, index, index - 1)
       }
 
       if (direction === 'down') {
         // нельзя уйти ниже последнего значения
-        if (index >= this.localActiveScene.actions.length - 1) { return }
+        if (index >= this.activeScene.actions.length - 1) { return }
 
-        this.localActiveScene.actions = this.moveArrElem(this.localActiveScene.actions, index, index + 1)
+        this.activeScene.actions = this.moveArrElem(this.activeScene.actions, index, index + 1)
       }
 
-      this.$emit('updatedScene', this.localActiveScene)
+      this.$emit('updatedScene', this.activeScene)
     },
     moveArrElem (arr, oldIndex, newIndex) {
       if (newIndex >= arr.length) {
@@ -204,7 +213,7 @@ export default {
         }
       }
       arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0])
-      return arr // for testing
+      return arr
     },
     clearActionToParam (action) {
       action.to = false
@@ -224,12 +233,12 @@ export default {
     },
     setAction (data) { // {type: [string], action: [object], scene: [object]}
       if (data.type === 'scene') {
-        for (const action in this.localActiveScene.actions) {
-          if (this.localActiveScene.actions[action].id === data.action.id) {
-            this.localActiveScene.actions[action].to = data.scene.id
+        for (const action in this.activeScene.actions) {
+          if (this.activeScene.actions[action].id === data.action.id) {
+            this.activeScene.actions[action].to = data.scene.id
           }
         }
-        this.$emit('updatedScene', this.localActiveScene)
+        this.$emit('updatedScene', this.activeScene)
         // закрываем диалоговое окно выбора сцены
         // возможно стоит вынести в отдельный метод,
         // если текущий метод будет еще где-то использоваться
@@ -237,28 +246,25 @@ export default {
       }
 
       if (data.type === 'quit') {
-        for (const action in this.localActiveScene.actions) {
-          if (this.localActiveScene.actions[action].id === data.action.id) {
-            this.localActiveScene.actions[action].to = 'quit'
+        for (const action in this.activeScene.actions) {
+          if (this.activeScene.actions[action].id === data.action.id) {
+            this.activeScene.actions[action].to = 'quit'
           }
         }
-        this.$emit('updatedScene', this.localActiveScene)
+        this.$emit('updatedScene', this.activeScene)
       }
     },
     onAddSceneAndGo (data) {
       this.$emit('onAddSceneAndGo', data)
       this.closeScenePicker()
     },
-    removeAction (action) {
-      const index = this.localActiveScene.actions.indexOf(action)
-
-      if (index >= 0) {
-        this.localActiveScene.actions.splice(index, 1)
-        this.$emit('updatedScene', this.localActiveScene)
-      }
+    removeAction () {
+      const newActionsArr = this.activeScene.actions.filter(item => item.id !== this.action.id)
+      this.activeScene.actions = newActionsArr
+      this.$emit('updatedScene', this.activeScene)
     },
     getSceneById (id) {
-      return this.scenes.filter(scene => scene.id === id)[0]
+      return { ...this.$store.getters['constructorStorage/getSceneById'](this.id) }
     }
   }
 }

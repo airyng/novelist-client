@@ -5,7 +5,8 @@
 export default {
   data () {
     return {
-      network: false,
+      visScriptLoaded: false,
+      network: null,
       containerID: 'scene-network',
       options: {
         autoResize: true,
@@ -60,10 +61,31 @@ export default {
       return process.server ? false : window.vis
     }
   },
+  watch: {
+    visScriptLoaded (val) {
+      if (val) {
+        this.init()
+      }
+    }
+  },
   mounted () {
-    this.init()
+    this.addScript()
   },
   methods: {
+    addScript () {
+      if (document.getElementById('vis_network')) {
+        this.visScriptLoaded = true
+        return
+      }
+
+      const script = document.createElement('script')
+      script.setAttribute('src', 'https://unpkg.com/vis-network/standalone/umd/vis-network.min.js')
+      document.head.appendChild(script)
+      script.setAttribute('id', 'vis_network')
+      script.onload = () => {
+        this.visScriptLoaded = true
+      }
+    },
     getEdges () {
       const edges = []
 
@@ -126,7 +148,6 @@ export default {
 
       this.sceneTransitionsEvent()
     },
-
     sceneTransitionsEvent () {
       this.network.on('doubleClick', (params) => {
         this.$emit('selectedSceneID', params.nodes[0])

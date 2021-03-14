@@ -1,13 +1,13 @@
 <template>
   <div>
     <v-fade-transition>
-      <div v-if="sceneID">
+      <div v-if="value">
         <div class="sceneEditor-overlay" @click="close" />
         <div class="sceneEditor-window constructor">
           <v-btn class="closeBtn" fab small depressed @click="close">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <ConstructorSceneEditor :sceneid="sceneID" />
+          <slot>...</slot>
         </div>
       </div>
     </v-fade-transition>
@@ -16,17 +16,12 @@
 
 <script>
 export default {
-  data () {
-    return {
-      sceneID: false
-    }
+  props: {
+    value: { type: Boolean, required: true }
   },
   methods: {
-    setScene (sceneID) {
-      this.sceneID = sceneID
-    },
     close () {
-      this.sceneID = false
+      this.$emit('onClose')
     }
   }
 }

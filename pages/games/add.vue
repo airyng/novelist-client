@@ -1,24 +1,33 @@
 <template>
   <div class="fullsize">
     <ConstructorSceneNetwork @selectedSceneID="onSceneSelected" />
-    <ConstructorSceneEditorPopup ref="sceneEditor" />
+    <ConstructorPopup
+      v-model="isScenePopupShow"
+      @onClose="closeSceneEditor"
+    >
+      <ConstructorSceneEditor ref="sceneEditor" :key="selectedSceneID" :sceneid="selectedSceneID" />
+    </ConstructorPopup>
   </div>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      selectedSceneID: false,
+      visScriptLoaded: false
+    }
+  },
   head: {
     title: 'Конструктор Новелл',
     meta: [
       { 'http-equiv': 'pragma', content: 'no-cache' },
       { 'http-equiv': 'cache-control', content: 'no-cache' },
       { 'http-equiv': 'expires', content: '0' }
-    ],
-    script: [
-      { src: 'https://unpkg.com/vis-network/standalone/umd/vis-network.min.js' }
     ]
   },
   computed: {
+    isScenePopupShow () { return !!this.selectedSceneID },
     scenes () {
       return this.$store.state.constructorStorage.scenes
     }
@@ -28,6 +37,7 @@ export default {
   },
   methods: {
     boot () {
+      this.$store.dispatch('constructorStorage/setStateToDefault')
       this.addSceneAndGo()
     },
     addSceneAndGo (data = false) {
@@ -48,7 +58,11 @@ export default {
       return newScene
     },
     onSceneSelected (id) {
-      this.$refs.sceneEditor.setScene(id)
+      this.selectedSceneID = id
+    },
+    closeSceneEditor () {
+      this.$refs.sceneEditor.save()
+      this.selectedSceneID = false
     }
   }
 }
