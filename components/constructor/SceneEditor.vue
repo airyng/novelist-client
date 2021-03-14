@@ -33,11 +33,12 @@
             class="scene-action-col"
           >
             <ConstructorSceneAction
-              
               class="pb-0"
               :action="action"
               :scene="scene"
-              @updatedScene="save"
+              @onSave="saveAction"
+              @onRemove="removeAction"
+              @onOrderChange="changeActionOrder"
             />
           </div>
 
@@ -61,6 +62,8 @@
 </template>
 
 <script>
+import { moveArrElem } from '@/plugins/utils'
+
 export default {
   props: {
     sceneid: { type: [Number, Boolean], default: false }
@@ -87,9 +90,44 @@ export default {
       this.$store.dispatch('constructorStorage/updateScene', _scene)
       this.getSceneFromStorage()
     },
+    // Возможно управление экшнами стоит вынести в отдельный компонент
+    // который будет отвечать только за них
     addAction () {
       this.$store.dispatch('constructorStorage/addAction', this.scene)
       this.getSceneFromStorage()
+    },
+    saveAction (action) {
+      this.scene.actions = this.scene.actions.map((element) => {
+        if (element.id === action.id) { element = action }
+        return element
+      })
+    },
+    removeAction (id) {
+      this.scene.actions = this.scene.actions.filter(item => item.id !== id)
+      this.$store.dispatch('constructorStorage/updateScene', this.scene)
+      this.getSceneFromStorage()
+    },
+    changeActionOrder (payload) {
+      let actionIndex = false
+      for (let index = 0; index < this.scene.actions.length; index++) {
+        const element = this.scene.actions[index]
+        if (element.id === payload.id) {
+          actionIndex = index
+          break
+        }
+      }
+
+      if (!actionIndex) { return }
+      if (payload.direction === 'up') {
+        this.scene.actions = moveArrElem([...this.scene.actions], actionIndex, actionIndex - 1)
+      }
+
+      if (payload.direction === 'down') {
+        // нельзя уйти ниже последнего значения
+        if (actionIndex >= this.scene.actions.length - 1) { return }
+
+        this.scene.actions = moveArrElem([...this.scene.actions], actionIndex, actionIndex + 1)
+      }
     }
   }
 }
