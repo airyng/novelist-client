@@ -1,3 +1,4 @@
+import { EventBus } from '~/plugins/event'
 
 export const state = () => ({
   settings: { // настройки редактора
@@ -16,8 +17,6 @@ export const state = () => ({
       }
     }
   },
-  activeScene: null, // текущая сцена
-  previousScene: null, // предыдущая сцена
   scenes: [], // список сцен
   projectID: null, // ID новеллы
   mainInfo: null
@@ -64,36 +63,24 @@ export const actions = {
       description: '',
       onTestDrive: false
     }
-    commit('setProperty', ['activeScene', null])
-    commit('setProperty', ['previousScene', null])
     commit('setProperty', ['scenes', []])
     commit('setProperty', ['projectID', null])
     commit('setProperty', ['mainInfo', mainInfo])
   },
-  goToScene ({ commit, state, getters }, elem) { // Переходим на новую сцену
-    // сохраняем текущую сцену, в историю переходов
-    // теперь будет предыдущей
-    commit('setProperty', ['previousScene', state.activeScene])
 
-    if (typeof elem === 'number') {
-      commit('setProperty', ['activeScene', getters.getSceneById(state)(elem)])
-    } else if (typeof elem === 'object') {
-      commit('setProperty', ['activeScene', elem])
-    }
-  },
-
-  addEmptyAction ({ commit, state, getters }) {
-    if (state.settings.maxActionsLength > state.activeScene.actions.length) {
-      const activeScene = JSON.parse(JSON.stringify(state.activeScene))
-      activeScene.actions.push(getters.getNewAction())
-      commit('setProperty', ['activeScene', activeScene])
-    }
-  },
+  // addEmptyAction ({ commit, state, getters }) {
+  //   if (state.settings.maxActionsLength > state.activeScene.actions.length) {
+  //     const activeScene = JSON.parse(JSON.stringify(state.activeScene))
+  //     activeScene.actions.push(getters.getNewAction())
+  //     commit('setProperty', ['activeScene', activeScene])
+  //   }
+  // },
 
   addScene ({ commit, state }, scene) {
     const scenes = [...state.scenes]
     scenes.push(scene)
     commit('setProperty', ['scenes', scenes])
+    EventBus.$emit('callToReinitSceneNetwork')
   },
 
   updateScene ({ commit, state }, scene) {
@@ -102,6 +89,7 @@ export const actions = {
       return item
     })
     commit('setProperty', ['scenes', scenes])
+    EventBus.$emit('callToReinitSceneNetwork')
   },
 
   addAction ({ dispatch, state, getters }, scene) {

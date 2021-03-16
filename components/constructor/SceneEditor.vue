@@ -13,19 +13,6 @@
     <v-container class="d-flex flex-column fullsize" style="max-width: 1200px">
       <v-row class="text-blocks">
         <v-col class="d-flex flex-column justify-end" cols="12">
-          <v-btn
-            v-if="settings.maxActionsLength > scene.actions.length"
-            rounded
-            fab
-            dark
-            class="text-center justify-center mb-5"
-            title="Добавить действие"
-            @click.stop="addAction()"
-          >
-            <v-icon rounded>
-              mdi-plus
-            </v-icon>
-          </v-btn>
           <div
             v-for="(action, index) in scene.actions"
             :key="index"
@@ -39,9 +26,22 @@
               @onSave="saveAction"
               @onRemove="removeAction"
               @onOrderChange="changeActionOrder"
+              @OnGoToScene="goToScene"
             />
           </div>
-
+          <v-btn
+            v-if="settings.maxActionsLength > scene.actions.length"
+            rounded
+            fab
+            dark
+            class="text-center justify-center mb-5"
+            title="Добавить действие"
+            @click.stop="addAction()"
+          >
+            <v-icon rounded>
+              mdi-plus
+            </v-icon>
+          </v-btn>
           <v-textarea
             v-model="scene.mainText"
             class="mainTextBlock"
@@ -89,6 +89,9 @@ export default {
       const _scene = scene || this.scene
       this.$store.dispatch('constructorStorage/updateScene', _scene)
       this.getSceneFromStorage()
+    },
+    goToScene (toSceneID) {
+      this.$emit('moveToScene', toSceneID)
     },
     // Возможно управление экшнами стоит вынести в отдельный компонент
     // который будет отвечать только за них

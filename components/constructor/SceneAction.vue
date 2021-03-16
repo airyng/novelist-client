@@ -36,7 +36,7 @@
       />
     </v-col>
     <v-col sm="2">
-      <v-tooltip v-if="typeof action.to == 'number'" top>
+      <v-tooltip v-if="typeof localAction.to == 'number'" top>
         <template #activator="{ on, attrs }">
           <v-chip
             close
@@ -44,16 +44,16 @@
             text-color="white"
             v-bind="attrs"
             @click:close="clearActionToParam"
-            @click="OnGoToScene(action.to)"
+            @click="OnGoToScene(localAction.to)"
             v-on="on"
           >
-            {{ getSceneById(action.to).title }}
+            {{ getSceneById(localAction.to).title }}
           </v-chip>
         </template>
-        <span>Переход на {{ getSceneById(action.to).title }}</span>
+        <span>Переход на {{ getSceneById(localAction.to).title }}</span>
       </v-tooltip>
 
-      <v-tooltip v-if="action.to == 'quit'" top>
+      <v-tooltip v-if="localAction.to == 'quit'" top>
         <template #activator="{ on, attrs }">
           <v-chip
             close
@@ -126,10 +126,8 @@
       @onDialogStateChanged="onScenePickerDialogStateChanged"
     >
       <ConstructorScenePicker
-        :current-scene="activeScene"
-        :scenes="scenes"
-        :action="pickedAction"
-        @callToAddingScene="onAddSceneAndGo"
+        :scene="activeScene"
+        :action="localAction"
         @OnScenePicked="setAction"
       />
     </CustomDialog>
@@ -196,8 +194,8 @@ export default {
       this.localAction.to = false
       this.$emit('onSave', this.localAction)
     },
-    OnGoToScene (scene) {
-      this.$emit('OnGoToScene', scene)
+    OnGoToScene (toScene) {
+      this.$emit('OnGoToScene', toScene)
     },
     openScenePicker (action) { // передаем выбранный экшн
       this.scenePickerDialog = true
@@ -211,30 +209,15 @@ export default {
     },
     setAction (data) { // {type: [string], action: [object], scene: [object]}
       if (data.type === 'scene') {
-        for (const action in this.activeScene.actions) {
-          if (this.activeScene.actions[action].id === data.action.id) {
-            this.activeScene.actions[action].to = data.scene.id
-          }
-        }
-        this.$emit('updatedScene', this.activeScene)
-        // закрываем диалоговое окно выбора сцены
-        // возможно стоит вынести в отдельный метод,
-        // если текущий метод будет еще где-то использоваться
+        this.localAction.to = data.scene.id
+        this.$emit('onSave', this.localAction)
         this.closeScenePicker()
       }
 
       if (data.type === 'quit') {
-        // for (const action in this.activeScene.actions) {
-        //   if (this.activeScene.actions[action].id === data.action.id) {
         this.localAction.to = 'quit'
-        // }
-        // }
         this.$emit('onSave', this.localAction)
       }
-    },
-    onAddSceneAndGo (data) {
-      this.$emit('onAddSceneAndGo', data)
-      this.closeScenePicker()
     },
     removeAction () {
       this.$emit('onRemove', this.localAction.id)
@@ -243,7 +226,7 @@ export default {
       this.$emit('onSave', this.localAction)
     },
     getSceneById (id) {
-      return { ...this.$store.getters['constructorStorage/getSceneById'](this.id) }
+      return { ...this.$store.getters['constructorStorage/getSceneById'](id) }
     }
   }
 }

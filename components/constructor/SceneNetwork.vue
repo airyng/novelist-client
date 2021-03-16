@@ -2,6 +2,8 @@
   <div :id="containerID" style="height:88vh" />
 </template>
 <script>
+import { EventBus } from '~/plugins/event'
+
 export default {
   data () {
     return {
@@ -41,9 +43,7 @@ export default {
           navigationButtons: true
         },
         layout: {
-          hierarchical: {
-            direction: 'LR'
-          }
+          hierarchical: true
         },
         physics: false
       }
@@ -70,6 +70,7 @@ export default {
   },
   mounted () {
     this.addScript()
+    EventBus.$on('callToReinitSceneNetwork', this.reinit)
   },
   methods: {
     addScript () {
@@ -152,6 +153,10 @@ export default {
       this.network.on('doubleClick', (params) => {
         this.$emit('selectedSceneID', params.nodes[0])
       })
+    },
+    reinit () {
+      this.network = null
+      this.init()
     }
   }
 }
