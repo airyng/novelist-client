@@ -1,67 +1,58 @@
 <template>
-    <v-row>
-        <v-col class="pb-0" cols="1">
-            <v-switch class="pb-0" v-model="isBackImageType"></v-switch>
-        </v-col>
-        <v-col @click="isBackImageType = !isBackImageType" cols="11" class="pb-0 curs-pointer d-flex align-items-center">
-            <span v-html="toggleLabel"></span>
-        </v-col>
-        <v-col class="pt-0" cols="12">
-            <wide-color-picker
-                class="pt-0"
-                v-show="!isBackImageType"
-                @onValueChanged="colorPicked"
-            ></wide-color-picker>
+  <v-row>
+    <v-col class="pb-0 d-flex align-center" cols="1">
+      <v-switch v-model="isBackImageType" class="pb-0" />
+    </v-col>
+    <v-col cols="11" class="pb-0 curs-pointer d-flex align-center" @click="isBackImageType = !isBackImageType">
+      <span v-if="isBackImageType">Цвет / <b>Изображение</b></span>
+      <span v-else><b>Цвет</b> / Изображение</span>
+    </v-col>
+    <v-col class="pt-0" cols="12">
+      <ConstructorWideColorPicker
+        v-show="!isBackImageType"
+        class="pt-0"
+        @onValueChanged="colorPicked"
+      />
 
-            <background-image-picker
-                class="pt-0"
-                v-show="isBackImageType"
-                @OnBackChanged="imagePicked"
-            ></background-image-picker>
-        </v-col>
-    </v-row>
+      <!-- <ConstructorBackgroundImagePicker
+        v-show="isBackImageType"
+        class="pt-0"
+        @OnBackChanged="imagePicked"
+      /> -->
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            isBackImageType: false,
-            rgbaStyle: null,
-            imageStyle: null
-        }
-    },
-    watch: {
-        isBackImageType ( val ){
-            this.OnBackChanged()
-        }
-    },
-    computed: {
-        toggleLabel(){
-            if(this.isBackImageType)
-                return 'Цвет / <b>Изображение</b>'
-            else
-                return '<b>Цвет</b> / Изображение'
-        }
-    },
-    methods: {
-        colorPicked( value ){
-            this.rgbaStyle = value
-            this.OnBackChanged()
-        },
-        imagePicked ( data ){
-            this.imageStyle = data
-            this.OnBackChanged()
-        },
-        OnBackChanged (){
-            
-            var result = ''
-
-            if(this.isBackImageType)
-                this.$emit('OnBackChanged', this.imageStyle)
-            else
-                this.$emit('OnBackChanged', this.rgbaStyle)
-        }
+  data () {
+    return {
+      isBackImageType: false,
+      rgbaStyle: null,
+      imageStyle: null
     }
+  },
+  watch: {
+    isBackImageType (val) {
+      this.OnBackChanged()
+    }
+  },
+  methods: {
+    colorPicked (value) {
+      this.rgbaStyle = value
+      this.OnBackChanged()
+    },
+    imagePicked (data) {
+      this.imageStyle = data
+      this.OnBackChanged()
+    },
+    OnBackChanged () {
+      if (this.isBackImageType) {
+        this.$emit('OnBackChanged', this.imageStyle)
+      } else {
+        this.$emit('OnBackChanged', this.rgbaStyle)
+      }
+    }
+  }
 }
 </script>

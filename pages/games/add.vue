@@ -1,6 +1,5 @@
 <template>
-  <div class="fullsize">
-    <ConstructorSceneNetwork @selectedSceneID="onSceneSelected" />
+  <div class="fullsize position-relative">
     <ConstructorPopup
       v-model="isScenePopupShow"
       @onClose="closeSceneEditor"
@@ -12,6 +11,22 @@
         @moveToScene="onSceneSelected"
       />
     </ConstructorPopup>
+    <ConstructorPopup
+      v-model="isCharacterPopupShow"
+      class="char-generator__popup"
+      @onClose="closeCharacterEditor"
+    >
+      <CharacterGenerator />
+    </ConstructorPopup>
+
+    <div class="bottom-char-bar left-right-stroke">
+      <div class="add-char-btn" @click="openCharacterEditor">
+        <img src="@/assets/images/constructor/icon-add-character.png">
+      </div>
+    </div>
+
+    <ConstructorSceneNetwork @selectedSceneID="onSceneSelected" />
+    <CommonNightSkyCanvas />
   </div>
 </template>
 
@@ -21,6 +36,7 @@ export default {
   data () {
     return {
       selectedSceneID: false,
+      isCharacterPopupShow: false,
       visScriptLoaded: false
     }
   },
@@ -59,7 +75,51 @@ export default {
     closeSceneEditor () {
       this.$refs.sceneEditor?.save()
       this.selectedSceneID = false
+    },
+    openCharacterEditor () {
+      this.isCharacterPopupShow = true
+    },
+    closeCharacterEditor () {
+      this.isCharacterPopupShow = false
     }
   }
 }
 </script>
+
+<style lang="sass">
+footer
+  display: none
+
+.bottom-char-bar
+  position: absolute
+  z-index: 10
+  left: 0
+  bottom: 10px
+  display: flex
+  align-items: center
+  padding: 10px
+
+.add-char-btn
+  display: flex
+  width: 100%
+  max-width: 100px
+  cursor: pointer
+  & img
+    width: 100%
+    transition: all .2s ease
+  &:hover
+    img
+      transform: rotateZ(-5deg)
+.char-generator__popup .editor-window
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)
+  background-size: 400% 400%
+  animation: move-bg-pos 100s ease infinite
+
+@keyframes move-bg-pos
+  0%
+    background-position: 0% 50%
+  50%
+    background-position: 100% 50%
+  100%
+    background-position: 0% 50%
+</style>

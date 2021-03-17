@@ -33,7 +33,7 @@
           <span class="white--text caption">{{ id }}</span>
         </v-avatar>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="6" class="d-flex align-center justify-center">
         <CharacterCanvas :updated-at="updatedAt" :active-items="activeItems" />
       </v-col>
     </v-row>
@@ -51,7 +51,7 @@ export default {
         { imageID: false, folder: 'Eyebrows', nameBase: 'eyebrows' },
         { imageID: false, folder: 'Eyes', nameBase: 'eyes' },
         { imageID: false, folder: 'Mouth', nameBase: 'mouth' },
-        { imageID: false, folder: 'Misc', nameBase: '' },
+        // { imageID: false, folder: 'Misc', nameBase: '' },
         { imageID: false, folder: 'Tops', nameBase: 'top' },
         { imageID: false, folder: 'Hair', nameBase: 'hair' }
       ],
@@ -92,12 +92,13 @@ export default {
           title: 'Рот',
           folder: 'Mouth',
           ids: ['1_1', '2_1', '3_1', '4_1', '5_1']
-        },
-        {
-          title: 'Разное',
-          folder: 'Misc',
-          ids: ['blush', 'blush_2', 'sweat', 'tears', 'tears1', 'tears1_1', 'tears1_2', 'tears1_3', 'tears1_4', 'tears1_5', 'tears2', 'tears2_1', 'tears2_2', 'tears2_3', 'tears2_4', 'tears2_5']
         }
+        // ,
+        // {
+        //   title: 'Разное',
+        //   folder: 'Misc',
+        //   ids: ['blush', 'blush_2', 'sweat', 'tears', 'tears1', 'tears1_1', 'tears1_2', 'tears1_3', 'tears1_4', 'tears1_5', 'tears2', 'tears2_1', 'tears2_2', 'tears2_3', 'tears2_4', 'tears2_5']
+        // }
       ]
     }
   },
@@ -132,8 +133,3 @@ export default {
   }
 }
 </script>
-
-<style lang="sass">
-.v-avatar
-  cursor: pointer
-</style>

@@ -1,5 +1,9 @@
 <template>
-  <div v-if="sceneid && scene" class="d-flex flex-column fullsize">
+  <div
+    v-if="sceneid && scene"
+    class="d-flex flex-column fullsize position-relative"
+    :style="backgroundStyle"
+  >
     <v-container fluid>
       <v-row justify="center">
         <v-col cols="12">
@@ -58,6 +62,32 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <CustomDialog
+      title="Выберите фон"
+    >
+      <template #toggler>
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              rounded
+              fab
+              dark
+              class="text-center justify-center mb-4 backPicker-btn"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon rounded>
+                mdi-tab-unselected
+              </v-icon>
+            </v-btn>
+          </template>
+          <span>Выбрать фон</span>
+        </v-tooltip>
+      </template>
+
+      <ConstructorBackgroundPicker @OnBackChanged="setBackground" />
+    </CustomDialog>
   </div>
 </template>
 
@@ -74,6 +104,14 @@ export default {
     }
   },
   computed: {
+    backgroundStyle () {
+      if (!this.scene.background) {
+        return 'background-color: white'
+      } else if (this.scene.background.type === 'color') {
+        return 'background-color: ' + this.scene.background.value
+      }
+      return 'background-image: url(' + this.scene.background.value + ')'
+    },
     settings () {
       return this.$store.state.constructorStorage.settings
     }
@@ -131,6 +169,9 @@ export default {
 
         this.scene.actions = moveArrElem([...this.scene.actions], actionIndex, actionIndex + 1)
       }
+    },
+    setBackground (backObj) {
+      this.scene.background = backObj.hexa ? { type: 'color', value: backObj.hexa } : false
     }
   }
 }
@@ -158,4 +199,8 @@ export default {
     display: none !important
 // .sceneEditor-container
 //   height: 100%
+.backPicker-btn
+  position: absolute
+  top: 65px
+  right: 10px
 </style>

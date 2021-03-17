@@ -1,5 +1,5 @@
 <template>
-  <div :id="containerID" style="height:88vh" />
+  <div :id="containerID" style="height:94vh" />
 </template>
 <script>
 import { EventBus } from '~/plugins/event'
@@ -28,8 +28,10 @@ export default {
           // forceDirection: 'horizontal',
           // roundness: 0.4,
           color: {
-            color: '#6200ea',
+            color: '#fff',
             highlight: '#6200ea'
+            // color: '#6200ea',
+            // highlight: '#6200ea'
           },
           arrows: {
             from: {
@@ -113,18 +115,18 @@ export default {
           title
         }
 
-        if (scene.background) {
-          if (scene.background.url_small) {
-            item.image = scene.background.url_small
-            item.shape = 'circularImage'
-          } else if (scene.background.hexa) {
-            item.color = scene.background.hexa
-            item.shape = 'circle'
-          }
-        } else {
-          item.color = '#ffffff'
-          item.shape = 'circle'
-        }
+        // if (scene.background) {
+        //   if (scene.background.type === 'image') {
+        //     item.image = scene.background.url_small
+        //     item.shape = 'circularImage'
+        //   } else if (scene.background.type === 'color') {
+        //     item.color = scene.background.value
+        //     item.shape = 'circle'
+        //   }
+        // } else {
+        item.color = '#ffffff'
+        item.shape = 'circle'
+        // }
         return item
       })
 
@@ -165,6 +167,12 @@ export default {
 <style lang="sass">
 .vis-network
   outline: none!important
+  z-index: 9
+
 .vis-up, .vis-down, .vis-right, .vis-left
   display: none!important
+
+div.vis-network div.vis-navigation div.vis-button
+  background-color: white
+  filter: hue-rotate(120deg)
 </style>

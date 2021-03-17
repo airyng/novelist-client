@@ -2,8 +2,8 @@
   <div>
     <v-fade-transition>
       <div v-if="value">
-        <div class="sceneEditor-overlay" @click="close" />
-        <div class="sceneEditor-window constructor">
+        <div class="editor-overlay" @click="close" />
+        <div class="editor-window constructor">
           <v-btn class="closeBtn" fab small depressed @click="close">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -32,7 +32,8 @@ export default {
   position: absolute
   right: 10px
   top: 10px
-.sceneEditor-overlay
+  z-index: 1
+.editor-overlay
   width: 100%
   height: 100%
   position: absolute
@@ -42,7 +43,7 @@ export default {
   filter: blur(10px)
   z-index: 100
 
-.sceneEditor-window
+.editor-window
   width: 95%
   height: 95%
   max-width: 1600px
@@ -52,7 +53,6 @@ export default {
   border-radius: 10px
   top: 50%
   transform: translate(-50%, -50%)
-  background: white
-  padding: 10px
+  // background: white
   z-index: 101
 </style>

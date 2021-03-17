@@ -110,10 +110,6 @@ export default {
         {
           title: 'О сайте',
           path: '/about'
-        },
-        {
-          title: 'Конструктор персонажей',
-          path: '/character-generator'
         }
         // {
         //     title: 'Мои новеллы',
