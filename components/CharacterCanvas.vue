@@ -1,32 +1,55 @@
 <template>
   <div>
-    <canvas :id="canvasID" width="948" height="1920" class="character-canvas" :class="{ lowOpacity: loading }" />
+    <canvas :id="canvasID" :width="portrait ? 948 : 948" :height="portrait ? 800 : 1920" :class="{ lowOpacity: loading }" :style="'height:'+height+'px'" />
   </div>
 </template>
 <script>
 export default {
   props: {
-    activeItems: { type: Array, required: true },
-    updatedAt: { type: Number, default: 0 }
+    charId: { type: String, required: true },
+    updatedAt: { type: Number, default: 0 },
+    height: { type: [String, Number], default: 500 },
+    portrait: { type: Boolean, default: false }
   },
   data () {
     return {
       canvasID: 0,
-      loading: false
+      loading: false,
+      activeItems: false
+    }
+  },
+  computed: {
+    charPartsSettings () {
+      return this.$store.getters['constructorStorage/getCharPartsSettings']()
     }
   },
   watch: {
     updatedAt () {
       this.drawCharacter()
+    },
+    charId () {
+      this.convertIdToItems()
+      this.drawCharacter()
     }
   },
   mounted () {
-    this.canvasID = new Date().getTime()
+    this.canvasID = new Date().getTime() + this.charId
     setTimeout(() => {
+      this.convertIdToItems()
       this.drawCharacter()
     }, 0)
   },
   methods: {
+    convertIdToItems () {
+      const ids = this.charId.split('.')
+      this.activeItems = []
+
+      ids.forEach((item, index) => {
+        const part = { ...this.charPartsSettings[index] }
+        part.imageID = item
+        this.activeItems.push(part)
+      })
+    },
     drawCharacter () {
       if (process.server || !this.activeItems) { return }
       const canvas = document.getElementById(this.canvasID)
@@ -67,9 +90,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.character-canvas
-    height: 500px
-
 .lowOpacity
-    opacity: 0.2
+  opacity: 0.2
 </style>

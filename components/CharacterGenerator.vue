@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <v-row>
+  <v-container class="fullsize">
+    <v-row class="fullsize">
       <v-col cols="1" class="d-flex flex-column">
         <v-avatar
           v-for="(item, index) in blocks"
@@ -21,7 +21,7 @@
           <span class="white--text caption">Random</span>
         </v-avatar>
       </v-col>
-      <v-col cols="5">
+      <v-col cols="5" style="overflow: hidden auto; height: 100%">
         <v-avatar
           v-for="(id, index) in currentSubBlock.ids"
           :key="index"
@@ -34,7 +34,7 @@
         </v-avatar>
       </v-col>
       <v-col cols="6" class="d-flex align-center justify-center">
-        <CharacterCanvas :updated-at="updatedAt" :active-items="activeItems" />
+        <CharacterCanvas :updated-at="updatedAt" :char-id="generatedImageID" />
       </v-col>
     </v-row>
   </v-container>
@@ -45,16 +45,7 @@ export default {
   data () {
     return {
       updatedAt: 0,
-      activeItems: [
-        { imageID: false, folder: 'Base', nameBase: 'base' },
-        { imageID: false, folder: 'Bottoms', nameBase: 'bottom' },
-        { imageID: false, folder: 'Eyebrows', nameBase: 'eyebrows' },
-        { imageID: false, folder: 'Eyes', nameBase: 'eyes' },
-        { imageID: false, folder: 'Mouth', nameBase: 'mouth' },
-        // { imageID: false, folder: 'Misc', nameBase: '' },
-        { imageID: false, folder: 'Tops', nameBase: 'top' },
-        { imageID: false, folder: 'Hair', nameBase: 'hair' }
-      ],
+      activeItems: [],
       currentSubBlock: false,
       blocks: [
         {
@@ -102,7 +93,17 @@ export default {
       ]
     }
   },
+  computed: {
+    generatedImageID () {
+      let result = ''
+      this.activeItems.forEach((item) => {
+        result += item.imageID + '.'
+      })
+      return result.substr(0, result.length - 1)
+    }
+  },
   mounted () {
+    this.activeItems = this.$store.getters['constructorStorage/getCharPartsSettings']()
     this.showItemsSubBlock(this.blocks[0])
     this.setInitialAssets()
   },

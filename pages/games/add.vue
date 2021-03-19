@@ -20,6 +20,15 @@
     </ConstructorPopup>
 
     <div class="bottom-char-bar left-right-stroke">
+      <CharacterCanvas
+        v-for="id in charIds"
+        :key="id"
+        :updated-at="updatedAt"
+        :char-id="id"
+        portrait
+        class="charPreview mr-2"
+        height="150"
+      />
       <div class="add-char-btn" @click="openCharacterEditor">
         <img src="@/assets/images/constructor/icon-add-character.png">
       </div>
@@ -37,7 +46,12 @@ export default {
     return {
       selectedSceneID: false,
       isCharacterPopupShow: false,
-      visScriptLoaded: false
+      visScriptLoaded: false,
+      updatedAt: 0,
+      charIds: [
+        '2.2_1.3_1.2_5.5_1.3_5.3_3',
+        '4.3_4.2_1.2_1.1_1.1_2.2_10'
+      ]
     }
   },
   head: {
@@ -56,6 +70,7 @@ export default {
   },
   mounted () {
     this.boot()
+    this.updatedAt = new Date().getTime()
     EventBus.$on('onAddSceneAndLinkAndGo', this.addSceneAndLinkToActAndOpen)
   },
   methods: {
@@ -102,7 +117,7 @@ footer
 .add-char-btn
   display: flex
   width: 100%
-  max-width: 100px
+  max-width: 50px
   cursor: pointer
   & img
     width: 100%
@@ -110,6 +125,12 @@ footer
   &:hover
     img
       transform: rotateZ(-5deg)
+
+.charPreview
+  display: flex
+  width: 150px
+  justify-content: center
+
 .char-generator__popup .editor-window
   background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)
   background-size: 400% 400%

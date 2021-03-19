@@ -47,6 +47,18 @@ export const getters = {
         to: false
       }
     }
+  },
+  getCharPartsSettings (state) {
+    return () => [
+      { imageID: false, folder: 'Base', nameBase: 'base' },
+      { imageID: false, folder: 'Bottoms', nameBase: 'bottom' },
+      { imageID: false, folder: 'Eyebrows', nameBase: 'eyebrows' },
+      { imageID: false, folder: 'Eyes', nameBase: 'eyes' },
+      { imageID: false, folder: 'Mouth', nameBase: 'mouth' },
+      // { imageID: false, folder: 'Misc', nameBase: '' },
+      { imageID: false, folder: 'Tops', nameBase: 'top' },
+      { imageID: false, folder: 'Hair', nameBase: 'hair' }
+    ]
   }
 }
 
