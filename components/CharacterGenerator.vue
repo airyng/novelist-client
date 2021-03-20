@@ -1,67 +1,114 @@
 <template>
-  <v-container class="fullsize">
-    <v-row class="fullsize">
-      <v-col cols="1" class="d-flex flex-column">
-        <v-avatar
-          v-for="(item, index) in blocks"
-          :key="index"
-          :color="currentSubBlock.folder === item.folder ? 'green' : 'indigo'"
-          size="50"
-          class="mb-5"
-          @click="showItemsSubBlock(item)"
-        >
-          <span class="white--text caption">{{ item.title }}</span>
-        </v-avatar>
-        <v-avatar
-          color="purple"
-          size="50"
-          class="mb-5"
-          @click="setRandomSubBlocks"
-        >
-          <span class="white--text caption">Random</span>
-        </v-avatar>
-      </v-col>
-      <v-col cols="5" style="overflow: hidden auto; height: 100%">
-        <v-avatar
-          v-for="(id, index) in currentSubBlock.ids"
-          :key="index"
-          :color="activeItems.filter((item) => item.folder === currentSubBlock.folder)[0].imageID === id ? 'green' : 'red'"
-          size="50"
-          class="mb-5 mr-5"
-          @click="setActiveAsset(currentSubBlock.folder, id)"
-        >
-          <span class="white--text caption">{{ id }}</span>
-        </v-avatar>
-      </v-col>
-      <v-col cols="6">
-        <v-row>
-          <v-col cols="12" class="d-flex justify-center">
-            <!-- Нужна валидация -->
-            <v-text-field
-              v-model="characterName"
-              label="Имя"
-              clearable
-              style="max-width: 200px"
-              :counter="18"
-            />
-          </v-col>
-          <v-col cols="12" class="d-flex justify-center">
-            <CharacterCanvas :updated-at="updatedAt" :char-id="generatedImageID" />
-          </v-col>
-          <v-col cols="12" class="d-flex justify-center">
-            <v-btn
-              depressed
-              color="indigo"
-              dark
-              @click="save"
-            >
-              Сохранить
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div>
+    <v-container class="fullsize">
+      <v-row class="fullsize">
+        <v-col cols="1" class="d-flex flex-column">
+          <v-avatar
+            v-for="(item, index) in blocks"
+            :key="index"
+            :color="currentSubBlock.folder === item.folder ? 'green' : 'indigo'"
+            size="50"
+            class="mb-5"
+            @click="showItemsSubBlock(item)"
+          >
+            <span class="white--text caption">{{ item.title }}</span>
+          </v-avatar>
+          <v-avatar
+            color="purple"
+            size="50"
+            class="mb-5"
+            @click="setRandomSubBlocks"
+          >
+            <span class="white--text caption">Random</span>
+          </v-avatar>
+        </v-col>
+        <v-col cols="5" style="overflow: hidden auto; height: 100%">
+          <v-avatar
+            v-for="(id, index) in currentSubBlock.ids"
+            :key="index"
+            :color="activeItems.filter((item) => item.folder === currentSubBlock.folder)[0].imageID === id ? 'green' : 'red'"
+            size="50"
+            class="mb-5 mr-5"
+            @click="setActiveAsset(currentSubBlock.folder, id)"
+          >
+            <span class="white--text caption">{{ id }}</span>
+          </v-avatar>
+        </v-col>
+        <v-col cols="6">
+          <v-row>
+            <v-col cols="12" class="d-flex justify-center">
+              <!-- Нужна валидация -->
+              <v-text-field
+                v-model="characterName"
+                label="Имя"
+                clearable
+                style="max-width: 200px"
+                :counter="18"
+              />
+            </v-col>
+            <v-col cols="12" class="d-flex justify-center">
+              <CharacterCanvas
+                :updated-at="updatedAt"
+                :char-id="generatedImageID"
+                :height="characterHeight"
+                class="character"
+              />
+            </v-col>
+            <!-- <v-col cols="12" class="d-flex justify-center">
+              <v-btn
+                depressed
+                color="indigo"
+                dark
+                @click="save"
+              >
+                Сохранить
+              </v-btn>
+            </v-col> -->
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-container>
+    <div class="btns-container d-flex flex-column align-center justify-center">
+      <v-tooltip top>
+        <template #activator="{ on, attrs }">
+          <v-btn
+            rounded
+            fab
+            dark
+            class="text-center justify-center mb-4"
+            v-bind="attrs"
+            v-on="on"
+            @click="save"
+          >
+            <v-icon rounded>
+              mdi-content-save-outline
+            </v-icon>
+          </v-btn>
+        </template>
+        <span>Сохранить</span>
+      </v-tooltip>
+
+      <v-tooltip top>
+        <template #activator="{ on, attrs }">
+          <v-btn
+            v-if="typeof char === 'object'"
+            rounded
+            fab
+            dark
+            class="text-center justify-center mb-4"
+            v-bind="attrs"
+            v-on="on"
+            @click="remove"
+          >
+            <v-icon rounded>
+              mdi-trash-can-outline
+            </v-icon>
+          </v-btn>
+        </template>
+        <span>Удалить</span>
+      </v-tooltip>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -75,6 +122,7 @@ export default {
       activeItems: [],
       currentSubBlock: false,
       characterName: '',
+      characterHeight: 0,
       blocks: [
         {
           title: 'Тело',
@@ -140,8 +188,14 @@ export default {
   },
   mounted () {
     this.init()
+    this.setCharacterSettings()
+    window.addEventListener('resize', () => this.setCharacterSettings())
   },
   methods: {
+    setCharacterSettings () {
+      this.characterHeight = Math.ceil(window.innerHeight / 1.4)
+      this.charUpdatedAt = new Date().getTime()
+    },
     init () {
       if (typeof this.char === 'object') {
         this.convertIdToItems()
@@ -190,15 +244,32 @@ export default {
       this.currentSubBlock = block
     },
     save () {
-      const char = { ...this.$store.getters['constructorStorage/getNewCharacter'] }
-      console.log(char)
+      const char = { ...this.$store.getters['constructorStorage/getNewCharacter']() }
       if (this.char.uid) {
         char.uid = this.char.uid
       }
       char.name = this.characterName
       char.id = this.generatedImageID
       this.$store.dispatch('constructorStorage/updateCharacterList', char)
+      this.$emit('onCharSaved')
+    },
+    remove () {
+      this.$store.dispatch('constructorStorage/removeCharacterFromList', this.char)
+      this.$emit('onCharSaved')
     }
   }
 }
 </script>
+
+<style lang="sass" scoped>
+.btns-container
+  position: absolute
+  top: 65px
+  right: 10px
+
+.character
+  position: absolute
+  right: 230px
+  bottom: -10px
+  left: auto
+</style>

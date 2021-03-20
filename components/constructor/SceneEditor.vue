@@ -16,6 +16,13 @@
 
     <v-container class="d-flex flex-column fullsize" style="max-width: 1200px">
       <v-row class="text-blocks">
+        <CharacterCanvas
+          v-if="character"
+          :updated-at="charUpdatedAt"
+          :char-id="character.id"
+          :height="characterHeight"
+          class="character"
+        />
         <v-col class="d-flex flex-column justify-end" cols="12">
           <div
             v-for="(action, index) in scene.actions"
@@ -91,12 +98,14 @@
       </CustomDialog>
 
       <CustomDialog
+        ref="characterPickerDialog"
         title="Добавить персонажа"
       >
         <template #toggler>
           <v-tooltip top>
             <template #activator="{ on, attrs }">
               <v-btn
+                v-show="!character"
                 rounded
                 fab
                 dark
@@ -113,8 +122,28 @@
           </v-tooltip>
         </template>
 
-        <ConstructorCharacterPicker @OnAddCharacter="addCharacter" />
+        <ConstructorCharacterPicker @onCharacterPicked="addCharacter" />
       </CustomDialog>
+
+      <v-tooltip top>
+        <template #activator="{ on, attrs }">
+          <v-btn
+            v-show="character"
+            rounded
+            fab
+            dark
+            class="text-center justify-center mb-4"
+            v-bind="attrs"
+            v-on="on"
+            @click="removeCharacter"
+          >
+            <v-icon rounded>
+              mdi-account-minus
+            </v-icon>
+          </v-btn>
+        </template>
+        <span>Убрать персонажа</span>
+      </v-tooltip>
     </div>
   </div>
 </template>
@@ -128,7 +157,9 @@ export default {
   },
   data () {
     return {
-      scene: false
+      scene: false,
+      charUpdatedAt: 0,
+      characterHeight: 0
     }
   },
   computed: {
@@ -142,12 +173,34 @@ export default {
     },
     settings () {
       return this.$store.state.constructorStorage.settings
+    },
+    character () {
+      if (this.scene.character) {
+        return this.$store.state.constructorStorage.characters.filter(char => char.uid === this.scene.character)[0]
+      } else {
+        return false
+      }
     }
   },
   mounted () {
     this.getSceneFromStorage()
+    this.setCharacterSettings()
+    window.addEventListener('resize', () => this.setCharacterSettings())
   },
   methods: {
+    removeCharacter () {
+      this.scene.character = false
+    },
+    setCharacterSettings () {
+      this.characterHeight = Math.ceil(window.innerHeight / 1.3)
+      this.charUpdatedAt = new Date().getTime()
+    },
+    addCharacter (char) {
+      this.$refs.characterPickerDialog.close()
+      this.scene.character = char.uid
+      this.charUpdatedAt = new Date().getTime()
+      this.save(this.scene)
+    },
     getSceneFromStorage () {
       this.scene = { ...this.$store.getters['constructorStorage/getSceneById'](this.sceneid) }
     },
@@ -232,4 +285,8 @@ export default {
   top: 65px
   right: 10px
 
+.character
+  position: absolute
+  left: 200px
+  bottom: -10px
 </style>

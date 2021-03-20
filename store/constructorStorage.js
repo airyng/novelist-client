@@ -36,15 +36,18 @@ export const getters = {
       title: 'Сцена ' + id,
       mainText: '',
       background: null,
-      actions: []
+      actions: [],
+      character: false
     }
   },
   getNewCharacter (state) {
-    const uid = state.characters.length + 1
-    return {
-      name: '',
-      id: '',
-      uid
+    return () => {
+      const uid = new Date().getTime()
+      return {
+        name: '',
+        id: '',
+        uid
+      }
     }
   },
   getNewAction (state) {
@@ -138,6 +141,10 @@ export const actions = {
     if (!isFoundMatch) {
       characters.push(character)
     }
+    commit('setProperty', ['characters', characters])
+  },
+  removeCharacterFromList ({ state, commit }, character) {
+    const characters = state.characters.filter(char => char.uid !== character.uid)
     commit('setProperty', ['characters', characters])
   }
 }
