@@ -33,8 +33,32 @@
           <span class="white--text caption">{{ id }}</span>
         </v-avatar>
       </v-col>
-      <v-col cols="6" class="d-flex align-center justify-center">
-        <CharacterCanvas :updated-at="updatedAt" :char-id="generatedImageID" />
+      <v-col cols="6">
+        <v-row>
+          <v-col cols="12" class="d-flex justify-center">
+            <!-- Нужна валидация -->
+            <v-text-field
+              v-model="characterName"
+              label="Имя"
+              clearable
+              style="max-width: 200px"
+              :counter="18"
+            />
+          </v-col>
+          <v-col cols="12" class="d-flex justify-center">
+            <CharacterCanvas :updated-at="updatedAt" :char-id="generatedImageID" />
+          </v-col>
+          <v-col cols="12" class="d-flex justify-center">
+            <v-btn
+              depressed
+              color="indigo"
+              dark
+              @click="save"
+            >
+              Сохранить
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>
@@ -42,11 +66,15 @@
 
 <script>
 export default {
+  props: {
+    char: { type: [Object, Boolean], default: false }
+  },
   data () {
     return {
       updatedAt: 0,
       activeItems: [],
       currentSubBlock: false,
+      characterName: '',
       blocks: [
         {
           title: 'Тело',
@@ -100,14 +128,44 @@ export default {
         result += item.imageID + '.'
       })
       return result.substr(0, result.length - 1)
+    },
+    charPartsSettings () {
+      return this.$store.getters['constructorStorage/getCharPartsSettings']()
+    }
+  },
+  watch: {
+    char () {
+      this.init()
     }
   },
   mounted () {
-    this.activeItems = this.$store.getters['constructorStorage/getCharPartsSettings']()
-    this.showItemsSubBlock(this.blocks[0])
-    this.setInitialAssets()
+    this.init()
   },
   methods: {
+    init () {
+      if (typeof this.char === 'object') {
+        this.convertIdToItems()
+        this.showItemsSubBlock(this.blocks[0])
+        this.characterName = this.char.name
+      } else if (this.char === true) {
+        this.activeItems = [...this.charPartsSettings]
+        this.showItemsSubBlock(this.blocks[0])
+        this.setInitialAssets()
+      } else {
+        this.activeItems = []
+        this.characterName = ''
+      }
+    },
+    convertIdToItems () {
+      const ids = this.char.id.split('.')
+      this.activeItems = []
+
+      ids.forEach((item, index) => {
+        const part = { ...this.charPartsSettings[index] }
+        part.imageID = item
+        this.activeItems.push(part)
+      })
+    },
     setRandomSubBlocks () {
       for (let index = 0; index < this.blocks.length; index++) {
         const element = this.blocks[index]
@@ -130,6 +188,16 @@ export default {
     },
     showItemsSubBlock (block) {
       this.currentSubBlock = block
+    },
+    save () {
+      const char = { ...this.$store.getters['constructorStorage/getNewCharacter'] }
+      console.log(char)
+      if (this.char.uid) {
+        char.uid = this.char.uid
+      }
+      char.name = this.characterName
+      char.id = this.generatedImageID
+      this.$store.dispatch('constructorStorage/updateCharacterList', char)
     }
   }
 }

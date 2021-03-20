@@ -16,21 +16,27 @@
       class="char-generator__popup"
       @onClose="closeCharacterEditor"
     >
-      <CharacterGenerator />
+      <CharacterGenerator :char="selectedCharacter" />
     </ConstructorPopup>
 
     <div class="bottom-char-bar left-right-stroke">
-      <CharacterCanvas
-        v-for="id in charIds"
-        :key="id"
-        :updated-at="updatedAt"
-        :char-id="id"
-        portrait
+      <div
+        v-for="char in characters"
+        :key="char.uid"
         class="charPreview mr-2"
-        height="150"
-      />
-      <div class="add-char-btn" @click="openCharacterEditor">
-        <img src="@/assets/images/constructor/icon-add-character.png">
+        @click.stop="openCharacterEditor(char)"
+      >
+        <CharacterCanvas
+          :updated-at="updatedAt"
+          :char-id="char.id"
+          portrait
+          height="150"
+        />
+        <span>{{ char.name }}</span>
+      </div>
+
+      <div class="charPreview" @click="openCharacterEditor()">
+        <img src="@/assets/images/constructor/icon-add-character.png" class="add-char-btn">
       </div>
     </div>
 
@@ -45,13 +51,9 @@ export default {
   data () {
     return {
       selectedSceneID: false,
-      isCharacterPopupShow: false,
+      selectedCharacter: false,
       visScriptLoaded: false,
-      updatedAt: 0,
-      charIds: [
-        '2.2_1.3_1.2_5.5_1.3_5.3_3',
-        '4.3_4.2_1.2_1.1_1.1_2.2_10'
-      ]
+      updatedAt: 0
     }
   },
   head: {
@@ -64,6 +66,10 @@ export default {
   },
   computed: {
     isScenePopupShow () { return !!this.selectedSceneID },
+    isCharacterPopupShow () { return !!this.selectedCharacter },
+    characters () {
+      return this.$store.state.constructorStorage.characters
+    },
     scenes () {
       return this.$store.state.constructorStorage.scenes
     }
@@ -91,11 +97,11 @@ export default {
       this.$refs.sceneEditor?.save()
       this.selectedSceneID = false
     },
-    openCharacterEditor () {
-      this.isCharacterPopupShow = true
+    openCharacterEditor (char) {
+      this.selectedCharacter = char || true
     },
     closeCharacterEditor () {
-      this.isCharacterPopupShow = false
+      this.selectedCharacter = false
     }
   }
 }
@@ -114,22 +120,23 @@ footer
   align-items: center
   padding: 10px
 
-.add-char-btn
-  display: flex
-  width: 100%
-  max-width: 50px
-  cursor: pointer
-  & img
-    width: 100%
-    transition: all .2s ease
-  &:hover
-    img
-      transform: rotateZ(-5deg)
-
 .charPreview
   display: flex
   width: 150px
   justify-content: center
+  align-items: center
+  cursor: pointer
+  flex-direction: column
+  border-radius: 12px
+  height: 190px
+  &:hover
+    border: 1px solid white
+
+.add-char-btn
+  display: flex
+  width: 50px
+  height: 50px
+  transition: all .2s ease
 
 .char-generator__popup .editor-window
   background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)

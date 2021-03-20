@@ -19,7 +19,8 @@ export const state = () => ({
   },
   scenes: [], // список сцен
   projectID: null, // ID новеллы
-  mainInfo: null
+  mainInfo: null,
+  characters: []
 })
 
 export const getters = {
@@ -36,6 +37,14 @@ export const getters = {
       mainText: '',
       background: null,
       actions: []
+    }
+  },
+  getNewCharacter (state) {
+    const uid = state.characters.length + 1
+    return {
+      name: '',
+      id: '',
+      uid
     }
   },
   getNewAction (state) {
@@ -112,5 +121,23 @@ export const actions = {
     } else {
       // To do: Show error message
     }
+  },
+  // Если находим совпадение по имени, то обновляем персонажа
+  // Если нет, то добавляем, как нового
+  updateCharacterList ({ state, commit }, character) {
+    let isFoundMatch = false
+    const characters = state.characters.map((char) => {
+      if (char.uid === character.uid) {
+        const uid = char.uid
+        char = character
+        char.uid = uid
+        isFoundMatch = true
+      }
+      return char
+    })
+    if (!isFoundMatch) {
+      characters.push(character)
+    }
+    commit('setProperty', ['characters', characters])
   }
 }

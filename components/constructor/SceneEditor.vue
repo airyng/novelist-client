@@ -52,7 +52,7 @@
             name="mainText"
             label="Основной текст"
             filled
-            rows="6"
+            rows="3"
             :counter="settings.mainTextMaxLength"
             background-color="#444"
             dark
@@ -63,31 +63,59 @@
       </v-row>
     </v-container>
 
-    <CustomDialog
-      title="Выберите фон"
-    >
-      <template #toggler>
-        <v-tooltip top>
-          <template #activator="{ on, attrs }">
-            <v-btn
-              rounded
-              fab
-              dark
-              class="text-center justify-center mb-4 backPicker-btn"
-              v-bind="attrs"
-              v-on="on"
-            >
-              <v-icon rounded>
-                mdi-tab-unselected
-              </v-icon>
-            </v-btn>
-          </template>
-          <span>Выбрать фон</span>
-        </v-tooltip>
-      </template>
+    <div class="btns-container">
+      <CustomDialog
+        title="Выбрать фон"
+      >
+        <template #toggler>
+          <v-tooltip top>
+            <template #activator="{ on, attrs }">
+              <v-btn
+                rounded
+                fab
+                dark
+                class="text-center justify-center mb-4"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon rounded>
+                  mdi-tab-unselected
+                </v-icon>
+              </v-btn>
+            </template>
+            <span>Выбрать фон</span>
+          </v-tooltip>
+        </template>
 
-      <ConstructorBackgroundPicker @OnBackChanged="setBackground" />
-    </CustomDialog>
+        <ConstructorBackgroundPicker @OnBackChanged="setBackground" />
+      </CustomDialog>
+
+      <CustomDialog
+        title="Добавить персонажа"
+      >
+        <template #toggler>
+          <v-tooltip top>
+            <template #activator="{ on, attrs }">
+              <v-btn
+                rounded
+                fab
+                dark
+                class="text-center justify-center mb-4"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon rounded>
+                  mdi-account-plus
+                </v-icon>
+              </v-btn>
+            </template>
+            <span>Добавить персонажа</span>
+          </v-tooltip>
+        </template>
+
+        <ConstructorCharacterPicker @OnAddCharacter="addCharacter" />
+      </CustomDialog>
+    </div>
   </div>
 </template>
 
@@ -179,7 +207,7 @@ export default {
 
 <style lang="sass">
 .mainTextBlock
-  max-height: 250px
+  max-height: 150px
   background-color: #444
   position: relative
   &::after, &::before
@@ -199,8 +227,9 @@ export default {
     display: none !important
 // .sceneEditor-container
 //   height: 100%
-.backPicker-btn
+.btns-container
   position: absolute
   top: 65px
   right: 10px
+
 </style>

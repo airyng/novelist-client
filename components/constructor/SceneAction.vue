@@ -31,6 +31,7 @@
         filled
         :counter="actionTextMaxLength"
         background-color="#444"
+        dense
         dark
         @input="save"
       />
