@@ -2,7 +2,8 @@
   <div :id="containerID" style="height:94vh" />
 </template>
 <script>
-import { EventBus } from '~/plugins/event'
+import { EventBus } from '@/plugins/event'
+import { excerpt } from '@/plugins/utils'
 
 export default {
   data () {
@@ -106,13 +107,10 @@ export default {
     },
     getNodes () {
       const nodes = this.scenes.map((scene) => {
-        let title = '...'
-        if (scene.mainText) { title = scene.mainText.substring(0, 30) + title }
-
         const item = {
           id: scene.id,
-          label: scene.title,
-          title
+          title: scene.title + ' - ' + excerpt(scene.mainText, 30),
+          label: excerpt(scene.title, 10)
         }
 
         // if (scene.background) {

@@ -43,7 +43,7 @@
                   </v-list-item-icon>
 
                   <v-list-item-content @click="setCondition(_scene)">
-                    <v-list-item-title>{{ _scene.title }} - {{ _scene.mainText.substring(0, excerptLimit) + '...' }}</v-list-item-title>
+                    <v-list-item-title>{{ _scene.title }} - {{ excerpt(_scene.mainText, excerptLimit) }}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import { excerpt } from '@/plugins/utils'
 export default {
   props: {
     scene: { type: Object, required: true },
@@ -114,6 +115,9 @@ export default {
     this.copyConditionData()
   },
   methods: {
+    excerpt (text, maxLength) {
+      return excerpt(text, maxLength)
+    },
     copyConditionData () {
       if (typeof this.action.condition === 'object') {
         this.selectedCondition = { ...this.action.condition }

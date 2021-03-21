@@ -9,6 +9,16 @@ const moveArrElem = (arr, oldIndex, newIndex) => {
   return arr
 }
 
+const excerpt = (text, maxLength) => {
+  if (!text.length) { return '...' }
+  if (text.length <= maxLength) {
+    return text
+  } else {
+    return text.substring(0, maxLength) + '...'
+  }
+}
+
 export {
+  excerpt,
   moveArrElem
 }

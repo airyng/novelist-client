@@ -70,7 +70,7 @@
               @click="OnGoToScene(localAction.to)"
               v-on="on"
             >
-              {{ getSceneById(localAction.to).title }}
+              {{ excerpt(getSceneById(localAction.to).title, 15) }}
             </v-chip>
           </template>
           <span>Переход на {{ getSceneById(localAction.to).title }}</span>
@@ -179,6 +179,7 @@
 </template>
 
 <script>
+import { excerpt } from '@/plugins/utils'
 export default {
   props: {
     scene: { type: Object, required: true },
@@ -226,6 +227,9 @@ export default {
     this.setLocalAction()
   },
   methods: {
+    excerpt (text, maxLength) {
+      return excerpt(text, maxLength)
+    },
     getSceneFromStorage () {
       this.activeScene = { ...this.scene }
     },

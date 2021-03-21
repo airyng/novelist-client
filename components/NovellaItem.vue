@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import { excerpt } from '@/plugins/utils'
 export default {
   props: {
     item: { type: Object, required: true }
@@ -67,7 +68,7 @@ export default {
   },
   computed: {
     itemExcerpt () {
-      if (this.item.description.length <= 120) { return this.item.description } else { return this.item.description.substring(0, 120) + '...' }
+      return excerpt(this.item.description, 120)
     },
     itemBanner () {
       return 'https://novelist.anime-look.ru/storage/backgrounds/September2020/nfqvPsBVxTOpTxMRYGTt.jpg'
@@ -77,6 +78,10 @@ export default {
   mounted () {
     // this.scenes = JSON.parse(this.item.json)
   },
-  methods: {}
+  methods: {
+    excerpt (text, maxLength) {
+      return excerpt(text, maxLength)
+    }
+  }
 }
 </script>

@@ -26,9 +26,9 @@
 
     <v-row justify="center">
       <v-col cols="1">
-        <v-switch v-model="localMainInfo.onTestDrive" />
+        <v-switch v-model="localMainInfo.onTestDrive" class="mt-0" />
       </v-col>
-      <v-col cols="11" class="curs-pointer d-flex align-items-center" @click="toggleMode">
+      <v-col cols="11" class="curs-pointer d-flex align-items-center mt-1" @click="toggleMode">
         <span v-if="localMainInfo.onTestDrive">Черновик / <b>Тест-Драйв</b></span>
         <span v-else><b>Черновик</b> / Тест-Драйв</span>
       </v-col>
@@ -38,36 +38,41 @@
 
 <script>
 export default {
-  props: {
-    // mainInfo: { type: Object, required: true },
-    settings: { type: Object, required: true }
-  },
   data () {
     return {
       gameStatusToggler: false,
       localMainInfo: null
     }
   },
-  watch: {
-    localMainInfo (val) {
-      this.$emit('input', val)
+  computed: {
+    mainInfo () {
+      return this.$store.state.constructorStorage.mainInfo
+    },
+    settings () {
+      return this.$store.state.constructorStorage.settings.mainInfo
     }
+  },
+  watch: {
+    // localMainInfo (val) {
+    //   this.$emit('input', val)
+    // }
   },
   mounted () {
     this.setDataFromProps()
-    this.gameStatusToggler = this.localMainInfo ? (this.localMainInfo.status !== 'draft') : false
   },
   methods: {
     setDataFromProps () {
-      if (this.localMainInfo !== this.mainInfo) {
-        this.localMainInfo = { ...this.mainInfo }
-      }
+      this.localMainInfo = { ...this.mainInfo }
+      this.gameStatusToggler = this.localMainInfo ? (this.localMainInfo.status !== 'draft') : false
     },
     toggleMode () {
       this.localMainInfo.onTestDrive = !this.localMainInfo.onTestDrive
     },
     callToCloseModals () {
       this.$emit('callToCloseModals')
+    },
+    save () { // calling outside
+      this.$store.dispatch('constructorStorage/updateMainSettings', this.localMainInfo)
     }
   }
 }

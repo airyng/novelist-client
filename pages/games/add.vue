@@ -19,8 +19,37 @@
       <CharacterGenerator :char="selectedCharacter" @onCharSaved="closeCharacterEditor" />
     </ConstructorPopup>
 
-    <div class="bottom-char-bar left-right-stroke">
-      <ConstructorCharacterList with-add-btn @onCharacterClick="openCharacterEditor" />
+    <div class="bottom-bar">
+      <CustomDialog
+        title="Основная информация"
+        @onDialogStateChanged="mainSettingsDialogStateChanged"
+      >
+        <template #toggler>
+          <v-tooltip top>
+            <template #activator="{ on, attrs }">
+              <v-btn
+                rounded
+                fab
+                dark
+                class="mainSettingsBtn"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon rounded>
+                  mdi-cog-outline
+                </v-icon>
+              </v-btn>
+            </template>
+            <span>Основная информация</span>
+          </v-tooltip>
+        </template>
+
+        <ConstructorMainSceneInfo ref="mainSceneInfo" />
+      </CustomDialog>
+
+      <div class=" left-right-stroke">
+        <ConstructorCharacterList with-add-btn @onCharacterClick="openCharacterEditor" />
+      </div>
     </div>
 
     <ConstructorSceneNetwork @selectedSceneID="onSceneSelected" />
@@ -80,6 +109,11 @@ export default {
     },
     closeCharacterEditor () {
       this.selectedCharacter = false
+    },
+    mainSettingsDialogStateChanged (val) {
+      if (!val) {
+        this.$refs.mainSceneInfo.save()
+      }
     }
   }
 }
@@ -89,7 +123,10 @@ export default {
 footer
   display: none
 
-.bottom-char-bar
+.mainSettingsBtn
+  margin: 0 0 20px 20px
+
+.bottom-bar
   position: absolute
   z-index: 10
   left: 0

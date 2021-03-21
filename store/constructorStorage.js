@@ -100,6 +100,9 @@ export const mutations = {
 }
 
 export const actions = {
+  updateMainSettings ({ commit }, data) {
+    commit('setProperty', ['mainInfo', data])
+  },
   setStateToDefault ({ commit }) {
     const mainInfo = {
       title: '',
