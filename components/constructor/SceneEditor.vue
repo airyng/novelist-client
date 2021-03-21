@@ -239,7 +239,7 @@ export default {
         }
       }
 
-      if (!actionIndex) { return }
+      if (actionIndex === false) { return }
       if (payload.direction === 'up') {
         this.scene.actions = moveArrElem([...this.scene.actions], actionIndex, actionIndex - 1)
       }

@@ -3,18 +3,22 @@
     <v-item-group mandatory>
       <v-row>
         <template v-if="scenes.length > 1">
-          <v-col cols="12">
+          <v-col
+            class="d-flex pb-0"
+            cols="12"
+          >
+            <v-select
+              v-model="selectedCondition"
+              :items="conditions"
+              label="Условие"
+            />
+          </v-col>
+          <v-col cols="12" class="pb-0">
             <v-text-field
               v-model="searchKeyword"
               :clearable="true"
               label="Поиск сцены по названию"
             />
-          </v-col>
-
-          <v-col cols="12">
-            <v-btn color="purple" rounded dark @click="callToAddingScene">
-              Добавить сцену
-            </v-btn>
           </v-col>
 
           <v-col cols="12">
@@ -38,7 +42,7 @@
                     <v-avatar v-else color="grey" />
                   </v-list-item-icon>
 
-                  <v-list-item-content @click="setScene(_scene)">
+                  <v-list-item-content @click="setCondition(_scene)">
                     <v-list-item-title>{{ _scene.title }} - {{ _scene.mainText.substring(0, excerptLimit) + '...' }}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
@@ -64,14 +68,15 @@
 
 <script>
 export default {
-  name: 'ScenePicker',
   props: {
-    scene: { type: Object, required: true }
+    scene: { type: Object, required: true },
+    action: { type: Object, required: true }
   },
   data () {
     return {
       searchKeyword: '',
-      excerptLimit: 30
+      excerptLimit: 30,
+      selectedCondition: false
     }
   },
   computed: {
@@ -90,17 +95,45 @@ export default {
     },
     scenes () {
       return this.$store.state.constructorStorage.scenes
+    },
+    conditions () {
+      return this.$store.getters['constructorStorage/getConditions']
     }
   },
+  watch: {
+    action () {
+      this.copyConditionData()
+    },
+    selectedCondition (val) {
+      if (val === false) {
+        this.removeCondition()
+      }
+    }
+  },
+  mounted () {
+    this.copyConditionData()
+  },
   methods: {
+    copyConditionData () {
+      if (typeof this.action.condition === 'object') {
+        this.selectedCondition = { ...this.action.condition }
+      }
+    },
     callToAddingScene () {
       const newScene = this.$store.getters['constructorStorage/getEmptyScene']()
       this.$store.dispatch('constructorStorage/addScene', newScene)
-      this.setScene(newScene)
+      this.setCondition(newScene)
     //   this.$emit('callToAddingScene')
     },
-    setScene (scene) {
-      this.$emit('OnScenePicked', { type: 'scene', scene })
+    removeCondition () {
+      this.$emit('OnConditionPicked', false)
+    },
+    setCondition (scene) {
+      if (this.selectedCondition === false) {
+        this.removeCondition()
+      } else {
+        this.$emit('OnConditionPicked', { type: this.selectedCondition, value: scene.id })
+      }
     }
   }
 }

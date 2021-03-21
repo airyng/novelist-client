@@ -63,7 +63,7 @@ export default {
       this.addNewScene()
     },
     addNewScene () { // Создаем новую сцену и возвращаем ее
-      const newScene = this.$store.getters['constructorStorage/getEmptyScene']
+      const newScene = this.$store.getters['constructorStorage/getEmptyScene']()
       this.$store.dispatch('constructorStorage/addScene', newScene)
       return newScene
     },

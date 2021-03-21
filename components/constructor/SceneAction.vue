@@ -1,6 +1,6 @@
 <template>
-  <v-row v-if="localAction && activeScene">
-    <v-col sm="10" class="d-flex">
+  <div v-if="localAction && activeScene">
+    <div class="d-flex" style="width: 100%">
       <!-- Кнопки перемещения очередности -->
       <div
         v-if="activeScene.actions.length > 1"
@@ -34,91 +34,124 @@
         dark
         @input="save"
       />
-    </v-col>
-    <v-col sm="2">
-      <v-tooltip v-if="typeof localAction.to == 'number'" top>
-        <template #activator="{ on, attrs }">
-          <v-chip
-            close
-            color="purple"
-            text-color="white"
-            v-bind="attrs"
-            @click:close="clearActionToParam"
-            @click="OnGoToScene(localAction.to)"
-            v-on="on"
-          >
-            {{ getSceneById(localAction.to).title }}
-          </v-chip>
-        </template>
-        <span>Переход на {{ getSceneById(localAction.to).title }}</span>
-      </v-tooltip>
-
-      <v-tooltip v-if="localAction.to == 'quit'" top>
-        <template #activator="{ on, attrs }">
-          <v-chip
-            close
-            color="black"
-            text-color="white"
-            v-bind="attrs"
-            @click:close="clearActionToParam"
-            v-on="on"
-          >
-            Выход
-          </v-chip>
-        </template>
-        <span>Выход из новеллы</span>
-      </v-tooltip>
-
-      <v-menu left bottom>
-        <template #activator="{ on, attrs }">
-          <v-btn
-            rounded
-            fab
-            dark
-            small
-            class="text-center justify-center"
-            v-bind="attrs"
-            v-on="on"
-          >
-            <v-icon rounded>
-              mdi-dots-horizontal
-            </v-icon>
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item
-            @click="openScenePicker(action)"
-          >
-            <v-list-item-title>
-              Переход на сцену
-            </v-list-item-title>
-          </v-list-item>
-
-          <v-list-item
-            @click="setQuitAction(action)"
-          >
-            <v-list-item-title>
-              Выход
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-
-      <v-btn
-        v-if="activeScene.actions.length > 1"
-        rounded
-        fab
-        dark
-        small
-        class="text-center justify-center"
-        @click="removeAction(action)"
-      >
-        <v-icon rounded>
-          mdi-close
+      <div class="d-flex pt-2">
+        <v-tooltip v-if="hasCondition" top>
+          <template #activator="{ on, attrs }">
+            <v-chip
+              close
+              color="black"
+              text-color="white"
+              v-bind="attrs"
+              class="mt-1 ml-1"
+              @click:close="clearActionCondition"
+              v-on="on"
+            >
+              Условие
+            </v-chip>
+          </template>
+          <span>Если {{ pickedConditionText }}</span>
+        </v-tooltip>
+        <v-icon
+          v-if="hasCondition && typeof localAction.to == 'number'"
+          class="ml-1"
+          style="height: 42px"
+        >
+          mdi-arrow-right-bold
         </v-icon>
-      </v-btn>
-    </v-col>
+        <v-tooltip v-if="typeof localAction.to == 'number'" top>
+          <template #activator="{ on, attrs }">
+            <v-chip
+              close
+              color="purple"
+              text-color="white"
+              v-bind="attrs"
+              class="mt-1 ml-1"
+              @click:close="clearActionToParam"
+              @click="OnGoToScene(localAction.to)"
+              v-on="on"
+            >
+              {{ getSceneById(localAction.to).title }}
+            </v-chip>
+          </template>
+          <span>Переход на {{ getSceneById(localAction.to).title }}</span>
+        </v-tooltip>
+
+        <v-tooltip v-if="localAction.to == 'quit'" top>
+          <template #activator="{ on, attrs }">
+            <v-chip
+              close
+              color="black"
+              text-color="white"
+              class="ml-1"
+              v-bind="attrs"
+              @click:close="clearActionToParam"
+              v-on="on"
+            >
+              Выход
+            </v-chip>
+          </template>
+          <span>Выход из новеллы</span>
+        </v-tooltip>
+
+        <v-menu left bottom>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              rounded
+              fab
+              dark
+              small
+              class="text-center justify-center ml-1"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon rounded>
+                mdi-dots-horizontal
+              </v-icon>
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item
+              @click="openScenePicker()"
+            >
+              <v-list-item-title>
+                Переход на сцену
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item
+              @click="openActionConditionPicker()"
+            >
+              <v-list-item-title>
+                Переход по условию
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item
+              @click="setQuitAction()"
+            >
+              <v-list-item-title>
+                Выход
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
+        <v-btn
+          v-if="activeScene.actions.length > 1"
+          rounded
+          fab
+          dark
+          small
+          class="text-center justify-center ml-1"
+          @click="removeAction()"
+        >
+          <v-icon rounded>
+            mdi-close
+          </v-icon>
+        </v-btn>
+      </div>
+    </div>
 
     <CustomDialog
       :toggler="scenePickerDialog"
@@ -127,11 +160,22 @@
     >
       <ConstructorScenePicker
         :scene="activeScene"
-        :action="localAction"
         @OnScenePicked="setAction"
       />
     </CustomDialog>
-  </v-row>
+
+    <CustomDialog
+      :toggler="conditionPickerDialog"
+      title="Укажите условие перехода на сцену"
+      @onDialogStateChanged="onConditionPickerDialogStateChanged"
+    >
+      <ConstructorConditionPicker
+        :scene="activeScene"
+        :action="localAction"
+        @OnConditionPicked="setCondition"
+      />
+    </CustomDialog>
+  </div>
 </template>
 
 <script>
@@ -145,6 +189,7 @@ export default {
       activeScene: null,
       localAction: null,
       scenePickerDialog: false,
+      conditionPickerDialog: false,
       pickedAction: false // экшн, который будет передан в компонент для настройки
     }
   },
@@ -154,6 +199,18 @@ export default {
     },
     scenes () {
       return this.$store.state.constructorStorage.scenes
+    },
+    conditions () {
+      return this.$store.getters['constructorStorage/getConditions']
+    },
+    hasCondition () {
+      return typeof this.localAction.condition === 'object' && typeof this.localAction.condition.type === 'string'
+    },
+    pickedConditionText () {
+      if (!this.localAction.condition) { return false }
+      const conditionText = this.conditions.filter(item => this.localAction.condition.type === item.value)[0].text
+      const sceneName = this.getSceneById(this.localAction.to).title
+      return conditionText + ' \'' + sceneName + '\''
     }
   },
   watch: {
@@ -183,26 +240,42 @@ export default {
     //     this.localAction = { ...this.action }
     //   }
     // },
-    setQuitAction (action) {
+    setQuitAction () {
+      const action = this.localAction
       const data = { type: 'quit', action }
       this.setAction(data)
     },
     changeActionOrder (direction) {
       this.$emit('onOrderChange', { id: this.localAction.id, direction })
     },
-    clearActionToParam (action) {
+    clearActionToParam () {
       this.localAction.to = false
-      this.$emit('onSave', this.localAction)
+      this.save()
     },
     OnGoToScene (toScene) {
       this.$emit('OnGoToScene', toScene)
     },
-    openScenePicker (action) { // передаем выбранный экшн
+    openActionConditionPicker () {
+      this.conditionPickerDialog = true
+    },
+    onConditionPickerDialogStateChanged (data) { // Метод под вопросом
+      this.conditionPickerDialog = data
+    },
+    setCondition (data) {
+      this.localAction.condition = data
+      this.conditionPickerDialog = false
+      this.save()
+    },
+    openScenePicker () { // передаем выбранный экшн
       this.scenePickerDialog = true
-      this.pickedAction = action
+      this.pickedAction = this.localAction
     },
     closeScenePicker () {
       this.scenePickerDialog = false
+    },
+    clearActionCondition () {
+      this.localAction.condition = false
+      this.save()
     },
     onScenePickerDialogStateChanged (data) {
       this.scenePickerDialog = data
@@ -210,13 +283,13 @@ export default {
     setAction (data) { // {type: [string], action: [object], scene: [object]}
       if (data.type === 'scene') {
         this.localAction.to = data.scene.id
-        this.$emit('onSave', this.localAction)
+        this.save()
         this.closeScenePicker()
       }
 
       if (data.type === 'quit') {
         this.localAction.to = 'quit'
-        this.$emit('onSave', this.localAction)
+        this.save()
       }
     },
     removeAction () {

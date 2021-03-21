@@ -30,14 +30,16 @@ export const getters = {
     }
   },
   getEmptyScene (state) {
-    const id = state.scenes.length + 1
-    return {
-      id,
-      title: 'Сцена ' + id,
-      mainText: '',
-      background: null,
-      actions: [],
-      character: false
+    return () => {
+      const id = new Date().getTime()
+      return {
+        id,
+        title: 'Сцена ' + id,
+        mainText: '',
+        background: null,
+        actions: [],
+        character: false
+      }
     }
   },
   getNewCharacter (state) {
@@ -54,11 +56,28 @@ export const getters = {
     return (scene) => {
       if (!scene) { return false }
       return {
-        id: scene.actions.length + 1,
+        id: new Date().getTime(),
         actionText: '',
-        to: false
+        to: false,
+        condition: false
       }
     }
+  },
+  getConditions (state) {
+    return [
+      {
+        text: 'Нет',
+        value: false
+      },
+      {
+        text: 'Игрок посетил сцену',
+        value: 'scene_visited'
+      },
+      {
+        text: 'Игрок не посетил сцену',
+        value: 'scene_not_visited'
+      }
+    ]
   },
   getCharPartsSettings (state) {
     return () => [
