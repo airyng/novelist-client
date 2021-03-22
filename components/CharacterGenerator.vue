@@ -43,7 +43,7 @@
                 label="Имя"
                 clearable
                 style="max-width: 200px"
-                :counter="18"
+                :counter="maxNameLength"
               />
             </v-col>
             <v-col cols="12" class="d-flex justify-center">
@@ -112,6 +112,7 @@
 </template>
 
 <script>
+import { ErrorMessage } from '@/plugins/toast'
 export default {
   props: {
     char: { type: [Object, Boolean], default: false }
@@ -123,6 +124,7 @@ export default {
       currentSubBlock: false,
       characterName: '',
       characterHeight: 0,
+      maxNameLength: 18,
       blocks: [
         {
           title: 'Тело',
@@ -244,6 +246,15 @@ export default {
       this.currentSubBlock = block
     },
     save () {
+      if (!this.characterName || this.characterName.length <= 2) {
+        ErrorMessage({ text: 'Имя персонажа не может быть меньше 2х символов' })
+        return
+      }
+      if (this.characterName.length > this.maxNameLength) {
+        ErrorMessage({ text: 'Имя персонажа не может быть больше ' + this.maxNameLength + ' символов' })
+        return
+      }
+
       const char = { ...this.$store.getters['constructorStorage/getNewCharacter']() }
       if (this.char.uid) {
         char.uid = this.char.uid

@@ -1,9 +1,8 @@
-import Swal from 'sweetalert'
-
-export const ErrorMessage = (title = 'Ошибка!', text = '') => {
+import Swal from 'sweetalert2'
+const ErrorMessage = (params) => {
   Swal.fire({
-    title,
-    text,
+    title: params.title || 'Ошибка!',
+    text: params.text || '',
     icon: 'error',
     toast: true,
     timer: 5000,
@@ -13,10 +12,10 @@ export const ErrorMessage = (title = 'Ошибка!', text = '') => {
   })
 }
 
-export const SuccessMessage = (title = 'Готово!', text = '') => {
+const SuccessMessage = (params) => {
   Swal.fire({
-    title,
-    text,
+    title: params.title || 'Готово!',
+    text: params.text || '',
     icon: 'success',
     toast: true,
     timer: 5000,
@@ -24,4 +23,9 @@ export const SuccessMessage = (title = 'Готово!', text = '') => {
     timerProgressBar: true,
     showConfirmButton: false
   })
+}
+
+export {
+  ErrorMessage,
+  SuccessMessage
 }

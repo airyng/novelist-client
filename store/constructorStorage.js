@@ -4,8 +4,9 @@ export const state = () => ({
   settings: { // настройки редактора
     mainTextMaxLength: 500,
     mainTextMinLength: 5,
-    actionTextMaxLength: 80,
+    actionTextMaxLength: 100,
     maxActionsLength: 3,
+    maxSceneTitleLength: 50,
     mainInfo: {
       title: {
         minLength: 5,

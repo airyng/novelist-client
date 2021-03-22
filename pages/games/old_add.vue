@@ -240,7 +240,7 @@ export default {
 
       this.goToScene(this.scenes[0])
       this.previousScene = false
-      SuccessMessage(false, 'Сцена успешно удалена!')
+      SuccessMessage({ title: false, text: 'Сцена успешно удалена!' })
     },
     addAction () {
       if (this.settings.maxActionsLength > this.activeScene.actions.length) { this.activeScene.actions.push(this.getNewAction()) }

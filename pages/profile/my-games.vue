@@ -181,10 +181,7 @@ export default {
     },
     publish (item) {
       if (item.status === 'draft') {
-        ErrorMessage(
-          'Ошибка',
-          'Публикация доступна только для новелл со статусом "Тест-Драйв"'
-        )
+        ErrorMessage({ text: 'Публикация доступна только для новелл со статусом "Тест-Драйв"' })
         // return
       }
 
@@ -233,10 +230,7 @@ export default {
     },
     goToPlay (item) {
       if (item.status === 'draft') {
-        ErrorMessage(
-          'Ошибка',
-          'Новелла в статусе "Черновик"'
-        )
+        ErrorMessage({ text: 'Новелла в статусе "Черновик"' })
       } else {
         this.goToPage('/games/' + item.id + '/play')
       }
