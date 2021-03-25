@@ -15,6 +15,12 @@ export default {
         autoResize: true,
         locale: 'ru',
         nodes: {
+          // size: 25,
+          widthConstraint: {
+            minimum: 1,
+            maximum: 100
+          }
+          // opacity: '0.7'
           // color: {
           //     border: '#6200ea',
           //     background: '#ffffff',
@@ -109,7 +115,7 @@ export default {
       const nodes = this.scenes.map((scene) => {
         const item = {
           id: scene.id,
-          title: scene.title + ' - ' + excerpt(scene.mainText, 30),
+          // title: scene.title + ' - ' + excerpt(scene.mainText, 30),
           label: excerpt(scene.title, 10)
         }
 
@@ -150,9 +156,30 @@ export default {
       this.sceneTransitionsEvent()
     },
     sceneTransitionsEvent () {
-      this.network.on('doubleClick', (params) => {
-        this.$emit('selectedSceneID', params.nodes[0])
+      this.network.on('click', (params) => {
+        if (params.nodes.length) {
+          const pos = this.network.getPosition(params.nodes[0])
+          const scale = this.network.getScale() // get Scale
+          const canvas = document.querySelector('#' + this.containerID)
+          const viewPos = this.network.getViewPosition()
+          const position = {
+            x: (canvas.clientWidth / 2) + pos.x - (viewPos.x * scale),
+            y: (canvas.clientHeight / 2) + pos.y - (viewPos.y * scale)
+          }
+          this.$emit('clicked', { position, sceneID: params.nodes[0] })
+        } else {
+          this.$emit('clicked', false)
+        }
       })
+      this.network.on('zoom', (params) => {
+        this.$emit('zoom', params)
+      })
+      this.network.on('dragStart', (params) => {
+        this.$emit('dragStart', params)
+      })
+      // this.network.on('doubleClick', (params) => {
+      //   this.$emit('selectedSceneID', params.nodes[0])
+      // })
     },
     reinit () {
       this.network = null

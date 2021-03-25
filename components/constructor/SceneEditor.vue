@@ -7,7 +7,7 @@
     <v-container fluid>
       <v-row justify="center">
         <v-col cols="12">
-          <h1 class="d-inline-block py-2 big-white-txt-shadow" contenteditable="true">
+          <h1 class="d-inline-block py-2 big-white-txt-shadow" style="outline: none" contenteditable="true">
             <!-- {{ scene.title }} -->
             <input
               v-model="scene.title"

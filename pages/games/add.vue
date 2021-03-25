@@ -19,6 +19,78 @@
       <CharacterGenerator :char="selectedCharacter" @onCharSaved="closeCharacterEditor" />
     </ConstructorPopup>
 
+    <ConstructorContextCircle :position="contextCirclePos">
+      <template #zero>
+        <v-btn
+          rounded
+          fab
+          dark
+          @click="onSceneSelected(preSelectedSceneID)"
+        >
+          <v-icon small rounded>
+            mdi-open-in-new
+          </v-icon>
+        </v-btn>
+      </template>
+
+      <template #first>
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              rounded
+              fab
+              dark
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon rounded>
+                mdi-cog-outline
+              </v-icon>
+            </v-btn>
+          </template>
+          <span>Основная информация</span>
+        </v-tooltip>
+      </template>
+
+      <template #second>
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              rounded
+              fab
+              dark
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon rounded>
+                mdi-cog-outline
+              </v-icon>
+            </v-btn>
+          </template>
+          <span>Основная информация</span>
+        </v-tooltip>
+      </template>
+
+      <template #third>
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              rounded
+              fab
+              dark
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon rounded>
+                mdi-cog-outline
+              </v-icon>
+            </v-btn>
+          </template>
+          <span>Основная информация</span>
+        </v-tooltip>
+      </template>
+    </ConstructorContextCircle>
+
     <div class="bottom-bar">
       <CustomDialog
         title="Основная информация"
@@ -52,7 +124,11 @@
       </div>
     </div>
 
-    <ConstructorSceneNetwork @selectedSceneID="onSceneSelected" />
+    <ConstructorSceneNetwork
+      @clicked="onSceneNetworkClicked"
+      @zoom="hideContextCircle"
+      @dragStart="hideContextCircle"
+    />
     <CommonNightSkyCanvas />
   </div>
 </template>
@@ -64,7 +140,9 @@ export default {
     return {
       selectedCharacter: false,
       selectedSceneID: false,
-      visScriptLoaded: false
+      visScriptLoaded: false,
+      contextCirclePos: false,
+      preSelectedSceneID: false // for contextMenu
     }
   },
   head: {
@@ -99,6 +177,9 @@ export default {
     onSceneSelected (id) {
       this.closeSceneEditor()
       this.selectedSceneID = id
+      setTimeout(() => {
+        this.hideContextCircle()
+      }, 500)
     },
     closeSceneEditor () {
       this.$refs.sceneEditor?.save()
@@ -114,6 +195,22 @@ export default {
       if (!val) {
         this.$refs.mainSceneInfo.save()
       }
+    },
+    onSceneNetworkClicked (payload) {
+      if (payload) {
+        this.hideContextCircle()
+        setTimeout(() => {
+          this.contextCirclePos = payload.position
+          this.preSelectedSceneID = payload.sceneID
+        }, 0)
+      } else {
+        this.hideContextCircle()
+      }
+      console.log(payload)
+    },
+    hideContextCircle (params) {
+      this.contextCirclePos = false
+      this.contextCircleScale = false
     }
   }
 }
