@@ -35,6 +35,7 @@
 
     <v-btn
       :disabled="isButtonDisabled"
+      depressed
       color="success"
       class="mr-4"
       @click="submitForm"
@@ -45,6 +46,7 @@
 </template>
 
 <script>
+import { ErrorMessage, SuccessMessage } from '@/plugins/toast'
 export default {
   data: () => ({
     formData: {
@@ -96,39 +98,28 @@ export default {
     async submitForm () {
       this.ajaxSending = true
       try {
-        await this.$store.dispatch('login', this.formData)
+        const response = await this.$api.login(this.formData)
+        if (response.status === 200) {
+          await this.$store.dispatch('authorize', response.data)
+          SuccessMessage({
+            title: 'Вход выполнен!'
+          })
+        } else if (response.status === 422 || response.status === 401) {
+          ErrorMessage({
+            text: 'Email или пароль не верны'
+          })
+        } else {
+          // eslint-disable-next-line no-console
+          console.log(response)
+        }
       } catch (e) {
-        this.formErrors.email = e.response.data.error.email || []
-        this.formErrors.password = e.response.data.error.password || []
+        // this.formErrors.email = e.response.data.error.email || []
+        // this.formErrors.password = e.response.data.error.password || []
+        // eslint-disable-next-line no-console
+        console.error(e)
       } finally {
         this.ajaxSending = false
       }
-      // axios.get('/sanctum/csrf-cookie').then((response) => {
-      //   axios.post('/api/addToken', this.formData)
-      //     .then((response) => {
-      //       this.ajaxSending = false
-
-      //       this.$root.setUserData(response.data)
-
-      //       Swal.fire({
-      //         title: 'Вход выполнен!',
-      //         icon: 'success',
-      //         toast: true,
-      //         timer: 3000,
-      //         position: 'bottom',
-      //         timerProgressBar: true,
-      //         showConfirmButton: false
-      //       })
-
-      //       this.$router.push({ name: 'profile' })
-      //     })
-      //     .catch((e) => {
-      //       this.formErrors.email = e.response.data.error.email || []
-      //       this.formErrors.password = e.response.data.error.password || []
-
-      //       this.ajaxSending = false
-      //     })
-      // })
     }
   }
 }

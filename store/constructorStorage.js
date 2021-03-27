@@ -1,4 +1,5 @@
 import { EventBus } from '~/plugins/event'
+import { ErrorMessage } from '~/plugins/toast'
 
 export const state = () => ({
   settings: { // настройки редактора
@@ -54,13 +55,12 @@ export const getters = {
     }
   },
   getNewAction (state) {
-    return (scene) => {
-      if (!scene) { return false }
+    return (params) => {
       return {
         id: new Date().getTime(),
-        actionText: '',
-        to: false,
-        condition: false
+        actionText: params.text || '',
+        to: params.to || false,
+        condition: params.condition || false
       }
     }
   },
@@ -115,14 +115,6 @@ export const actions = {
     commit('setProperty', ['mainInfo', mainInfo])
   },
 
-  // addEmptyAction ({ commit, state, getters }) {
-  //   if (state.settings.maxActionsLength > state.activeScene.actions.length) {
-  //     const activeScene = JSON.parse(JSON.stringify(state.activeScene))
-  //     activeScene.actions.push(getters.getNewAction())
-  //     commit('setProperty', ['activeScene', activeScene])
-  //   }
-  // },
-
   addScene ({ commit, state }, scene) {
     const scenes = [...state.scenes]
     scenes.push(scene)
@@ -139,13 +131,50 @@ export const actions = {
     EventBus.$emit('callToReinitSceneNetwork')
   },
 
-  addAction ({ dispatch, state, getters }, scene) {
+  deleteScene ({ commit, state }, sceneID) {
+    const scenes = state.scenes.filter(scene => scene.id !== sceneID)
+    commit('setProperty', ['scenes', scenes])
+    EventBus.$emit('callToReinitSceneNetwork')
+  },
+
+  copyScene ({ dispatch, getters }, sceneToCopy) {
+    if (!sceneToCopy) { return }
+    const newScene = getters.getEmptyScene()
+    newScene.background = sceneToCopy.background
+    newScene.character = sceneToCopy.character
+    newScene.mainText = sceneToCopy.mainText
+    dispatch('addScene', newScene)
+
+    // Устанавливаем экшн переход с копии на новую сцену
+    dispatch('addAction', { scene: sceneToCopy, actionParams: { text: 'Дальше...', to: newScene.id } })
+  },
+
+  deleteActionToScene ({ dispatch, state }, sceneID) {
+    for (let index = 0; index < state.scenes.length; index++) {
+      const scene = state.scenes[index]
+      const actionToThisScene = scene.actions.find(action => action.to === sceneID)
+      if (actionToThisScene) {
+        const sceneWithoutThisAction = { ...scene }
+        sceneWithoutThisAction.actions = sceneWithoutThisAction.actions.filter(action => action.id !== actionToThisScene.id)
+        dispatch('updateScene', sceneWithoutThisAction)
+        break
+      }
+    }
+  },
+
+  addAction ({ dispatch, state, getters }, { scene, actionParams }) {
     if (state.settings.maxActionsLength > scene.actions.length) {
       const _scene = JSON.parse(JSON.stringify(scene))
-      _scene.actions.push(getters.getNewAction(_scene))
+      _scene.actions.push(getters.getNewAction(actionParams || {}))
       dispatch('updateScene', _scene)
     } else {
-      // To do: Show error message
+      // To do: Show error message (Swal)
+      ErrorMessage(
+        {
+          title: 'Действие не создано',
+          text: 'Достигнуто максимально возможное кол-во действий'
+        }
+      )
     }
   },
   // Если находим совпадение по имени, то обновляем персонажа

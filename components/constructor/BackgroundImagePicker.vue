@@ -86,7 +86,11 @@ export default {
 
       if (this.nameSearchKey) {
         backs = this.backs.filter((item) => {
-          return item.name.toLowerCase().includes(this.nameSearchKey.toLowerCase())
+          if (item.name && this.nameSearchKey) {
+            return item.name.toLowerCase().includes(this.nameSearchKey.toLowerCase())
+          } else {
+            return false
+          }
         })
       }
 

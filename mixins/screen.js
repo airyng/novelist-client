@@ -29,6 +29,7 @@ export const screen = {
       return 'screen-' + name
     },
     isMobileScreen () {
+      if (process.server) { return true }
       return this.screenName === 'screen-small-to-medium-tablet' || this.screenName === 'screen-mobile'
     }
   }

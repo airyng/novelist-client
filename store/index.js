@@ -27,18 +27,21 @@ export const mutations = {
 }
 
 export const actions = {
-  async login ({ commit }, credentials) {
+  async authorize ({ commit }, tokenData) {
     try {
-      const tokenData = await this.$api.login({ login: credentials.login, password: credentials.password})
-      // set given token in cookie
-      this.$atm.setToken(tokenData)
-      const userData = await this.$api.getMe()
-      commit('setProperty', ['userData', userData])
-      commit('setProperty', ['isLoggedIn', true])
-      EventBus.$emit('logged-in', { redirect: '/' })
+      if (tokenData) {
+        // set given token in cookie
+        this.$atm.setToken(tokenData)
+        const userData = await this.$api.getMe()
+        commit('setProperty', ['userData', userData])
+        commit('setProperty', ['isLoggedIn', true])
+        EventBus.$emit('logged-in', { redirect: '/' })
+      } else {
+        commit('setProperty', ['isLoggedIn', false])
+      }
     } catch (err) {
       commit('setProperty', ['isLoggedIn', false])
-      throw err
+      console.error(err)
     }
   },
 

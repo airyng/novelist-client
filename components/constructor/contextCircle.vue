@@ -59,7 +59,7 @@ export default {
     & .zero
       top: 50%
       left: 50%
-      transform: translate(-50%, -50%) scale(2)
+      transform: translate(-50%, -50%) scale(1.6)
     & .first
       top: -50%
       left: 50%

@@ -25,7 +25,7 @@
 
 export default {
   async asyncData ({ store }) {
-    await store.dispatch('getLatestGames')
+    // await store.dispatch('getLatestGames')
   },
   data () {
     return {}

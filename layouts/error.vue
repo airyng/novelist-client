@@ -13,7 +13,7 @@
     <v-row>
       <v-col class="d-flex justify-center">
         <NuxtLink to="/">
-          <v-btn dark color="indigo">
+          <v-btn depressed dark color="indigo">
             На главную
           </v-btn>
         </NuxtLink>

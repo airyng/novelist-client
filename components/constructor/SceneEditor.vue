@@ -63,6 +63,7 @@
             rounded
             fab
             dark
+            depressed
             class="text-center justify-center mb-5"
             title="Добавить действие"
             @click.stop="addAction()"
@@ -99,6 +100,7 @@
                 rounded
                 fab
                 dark
+                depressed
                 class="text-center justify-center mb-4"
                 v-bind="attrs"
                 v-on="on"
@@ -127,6 +129,7 @@
                 rounded
                 fab
                 dark
+                depressed
                 class="text-center justify-center mb-4"
                 v-bind="attrs"
                 v-on="on"
@@ -150,6 +153,7 @@
             rounded
             fab
             dark
+            depressed
             class="text-center justify-center mb-4"
             v-bind="attrs"
             v-on="on"
@@ -233,7 +237,7 @@ export default {
     // Возможно управление экшнами стоит вынести в отдельный компонент
     // который будет отвечать только за них
     addAction () {
-      this.$store.dispatch('constructorStorage/addAction', this.scene)
+      this.$store.dispatch('constructorStorage/addAction', { scene: this.scene })
       this.getSceneFromStorage()
     },
     saveAction (action) {

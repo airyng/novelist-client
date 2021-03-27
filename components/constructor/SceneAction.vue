@@ -100,6 +100,7 @@
               fab
               dark
               small
+              depressed
               class="text-center justify-center ml-1"
               v-bind="attrs"
               v-on="on"
@@ -143,6 +144,7 @@
           fab
           dark
           small
+          depressed
           class="text-center justify-center ml-1"
           @click="removeAction()"
         >

@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app :class="$route.name + '-page'">
     <TopBar />
     <v-main>
       <nuxt />

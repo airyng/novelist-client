@@ -17,9 +17,10 @@ export default {
         nodes: {
           // size: 25,
           widthConstraint: {
-            minimum: 1,
+            minimum: 100,
             maximum: 100
-          }
+          },
+          margin: 2
           // opacity: '0.7'
           // color: {
           //     border: '#6200ea',
@@ -133,7 +134,6 @@ export default {
         // }
         return item
       })
-
       return new this.vis.DataSet(nodes)
     },
     init () {

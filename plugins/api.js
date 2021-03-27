@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 // backend api calls
+import { ErrorMessage, SuccessMessage } from '@/plugins/toast'
 
 export default function ({ $axios }, inject) {
   if (!$axios) { return }
@@ -18,16 +19,10 @@ export default function ({ $axios }, inject) {
       })
       .catch((e) => {
         console.error(e)
-      //     Swal.fire({
-      //       title: 'Ошибка загрузки данных',
-      //       text: 'Пожалуйста, обновите страницу',
-      //       icon: 'error',
-      //       toast: true,
-      //       timer: 10000,
-      //       position: 'bottom',
-      //       timerProgressBar: true,
-      //       showConfirmButton: false
-      //     })
+        ErrorMessage({
+          title: 'Ошибка загрузки данных',
+          text: 'Пожалуйста, обновите страницу'
+        })
       })
   }
 
@@ -41,89 +36,51 @@ export default function ({ $axios }, inject) {
       })
       .catch((e) => {
         console.error(e)
-      //     Swal.fire({
-      //       title: 'Ошибка загрузки данных',
-      //       text: 'Пожалуйста, обновите страницу',
-      //       icon: 'error',
-      //       toast: true,
-      //       timer: 10000,
-      //       position: 'bottom',
-      //       timerProgressBar: true,
-      //       showConfirmButton: false
-      //     })
+        ErrorMessage({
+          title: 'Ошибка загрузки данных',
+          text: 'Пожалуйста, обновите страницу'
+        })
       })
   }
 
-  const login = ({ login, password }) => {
-    return { accessToken: 'token', expires: '10.10.2021' }
-    // return $axios.post(getApiURL() + 'login', { login, password })
-    //   .then((response) => {
-    //     if (!process.server) {
-    //       console.log('login success', response.data)
-    //     }
-    //       Swal.fire({
-    //         title: 'Вход выполнен!',
-    //         icon: 'success',
-    //         toast: true,
-    //         timer: 3000,
-    //         position: 'bottom',
-    //         timerProgressBar: true,
-    //         showConfirmButton: false
-    //       })
-    //     return response.data
-    //   })
-    //   .catch((e) => {
-    //     console.error(e)
-    //   //     Swal.fire({
-    //   //       title: 'Ошибка загрузки данных',
-    //   //       text: 'Пожалуйста, обновите страницу',
-    //   //       icon: 'error',
-    //   //       toast: true,
-    //   //       timer: 10000,
-    //   //       position: 'bottom',
-    //   //       timerProgressBar: true,
-    //   //       showConfirmButton: false
-    //   //     })
-    //   })
+  const login = ({ email, password }) => {
+    return $axios.post(getApiURL() + 'auth/login', { email, password })
+      .then((response) => {
+        if (!process.server) {
+          console.log('login success', response.data)
+        }
+        return response
+      })
+      .catch((e) => {
+        console.error(e)
+        return e.response
+      })
   }
 
   const logout = () => {
-    // To do
+    return $axios.post(getApiURL() + 'auth/logout')
+      .then((response) => {
+        if (!process.server) {
+          console.log('logout success')
+        }
+      })
   }
 
   const getMe = () => {
-    return {
-      id: 1,
-      role_id: 1,
-      name: 'Airyng',
-      email: 'airyng@yandex.ru',
-      avatar: 'users/default.png',
-      email_verified_at: null,
-      settings: { locale: 'ru' },
-      created_at: '2020-08-03T12:49:31.000000Z',
-      updated_at: '2020-10-04T05:13:34.000000Z',
-      sex: null
-    }
-    // return $axios.get(getApiURL() + 'user/me')
-    //   .then((response) => {
-    //     if (!process.server) {
-    //       console.log('getMe success', response.data)
-    //     }
-    //     return response.data
-    //   })
-    //   .catch((e) => {
-    //     console.error(e)
-    //   //     Swal.fire({
-    //   //       title: 'Ошибка загрузки данных',
-    //   //       text: 'Пожалуйста, обновите страницу',
-    //   //       icon: 'error',
-    //   //       toast: true,
-    //   //       timer: 10000,
-    //   //       position: 'bottom',
-    //   //       timerProgressBar: true,
-    //   //       showConfirmButton: false
-    //   //     })
-    //   })
+    return $axios.post(getApiURL() + 'auth/me')
+      .then((response) => {
+        if (!process.server) {
+          console.log('getMe success', response.data)
+        }
+        SuccessMessage({
+          title: 'Вход выполнен!'
+        })
+        return response.data
+      })
+      .catch((e) => {
+        console.error(e)
+        return e.response
+      })
   }
 
   const getMyGamesList = () => {

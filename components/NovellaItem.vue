@@ -35,20 +35,20 @@
 
     <v-card-actions>
       <nuxt-link :to="'/games/'+ item.id + '/play'">
-        <v-btn text color="deep-purple">
+        <v-btn depressed text color="deep-purple">
           Играть
         </v-btn>
       </nuxt-link>
       <nuxt-link :to="'/games/'+ item.id">
-        <v-btn text color="deep-purple">
+        <v-btn depressed text color="deep-purple">
           Подробнее
         </v-btn>
       </nuxt-link>
       <v-spacer />
-      <v-btn icon disabled>
+      <v-btn depressed icon disabled>
         <v-icon>mdi-heart</v-icon>
       </v-btn>
-      <v-btn icon disabled>
+      <v-btn depressed icon disabled>
         <v-icon>mdi-share-variant</v-icon>
       </v-btn>
     </v-card-actions>

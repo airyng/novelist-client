@@ -72,6 +72,7 @@
 
     <v-btn
       :disabled="isButtonDisabled"
+      depressed
       color="success"
       class="mr-4"
       @click="submitForm"

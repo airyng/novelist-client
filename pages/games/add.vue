@@ -25,6 +25,7 @@
           rounded
           fab
           dark
+          depressed
           @click="onSceneSelected(preSelectedSceneID)"
         >
           <v-icon small rounded>
@@ -40,15 +41,17 @@
               rounded
               fab
               dark
+              depressed
               v-bind="attrs"
               v-on="on"
+              @click="duplicateScene(preSelectedSceneID)"
             >
               <v-icon rounded>
-                mdi-cog-outline
+                mdi-content-duplicate
               </v-icon>
             </v-btn>
           </template>
-          <span>Основная информация</span>
+          <span>Дублировать</span>
         </v-tooltip>
       </template>
 
@@ -59,15 +62,17 @@
               rounded
               fab
               dark
+              depressed
               v-bind="attrs"
               v-on="on"
+              @click="callToDeleteScene(preSelectedSceneID)"
             >
               <v-icon rounded>
-                mdi-cog-outline
+                mdi-delete-outline
               </v-icon>
             </v-btn>
           </template>
-          <span>Основная информация</span>
+          <span>Удалить</span>
         </v-tooltip>
       </template>
 
@@ -78,6 +83,8 @@
               rounded
               fab
               dark
+              disabled
+              depressed
               v-bind="attrs"
               v-on="on"
             >
@@ -86,7 +93,7 @@
               </v-icon>
             </v-btn>
           </template>
-          <span>Основная информация</span>
+          <!-- <span>Основная информация</span> -->
         </v-tooltip>
       </template>
     </ConstructorContextCircle>
@@ -103,6 +110,7 @@
                 rounded
                 fab
                 dark
+                depressed
                 class="mainSettingsBtn"
                 v-bind="attrs"
                 v-on="on"
@@ -134,7 +142,8 @@
 </template>
 
 <script>
-import { EventBus } from '~/plugins/event'
+import { EventBus } from '@/plugins/event'
+import Swal from 'sweetalert2'
 export default {
   data () {
     return {
@@ -206,18 +215,46 @@ export default {
       } else {
         this.hideContextCircle()
       }
-      console.log(payload)
+      // console.log(payload)
     },
     hideContextCircle (params) {
       this.contextCirclePos = false
       this.contextCircleScale = false
+    },
+    callToDeleteScene (sceneID) {
+      Swal.fire({
+        title: 'Вы действительно хотите удалить сцену "' + this.getSceneById(sceneID).title + '"?',
+        text: 'Все действия ведущие на эту сцену будут также удалены.',
+        showDenyButton: true,
+        showCancelButton: true,
+        showConfirmButton: false,
+        denyButtonText: 'Удалить',
+        cancelButtonText: 'Отмена'
+      }).then((result) => {
+        if (result.isDenied) {
+          this.deleteScene(sceneID)
+        }
+      })
+    },
+    getSceneById (id) {
+      return { ...this.$store.getters['constructorStorage/getSceneById'](id) }
+    },
+    deleteScene (sceneID) {
+      this.hideContextCircle()
+      this.$store.dispatch('constructorStorage/deleteScene', sceneID)
+      this.$store.dispatch('constructorStorage/deleteActionToScene', sceneID)
+    },
+    duplicateScene (sceneID) {
+      const sceneCopy = this.scenes.find(scene => scene.id === sceneID)
+      this.hideContextCircle()
+      this.$store.dispatch('constructorStorage/copyScene', sceneCopy)
     }
   }
 }
 </script>
 
 <style lang="sass">
-footer
+.games-add-page footer
   display: none
 
 .mainSettingsBtn

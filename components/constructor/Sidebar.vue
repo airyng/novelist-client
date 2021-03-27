@@ -10,6 +10,7 @@
               rounded
               fab
               dark
+              depressed
               class="text-center justify-center mb-4"
               v-bind="attrs"
               v-on="on"
@@ -41,6 +42,7 @@
           <template #activator="{ on, attrs }">
             <v-btn
               rounded
+              depressed
               fab
               dark
               class="text-center justify-center mb-4"
@@ -69,6 +71,7 @@
           rounded
           fab
           dark
+          depressed
           class="text-center justify-center mb-4"
           :class="{disabled: !previousScene}"
           v-bind="attrs"
@@ -93,6 +96,7 @@
               rounded
               fab
               dark
+              depressed
               class="text-center justify-center mb-4"
               v-bind="attrs"
               v-on="on"
@@ -118,6 +122,7 @@
           rounded
           fab
           dark
+          depressed
           class="text-center justify-center mb-4"
           v-bind="attrs"
           v-on="on"

@@ -12,7 +12,7 @@
           </v-col>
 
           <v-col cols="12">
-            <v-btn color="purple" rounded dark @click="callToAddingScene">
+            <v-btn depressed color="purple" rounded dark @click="callToAddingScene">
               Добавить сцену
             </v-btn>
           </v-col>
@@ -52,7 +52,7 @@
             <p>Сцены еще не были добавлены.</p>
           </v-col>
           <v-col cols="12" class="pt-0">
-            <v-btn color="purple" rounded dark @click="callToAddingScene">
+            <v-btn depressed color="purple" rounded dark @click="callToAddingScene">
               Добавить сцену
             </v-btn>
           </v-col>

@@ -20,6 +20,7 @@
               class="report-btn"
               color="deep-purple"
               fab
+              depressed
               dark
               v-bind="attrs"
               v-on="on"

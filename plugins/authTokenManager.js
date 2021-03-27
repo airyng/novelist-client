@@ -11,14 +11,14 @@ export default function ({ $axios, $cookiz }, inject) {
     return !!this.getToken()
   }
 
-  //   atm._setTokenToHeader = function (token) {
-  //     $axios.interceptors.request.use(function (config) {
-  //       config.headers.Authorization = 'Bearer ' + token
-  //       return config
-  //     }, function (err) {
-  //       return Promise.reject(err)
-  //     })
-  //   }
+  atm._setTokenToHeader = function (token) {
+    $axios.interceptors.request.use(function (config) {
+      config.headers.Authorization = 'Bearer ' + token
+      return config
+    }, function (err) {
+      return Promise.reject(err)
+    })
+  }
 
   atm.setToken = function (tokenData) {
     if (typeof tokenData !== 'object') {
@@ -27,14 +27,14 @@ export default function ({ $axios, $cookiz }, inject) {
     }
     // console.log('Trying to save token', tokenData)
 
-    if (tokenData.accessToken && tokenData.expires) {
+    if (tokenData.access_token && tokenData.expires_in) {
       // console.log('Saving token', tokenData)
       try {
         $cookiz.set(
           'access_token',
-          tokenData.accessToken,
+          tokenData.access_token,
           {
-            expires: new Date(tokenData.expires),
+            expires_in: new Date(tokenData.expires_in),
             path: '/'
           }
         )
@@ -43,7 +43,7 @@ export default function ({ $axios, $cookiz }, inject) {
         throw new Error(err)
       }
 
-      //   this._setTokenToHeader(tokenData.accessToken)
+      this._setTokenToHeader(tokenData.access_token)
       return true
     } else {
       console.error('Given argument is not in token object type.')
@@ -53,12 +53,12 @@ export default function ({ $axios, $cookiz }, inject) {
 
   atm.purge = function () {
     $cookiz.remove('access_token')
-    // this._setTokenToHeader('')
+    this._setTokenToHeader('')
   }
 
   atm.init = function () {
     if (this.hasToken()) {
-    //   this._setTokenToHeader(this.getToken())
+      this._setTokenToHeader(this.getToken())
       // console.log('atm debug', this.getToken())
       return true
     } else {

@@ -10,7 +10,7 @@ const moveArrElem = (arr, oldIndex, newIndex) => {
 }
 
 const excerpt = (text, maxLength) => {
-  if (!text.length) { return '...' }
+  if (!text || !text.length) { return '...' }
   if (text.length <= maxLength) {
     return text
   } else {

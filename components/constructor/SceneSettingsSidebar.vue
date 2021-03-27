@@ -6,6 +6,7 @@
           rounded
           fab
           dark
+          depressed
           class="text-center justify-center mb-4"
           v-bind="attrs"
           v-on="on"

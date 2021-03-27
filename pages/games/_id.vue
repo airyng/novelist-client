@@ -12,6 +12,7 @@
                     v-bind="attrs"
                     fab
                     dark
+                    depressed
                     small
                     v-on="on"
                   >
@@ -44,6 +45,7 @@
           <nuxt-link :to="'/games/'+ item.id + '/play'">
             <v-btn
               text
+              depressed
               color="deep-purple"
               class="mt-2 pa-1"
             >
@@ -61,9 +63,9 @@
 
 <script>
 export default {
-  async asyncData ({ $api, params, error }) {
+  asyncData ({ $api, params, error }) {
     // this.scenes = JSON.parse(this.item.json)
-    const item = await $api.getPublishedGameByID(params.id)
+    const item = [] // await $api.getPublishedGameByID(params.id)
     if (!item) { return error({ statusCode: 404 }) }
     return { item }
   },
