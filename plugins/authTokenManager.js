@@ -34,7 +34,7 @@ export default function ({ $axios, $cookiz }, inject) {
           'access_token',
           tokenData.access_token,
           {
-            expires_in: new Date(tokenData.expires_in),
+            expires: new Date(tokenData.expires_in),
             path: '/'
           }
         )
