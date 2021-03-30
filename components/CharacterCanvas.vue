@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas :id="canvasID" :width="portrait ? 948 : 948" :height="portrait ? 800 : 1920" :class="{ lowOpacity: loading }" :style="'height:'+height+'px'" />
+    <canvas :id="canvasID" :width="948" :height="portrait ? 800 : 1920" :class="{ lowOpacity: loading }" :style="'height:'+height+'px'" />
   </div>
 </template>
 <script>

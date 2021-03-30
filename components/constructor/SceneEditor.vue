@@ -8,7 +8,6 @@
       <v-row justify="center">
         <v-col cols="12">
           <h1 class="d-inline-block py-2 big-white-txt-shadow" style="outline: none" contenteditable="true">
-            <!-- {{ scene.title }} -->
             <input
               v-model="scene.title"
               type="text"
@@ -17,17 +16,6 @@
               :style="'outline: none; width:' + scene.title.length * 20 + 'px; cursor: pointer; min-width: 50px!important'"
             >
           </h1>
-          <!-- <div class="d-inline-block py-2 big-white-txt-shadow">
-            <v-text-field
-              v-model="scene.title"
-              name="title"
-              label="Название сцены"
-              filled
-              :counter="settings.maxSceneTitleLength"
-              background-color="transparent"
-              dense
-            />
-          </div> -->
         </v-col>
       </v-row>
     </v-container>

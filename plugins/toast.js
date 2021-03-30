@@ -25,7 +25,21 @@ const SuccessMessage = (params) => {
   })
 }
 
+const InfoMessage = (text) => {
+  if (!text) { return false }
+  Swal.fire({
+    text,
+    icon: 'info',
+    toast: true,
+    timer: 5000,
+    position: 'bottom',
+    timerProgressBar: true,
+    showConfirmButton: false
+  })
+}
+
 export {
   ErrorMessage,
-  SuccessMessage
+  SuccessMessage,
+  InfoMessage
 }
