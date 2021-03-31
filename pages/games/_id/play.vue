@@ -6,6 +6,7 @@
         :updated-at="charUpdatedAt"
         :char-id="character.id"
         :height="characterHeight"
+        transition
         class="character"
       />
       <v-row class="text-blocks">
@@ -28,7 +29,8 @@
           </div>
 
           <div class="mainTextBlock">
-            <p class="pa-5 ma-0">
+            <span v-if="character" class="charName">{{ character.name }}</span>
+            <p class="pa-5 mb-0" :class="{'mt-5': character}">
               {{ activeScene.mainText }}
             </p>
           </div>
@@ -118,8 +120,11 @@ export default {
     }
   },
   watch: {
-    character () {
-      this.setCharacterSettings()
+    character (newVal, oldVal) {
+      if (newVal.id !== oldVal.id) {
+        // console.log('debug', newVal, oldVal)
+        this.setCharacterSettings()
+      }
     }
   },
   mounted () {
@@ -167,11 +172,7 @@ export default {
 .text-blocks
   z-index: 1
 .actions
-  margin-bottom: 20px
-  // height: 270px
-  // width: 100%
-  // position: absolute
-  // bottom: 1vh
+  margin-bottom: 30px
 .action-btn
   padding: 10px 5px
   color: white
@@ -194,6 +195,16 @@ export default {
   background-color: #444444e6
   position: relative
   color: white
+  & .charName
+    position: absolute
+    top: -10px
+    border-radius: 15px
+    left: 0
+    padding: 10px
+    min-width: 100px
+    overflow: hidden
+    max-width: 300px
+    background-color: rgb(68 68 68)
   &::after, &::before
     content: ''
     position: absolute
@@ -203,10 +214,15 @@ export default {
   &::before
     width: 500px
     transform: translateX(-100%) scaleX(-1)
+    left: 0
+    // @media (max-width: 768px)
+      // left: 1px
   &::after
     width: 500px
     transform: translateX(100%)
     right: 0
+    // @media (max-width: 768px)
+      // right: 1px
   & .v-input__control .v-input__slot::before, & .v-input__control .v-input__slot::after
     display: none !important
 
@@ -214,4 +230,6 @@ export default {
   position: absolute
   left: 200px
   bottom: -10px
+  @media (max-width: 768px)
+    left: 0
 </style>

@@ -98,7 +98,7 @@
                 </v-icon>
               </v-btn>
             </template>
-            <span>Выбрать фон</span>
+            <!-- <span>Выбрать фон</span> -->
           </v-tooltip>
         </template>
 
@@ -127,7 +127,7 @@
                 </v-icon>
               </v-btn>
             </template>
-            <span>Добавить персонажа</span>
+            <!-- <span>Добавить персонажа</span> -->
           </v-tooltip>
         </template>
 
@@ -294,6 +294,7 @@ export default {
   position: absolute
   top: 65px
   right: 10px
+  z-index: 8
 
 .character
   position: absolute

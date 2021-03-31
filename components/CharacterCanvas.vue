@@ -1,6 +1,13 @@
 <template>
   <div>
-    <canvas :id="canvasID" :width="948" :height="portrait ? 800 : 1920" :class="{ lowOpacity: loading }" :style="'height:'+height+'px'" />
+    <canvas
+      :id="canvasID"
+      :width="948"
+      :height="portrait ? 800 : 1920"
+      class="characterCanvas"
+      :class="{ loaded: !loading, transition }"
+      :style="'height:'+height+'px'"
+    />
   </div>
 </template>
 <script>
@@ -9,12 +16,13 @@ export default {
     charId: { type: String, required: true },
     updatedAt: { type: Number, default: 0 },
     height: { type: [String, Number], default: 500 },
-    portrait: { type: Boolean, default: false }
+    portrait: { type: Boolean, default: false },
+    transition: { type: Boolean, default: false }
   },
   data () {
     return {
       canvasID: 0,
-      loading: false,
+      loading: true,
       activeItems: false
     }
   },
@@ -90,6 +98,12 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.lowOpacity
+.characterCanvas
   opacity: 0.2
+  &.transition
+    transform: translateX(-150vw)
+    transition: 0.5s all ease
+  &.loaded
+    transform: translateX(0)
+    opacity: 1
 </style>

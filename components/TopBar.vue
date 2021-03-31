@@ -5,6 +5,7 @@
       v-model="drawer"
       absolute
       dark
+      style="z-index: 9;"
     >
       <v-list nav dense>
         <v-list-item-group active-class="deep-purple--text text--accent-4">
@@ -30,7 +31,7 @@
     >
       <v-container>
         <v-row>
-          <v-col class="d-flex">
+          <v-col class="d-flex align-center">
             <v-app-bar-nav-icon
               v-if="isMobileScreen"
               @click="drawer = true"

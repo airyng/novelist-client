@@ -86,7 +86,7 @@
             </v-icon>
           </v-btn>
         </template>
-        <span>Сохранить</span>
+        <!-- <span>Сохранить</span> -->
       </v-tooltip>
 
       <v-tooltip top>
@@ -107,7 +107,7 @@
             </v-icon>
           </v-btn>
         </template>
-        <span>Удалить</span>
+        <!-- <span>Удалить</span> -->
       </v-tooltip>
     </div>
   </div>
