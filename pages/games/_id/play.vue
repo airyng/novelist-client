@@ -28,10 +28,10 @@
             </div>
           </div>
 
-          <div class="mainTextBlock">
+          <div class="mainTextBlock" @click="skipTextTyping">
             <span v-if="character" class="charName">{{ character.name }}</span>
             <p class="pa-5 mb-0" :class="{'mt-5': character}">
-              {{ activeScene.mainText }}
+              {{ mainText }}
             </p>
           </div>
         </v-col>
@@ -80,7 +80,7 @@
 import { InfoMessage } from '@/plugins/toast'
 const defaultGame = {
   scenes: [
-    { id: 1617138553349, title: 'Сцена 1617138553349', mainText: 'Сцена 1', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138591912, actionText: 'Дальше...', to: 1617138591890, condition: false }], character: 1617138569818 },
+    { id: 1617138553349, title: 'Сцена 1617138553349', mainText: 'Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1  ', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138591912, actionText: 'Дальше...', to: 1617138591890, condition: false }], character: 1617138569818 },
     { id: 1617138591890, title: 'Сцена 1617138591890', mainText: 'Сцена 2', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138593593, actionText: 'Дальше...', to: 1617138593566, condition: false }, { id: 1617138596746, actionText: 'На выход', to: 1617138596717, condition: false }], character: 1617138569818 },
     { id: 1617138593566, title: 'Сцена 1617138593566', mainText: 'Сцена 3', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138621744, actionText: 'На выход', to: 1617138596717, condition: false }], character: false },
     { id: 1617138596717, title: 'Финал', mainText: 'Сцена 4', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138650148, actionText: 'Выход', to: 'quit', condition: false }], character: 1617138569818 }
@@ -95,7 +95,9 @@ export default {
       characters: [],
       projectID: null, // ID новеллы
       charUpdatedAt: 0,
-      characterHeight: 0
+      characterHeight: 0,
+      mainText: '',
+      textSkiped: false
     }
   },
   computed: {
@@ -125,6 +127,9 @@ export default {
         // console.log('debug', newVal, oldVal)
         this.setCharacterSettings()
       }
+    },
+    activeScene () {
+      this.startTextTyping()
     }
   },
   mounted () {
@@ -163,6 +168,33 @@ export default {
     },
     getSceneById (id) {
       return this.scenes.find(scene => scene.id === id)
+    },
+    skipTextTyping () {
+      this.textSkiped = true
+    },
+    startTextTyping () {
+      const that = this
+      this.mainText = ''
+      this.textSkiped = false
+      let i = 0
+      const txt = this.activeScene.mainText
+      const speed = 50 /* Скорость/длительность эффекта в миллисекундах */
+
+      function typeWriter () {
+        if (i < txt.length) {
+          that.mainText += txt.charAt(i)
+          i++
+          if (that.textSkiped) {
+            typeWriter()
+          } else {
+            setTimeout(typeWriter, speed)
+          }
+        } else {
+          // Это конец анимации текста
+          // нужно показать экшены
+        }
+      }
+      typeWriter() // start
     }
   }
 }
@@ -195,6 +227,7 @@ export default {
   background-color: #444444e6
   position: relative
   color: white
+  cursor: pointer
   & .charName
     position: absolute
     top: -10px

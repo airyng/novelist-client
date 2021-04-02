@@ -53,7 +53,10 @@ export default {
           navigationButtons: true
         },
         layout: {
-          hierarchical: true
+          hierarchical: {
+            enabled: true,
+            nodeSpacing: 200
+          }
         },
         physics: false
       }
