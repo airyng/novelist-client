@@ -77,7 +77,7 @@ export default {
   watch: {
     visScriptLoaded (val) {
       if (val) {
-        this.init()
+        setTimeout(() => this.init(), 0)
       }
     }
   },
@@ -113,7 +113,7 @@ export default {
         }
       }
 
-      return new this.vis.DataSet(edges)
+      return new this.vis.DataSet(edges || [])
     },
     getNodes () {
       const nodes = this.scenes.map((scene, index) => {
@@ -140,9 +140,14 @@ export default {
         // }
         return item
       })
-      return new this.vis.DataSet(nodes)
+      return new this.vis.DataSet(nodes || [])
     },
     init () {
+      // wait and reinit if vis not loaded
+      if (!this.vis) {
+        setTimeout(() => this.reinit(), 100)
+        return false
+      }
       // create a network
       const container = document.getElementById(this.containerID)
 
