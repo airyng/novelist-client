@@ -210,8 +210,8 @@ export default {
       return typeof this.localAction.condition === 'object' && typeof this.localAction.condition.type === 'string'
     },
     pickedConditionText () {
-      if (!this.localAction.condition) { return false }
-      const conditionText = this.conditions.filter(item => this.localAction.condition.type === item.value)[0].text
+      if (!this.localAction.condition || !this.localAction.to) { return false }
+      const conditionText = this.conditions.find(item => this.localAction.condition.type === item.value).text
       const sceneName = this.getSceneById(this.localAction.to).title
       return conditionText + ' \'' + sceneName + '\''
     }

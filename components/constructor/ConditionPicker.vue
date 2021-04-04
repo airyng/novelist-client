@@ -3,51 +3,72 @@
     <v-item-group mandatory>
       <v-row>
         <template v-if="scenes.length > 1">
+          <v-timeline>
+            <v-timeline-item color="deep-purple" right>
+              <span slot="opposite">Выберите условие</span>
+              <div>
+                <v-select
+                  v-model="selectedCondition"
+                  :items="conditions"
+                />
+              </div>
+            </v-timeline-item>
+            <template v-if="selectedCondition">
+              <v-timeline-item color="deep-purple" right>
+                <span slot="opposite">Укажите сцену</span>
+                <div>
+                  <v-text-field
+                    v-model="searchKeyword"
+                    :clearable="true"
+                    label="Поиск сцены по названию"
+                  />
+
+                  <v-list flat style="max-height: 300px; overflow-y: scroll">
+                    <v-list-item-group color="deep-purple">
+                      <v-list-item
+                        v-for="(_scene, i) in filteredScenes"
+                        :key="i"
+                        :class="{ active: _scene.id === pickedScene.id}"
+                      >
+                        <v-list-item-icon>
+                          <v-avatar v-if="_scene.background && _scene.background.type === 'image'">
+                            <img
+                              :src="_scene.background.url_small"
+                              :alt="_scene.title"
+                            >
+                          </v-avatar>
+                          <v-avatar
+                            v-else-if="_scene.background && _scene.background.value"
+                            :color="_scene.background.value"
+                          />
+                          <v-avatar v-else color="grey" />
+                        </v-list-item-icon>
+
+                        <v-list-item-content @click="pickScene(_scene)">
+                          <v-list-item-title>{{ _scene.title }} - {{ excerpt(_scene.mainText, excerptLimit) }}</v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list-item-group>
+                  </v-list>
+                </div>
+              </v-timeline-item>
+              <v-timeline-item color="deep-purple" right>
+                <span slot="opposite">Выберите альтернативу</span>
+                <v-select
+                  v-model="selectedElseCondition"
+                  :items="elseConditions"
+                />
+              </v-timeline-item>
+            </template>
+          </v-timeline>
+
           <v-col
-            class="d-flex pb-0"
+            class="d-flex"
             cols="12"
           >
-            <v-select
-              v-model="selectedCondition"
-              :items="conditions"
-              label="Условие"
-            />
-          </v-col>
-          <v-col cols="12" class="pb-0">
-            <v-text-field
-              v-model="searchKeyword"
-              :clearable="true"
-              label="Поиск сцены по названию"
-            />
-          </v-col>
-
-          <v-col cols="12">
-            <v-list flat>
-              <v-list-item-group color="indigo">
-                <v-list-item
-                  v-for="(_scene, i) in filteredScenes"
-                  :key="i"
-                >
-                  <v-list-item-icon>
-                    <v-avatar v-if="_scene.background && _scene.background.type === 'image'">
-                      <img
-                        :src="_scene.background.url_small"
-                        :alt="_scene.title"
-                      >
-                    </v-avatar>
-                    <v-avatar
-                      v-else-if="_scene.background && _scene.background.value"
-                      :color="_scene.background.value"
-                    />
-                    <v-avatar v-else color="grey" />
-                  </v-list-item-icon>
-
-                  <v-list-item-content @click="setCondition(_scene)">
-                    <v-list-item-title>{{ _scene.title }} - {{ excerpt(_scene.mainText, excerptLimit) }}</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
+            <v-btn dark @click="setCondition">
+              Подтвердить
+            </v-btn>
           </v-col>
         </template>
 
@@ -77,7 +98,9 @@ export default {
     return {
       searchKeyword: '',
       excerptLimit: 30,
-      selectedCondition: false
+      selectedCondition: false,
+      pickedScene: false,
+      selectedElseCondition: 'block'
     }
   },
   computed: {
@@ -99,16 +122,14 @@ export default {
     },
     conditions () {
       return this.$store.getters['constructorStorage/getConditions']
+    },
+    elseConditions () {
+      return this.$store.getters['constructorStorage/getElseConditions']
     }
   },
   watch: {
     action () {
       this.copyConditionData()
-    },
-    selectedCondition (val) {
-      if (val === false) {
-        this.removeCondition()
-      }
     }
   },
   mounted () {
@@ -132,13 +153,25 @@ export default {
     removeCondition () {
       this.$emit('OnConditionPicked', false)
     },
-    setCondition (scene) {
+    pickScene (scene) {
+      this.pickedScene = scene
+    },
+    setCondition () {
       if (this.selectedCondition === false) {
         this.removeCondition()
       } else {
-        this.$emit('OnConditionPicked', { type: this.selectedCondition, value: scene.id })
+        this.$emit('OnConditionPicked', {
+          type: this.selectedCondition,
+          value: this.pickedScene.id,
+          else: this.selectedElseCondition
+        })
       }
     }
   }
 }
 </script>
+
+<style lang="sass" scoped>
+.v-list-item--active.active
+  background: linear-gradient(90deg, #673ab72b, #fff)
+</style>

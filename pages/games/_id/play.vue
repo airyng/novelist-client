@@ -13,18 +13,24 @@
         <v-col class="d-flex flex-column justify-end" cols="12">
           <div class="actions">
             <div
-              v-for="action in activeScene.actions"
-              :key="action.id"
-              class="action-btn mt-2"
-              @click="goToScene(action.to)"
+              class="actions-container"
+              :class="{ showed: actionsShowed}"
             >
-              <v-icon v-if="typeof action.to == 'number'" color="white">
-                mdi-chevron-right
-              </v-icon>
-              <v-icon v-if="action.to == 'quit'" color="white">
-                mdi-location-exit
-              </v-icon>
-              <span>{{ action.actionText }}</span>
+              <div
+                v-for="(action, index) in activeScene.actions"
+                :key="index"
+                class="action-btn mt-2"
+                :class="getClassesForCondition(action)"
+                @click="goToScene(action.to)"
+              >
+                <v-icon v-if="typeof action.to == 'number'" color="white">
+                  mdi-chevron-right
+                </v-icon>
+                <v-icon v-if="action.to == 'quit'" color="white">
+                  mdi-location-exit
+                </v-icon>
+                <span>{{ action.actionText }}</span>
+              </div>
             </div>
           </div>
 
@@ -37,38 +43,6 @@
         </v-col>
       </v-row>
     </v-container>
-    <!-- <v-container fluid>
-      <v-row class="mainTextBoxContainer">
-        <v-col sm="12" md="8" offset-md="2">
-          <div class="mainTextBox">
-            <p>{{ activeScene.mainText }}</p>
-          </div>
-        </v-col>
-      </v-row>
-
-      <v-row ref="actionsBlock" class="actions">
-        <v-col
-          v-for="action in activeScene.actions"
-          :key="action.id"
-          cols="12"
-          md="8"
-          offset-md="2"
-        >
-          <div
-            class="action-btn"
-            @click="goToScene(action.to)"
-          >
-            <v-icon v-if="typeof action.to == 'number'" color="white">
-              mdi-chevron-right
-            </v-icon>
-            <v-icon v-if="action.to == 'quit'" color="white">
-              mdi-location-exit
-            </v-icon>
-            <span>{{ action.actionText }}</span>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container> -->
 
     <!-- <project-loader
       @onRestoreState="onRestoreState"
@@ -80,7 +54,7 @@
 import { InfoMessage } from '@/plugins/toast'
 const defaultGame = {
   scenes: [
-    { id: 1617138553349, title: 'Сцена 1617138553349', mainText: 'Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1  ', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138591912, actionText: 'Дальше...', to: 1617138591890, condition: false }], character: 1617138569818 },
+    { id: 1617138553349, title: 'Сцена 1617138553349', mainText: 'Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1  ', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138591912, actionText: 'Дальше...', to: 1617138591890, condition: false }, { id: 1617138591912, actionText: 'Дальше...', to: 1617138591890, condition: false }], character: 1617138569818 },
     { id: 1617138591890, title: 'Сцена 1617138591890', mainText: 'Сцена 2', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138593593, actionText: 'Дальше...', to: 1617138593566, condition: false }, { id: 1617138596746, actionText: 'На выход', to: 1617138596717, condition: false }], character: 1617138569818 },
     { id: 1617138593566, title: 'Сцена 1617138593566', mainText: 'Сцена 3', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138621744, actionText: 'На выход', to: 1617138596717, condition: false }], character: false },
     { id: 1617138596717, title: 'Финал', mainText: 'Сцена 4', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138650148, actionText: 'Выход', to: 'quit', condition: false }], character: 1617138569818 }
@@ -97,7 +71,9 @@ export default {
       charUpdatedAt: 0,
       characterHeight: 0,
       mainText: '',
-      textSkiped: false
+      textSkiped: false,
+      actionsShowed: false,
+      sceneHistory: []
     }
   },
   computed: {
@@ -140,8 +116,18 @@ export default {
   },
   methods: {
     boot () {
-      this.scenes = [...defaultGame.scenes]
-      this.characters = [...defaultGame.characters]
+      if (process.server) { return false }
+      const localSavedGame = localStorage.getItem('game')
+      if (localSavedGame) {
+        const savedGameObject = JSON.parse(localSavedGame)
+        savedGameObject.json = JSON.parse(savedGameObject.json)
+        console.log(savedGameObject)
+        this.scenes = [...savedGameObject.json.scenes]
+        this.characters = [...savedGameObject.json.characters]
+      } else {
+        this.scenes = [...defaultGame.scenes]
+        this.characters = [...defaultGame.characters]
+      }
       this.goToScene(this.scenes[0])
       // eslint-disable-next-line no-console
       console.log('Game booted.')
@@ -159,15 +145,45 @@ export default {
     goToScene (elem) { // Переходим на новую сцену
       if (typeof elem === 'number') {
         this.activeScene = this.getSceneById(elem)
+        this.addSceneToHistory(this.activeScene)
       } else if (typeof elem === 'object' && typeof elem.id === 'number') {
         this.activeScene = this.getSceneById(elem.id)
+        this.addSceneToHistory(this.activeScene)
       } else if (elem === 'quit') {
         InfoMessage('Игра окончена')
         this.$router.push('/')
       }
     },
+    addSceneToHistory (scene) {
+      this.sceneHistory.push(scene.id)
+      // уникализируем
+      this.sceneHistory = this.sceneHistory.filter((elem, index, self) => {
+        return index === self.indexOf(elem)
+      })
+    },
     getSceneById (id) {
       return this.scenes.find(scene => scene.id === id)
+    },
+    getClassesForCondition (action) {
+      if (!action.condition) { return {} }
+
+      const isActionExistInHistory = this.sceneHistory.includes(action.condition.value)
+
+      let isConditionMatch = false
+
+      if (action.condition.type === 'scene_visited' && !isActionExistInHistory) {
+        isConditionMatch = true
+      } else if (action.condition.type === 'scene_not_visited' && isActionExistInHistory) {
+        isConditionMatch = true
+      }
+
+      if (!isConditionMatch) { return {} }
+
+      if (action.condition.else === 'block') {
+        return ['disabled']
+      } else if (action.condition.else === 'hide') {
+        return ['hidden']
+      }
     },
     skipTextTyping () {
       this.textSkiped = true
@@ -181,6 +197,7 @@ export default {
       const speed = 50 /* Скорость/длительность эффекта в миллисекундах */
 
       function typeWriter () {
+        that.actionsShowed = false
         if (i < txt.length) {
           that.mainText += txt.charAt(i)
           i++
@@ -192,6 +209,7 @@ export default {
         } else {
           // Это конец анимации текста
           // нужно показать экшены
+          that.actionsShowed = true
         }
       }
       typeWriter() // start
@@ -205,7 +223,23 @@ export default {
   z-index: 1
 .actions
   margin-bottom: 30px
+  width: 100%
+  position: relative
+
+.actions-container
+  display: none
+  width: 100%
+  position: absolute
+  &.showed
+    animation-iteration-count: 1
+    animation-name: emergence
+    animation-duration: 1s
+    animation-delay: 0s
+    display: block
+    bottom: 0
+    opacity: 1
 .action-btn
+  width: 100%
   padding: 10px 5px
   color: white
   cursor: pointer
@@ -214,6 +248,22 @@ export default {
   transition: all .3s ease
   &:hover
     background-color: rgba(68, 68, 68, 1)
+  &.hidden
+    display: none
+  &.disabled
+    opacity: 0.8
+    pointer-events: none
+
+@keyframes emergence
+  0%
+    bottom: -200px
+    opacity: 0
+  70%
+    bottom: -200px
+    opacity: 0
+  100%
+    bottom: 0
+    opacity: 1
 
 .games-id-play-page
   overflow: hidden
@@ -265,4 +315,5 @@ export default {
   bottom: -10px
   @media (max-width: 768px)
     left: 0
+
 </style>

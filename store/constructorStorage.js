@@ -80,6 +80,18 @@ export const getters = {
       }
     ]
   },
+  getElseConditions (state) {
+    return [
+      {
+        text: 'Заблокировать действие',
+        value: 'block'
+      },
+      {
+        text: 'Скрыть действие',
+        value: 'hide'
+      }
+    ]
+  },
   getCharPartsSettings (state) {
     return () => [
       { imageID: false, folder: 'Base', nameBase: 'base' },

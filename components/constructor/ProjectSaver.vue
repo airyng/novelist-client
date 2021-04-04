@@ -10,18 +10,30 @@
 </template>
 
 <script>
-import Swal from 'sweetalert'
+// import Swal from 'sweetalert'
+import { SuccessMessage, ErrorMessages } from '@/plugins/toast'
 export default {
-  props: {
-    mainInfo: { type: Object, required: true },
-    scenes: { type: Array, required: true },
-    id: { type: Number, default: null },
-    settings: { type: Object, required: true }
-  },
   data () {
     return {
       isLoading: false,
       errors: []
+    }
+  },
+  computed: {
+    settings () {
+      return this.$store.state.constructorStorage.settings
+    },
+    mainInfo () {
+      return this.$store.state.constructorStorage.mainInfo
+    },
+    id () {
+      return this.$store.state.constructorStorage.projectID
+    },
+    scenes () {
+      return this.$store.state.constructorStorage.scenes
+    },
+    characters () {
+      return this.$store.state.constructorStorage.characters
     }
   },
   methods: {
@@ -33,28 +45,34 @@ export default {
       } else {
         this.isLoading = true
 
-        if (await this.save()) { this.showSuccess() } else { this.showErrors() }
+        // if (await this.save()) { this.showSuccess() } else { this.showErrors() }
+        await this.save() ? this.showSuccess() : this.showErrors()
 
         this.isLoading = false
       }
     },
     save () {
-    //   const data = {
-    //     json: JSON.stringify(this.scenes),
-    //     title: this.mainInfo.title,
-    //     description: this.mainInfo.description,
-    //     onTestDrive: this.mainInfo.onTestDrive,
-    //     id: this.id
-    //   }
+      const json = {
+        scenes: this.scenes,
+        characters: this.characters
+      }
+      const data = {
+        json: JSON.stringify(json),
+        title: this.mainInfo.title,
+        description: this.mainInfo.description,
+        onTestDrive: this.mainInfo.onTestDrive,
+        id: this.id
+      }
+      localStorage.setItem('game', JSON.stringify(data))
+      // console.log('saved')
+      // const response = await axios.post('/api/game/save', data)
 
-      //   const response = await axios.post('/api/game/save', data)
+      // if (response.status != 200) {
+      //   this.addError('Неизвестная ошибка. Проверьте все сцены на наличие ошибок.')
+      //   return false
+      // }
 
-      //   if (response.status != 200) {
-      //     this.addError('Неизвестная ошибка. Проверьте все сцены на наличие ошибок.')
-      //     return false
-      //   }
-
-      //   this.$emit('saved', response.data.game.id)
+      // this.$emit('saved', response.data.game.id)
 
       return true
     },
@@ -86,15 +104,7 @@ export default {
       this.isLoading = false
     },
     showSuccess () {
-      Swal.fire({
-        title: 'Сохранено!',
-        icon: 'success',
-        toast: true,
-        timer: 3000,
-        timerProgressBar: true,
-        position: 'bottom',
-        showConfirmButton: false
-      })
+      SuccessMessage({ title: 'Сохранено!' })
     },
     checkForEmptyActions () {
       for (let index = 0; index < this.scenes.length; index++) {
@@ -170,10 +180,8 @@ export default {
     checkSeparatedScenes () {
       const scenesIDsWithTransitions = this.getScenesIDsWithTransitions()
 
-      for (let index = 0; index < this.scenes.length; index++) {
+      for (let index = 1; index < this.scenes.length; index++) { // начинаем с 1го индекса, потому как 0ой - это стартовая сцена
         const scene = this.scenes[index]
-
-        if (scene.id === 1) { continue } // пропускаем сцену с id=1, так как это стартовая сцена
 
         if (!scenesIDsWithTransitions.includes(scene.id)) {
           this.addError('Не на все сцены настроен переход. Например, ' + scene.title)
@@ -197,14 +205,14 @@ export default {
           })
         }
       }
-
-      Swal.mixin({
-        title: 'Ошибка!',
-        icon: 'error',
-        toast: true,
-        position: 'bottom'
-      })
-        .queue(swalObj)
+      ErrorMessages(swalObj)
+      // Swal.mixin({
+      //   title: 'Ошибка!',
+      //   icon: 'error',
+      //   toast: true,
+      //   position: 'bottom'
+      // })
+      //   .queue(swalObj)
     },
     isSceneHasExit (scene) { // проверяем, если ли в сцене хотя бы один выход
       let sceneHasExit = false
@@ -258,10 +266,10 @@ export default {
 </script>
 
 <style lang="sass">
-    .project-saver
-        position: absolute
-        bottom: 20px
-        left: 20px
-        background-color: rgba(255, 255, 255, 0.3)
-        border-radius: 100%
+.project-saver
+  position: absolute
+  top: 20px
+  left: 20px
+  background-color: rgba(255, 255, 255, 0.3)
+  border-radius: 100%
 </style>

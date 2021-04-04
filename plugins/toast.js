@@ -12,6 +12,16 @@ const ErrorMessage = (params) => {
   })
 }
 
+const ErrorMessages = (paramsArr) => {
+  Swal.mixin({
+    title: 'Ошибка!',
+    icon: 'error',
+    toast: true,
+    position: 'bottom'
+  })
+    .queue(paramsArr)
+}
+
 const SuccessMessage = (params) => {
   Swal.fire({
     title: params.title || 'Готово!',
@@ -40,6 +50,7 @@ const InfoMessage = (text) => {
 
 export {
   ErrorMessage,
+  ErrorMessages,
   SuccessMessage,
   InfoMessage
 }

@@ -99,6 +99,26 @@
     </ConstructorContextCircle>
 
     <div class="bottom-bar">
+      <v-tooltip top>
+        <template #activator="{ on, attrs }">
+          <v-btn
+            rounded
+            fab
+            dark
+            depressed
+            v-bind="attrs"
+            class="ml-5 mb-5"
+            v-on="on"
+            @click="saveProject"
+          >
+            <v-icon rounded>
+              mdi-content-save-outline
+            </v-icon>
+          </v-btn>
+        </template>
+        <span>Сохранить проект</span>
+      </v-tooltip>
+
       <CustomDialog
         title="Основная информация"
         @onDialogStateChanged="mainSettingsDialogStateChanged"
@@ -111,7 +131,7 @@
                 fab
                 dark
                 depressed
-                class="mainSettingsBtn"
+                class="ml-5 mb-5"
                 v-bind="attrs"
                 v-on="on"
               >
@@ -138,6 +158,10 @@
       @dragStart="hideContextCircle"
     />
     <CommonNightSkyCanvas />
+
+    <ConstructorProjectSaver
+      ref="projectSaver"
+    />
   </div>
 </template>
 
@@ -203,6 +227,7 @@ export default {
     mainSettingsDialogStateChanged (val) {
       if (!val) {
         this.$refs.mainSceneInfo.save()
+        // this.saveProject()
       }
     },
     onSceneNetworkClicked (payload) {
@@ -248,6 +273,9 @@ export default {
       const sceneCopy = this.scenes.find(scene => scene.id === sceneID)
       this.hideContextCircle()
       this.$store.dispatch('constructorStorage/copyScene', sceneCopy)
+    },
+    saveProject () {
+      this.$refs.projectSaver.beginSaving()
     }
   }
 }
@@ -256,9 +284,6 @@ export default {
 <style lang="sass">
 .games-add-page footer
   display: none
-
-.mainSettingsBtn
-  margin: 0 0 20px 20px
 
 .bottom-bar
   position: absolute
@@ -278,4 +303,7 @@ export default {
     background-position: 100% 50%
   100%
     background-position: 0% 50%
+
+.v-menu__content
+  z-index: 999!important
 </style>
