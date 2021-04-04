@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     setDataFromProps () {
-      this.localMainInfo = Object.assign({}, this.mainInfo)
+      this.localMainInfo = JSON.parse(JSON.stringify(this.mainInfo))
       this.gameStatusToggler = this.localMainInfo ? (this.localMainInfo.status !== 'draft') : false
     },
     toggleMode () {

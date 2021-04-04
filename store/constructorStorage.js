@@ -34,9 +34,10 @@ export const getters = {
   getEmptyScene (state) {
     return () => {
       const id = new Date().getTime()
+      const title = state.scenes.length ? 'Сцена ' + id : 'Старт'
       return {
         id,
-        title: 'Сцена ' + id,
+        title,
         mainText: '',
         background: null,
         actions: [],

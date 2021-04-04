@@ -28,13 +28,13 @@ export default function ({ $axios, $cookiz }, inject) {
     // console.log('Trying to save token', tokenData)
 
     if (tokenData.access_token && tokenData.expires_in) {
-      // console.log('Saving token', tokenData)
+      console.log('Saving token', tokenData)
       try {
         $cookiz.set(
           'access_token',
           tokenData.access_token,
           {
-            expires: new Date(tokenData.expires_in),
+            maxAge: tokenData.expires_in,
             path: '/'
           }
         )

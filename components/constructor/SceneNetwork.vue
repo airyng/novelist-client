@@ -116,11 +116,16 @@ export default {
       return new this.vis.DataSet(edges)
     },
     getNodes () {
-      const nodes = this.scenes.map((scene) => {
+      const nodes = this.scenes.map((scene, index) => {
         const item = {
           id: scene.id,
           // title: scene.title + ' - ' + excerpt(scene.mainText, 30),
-          label: excerpt(scene.title, 10)
+          label: excerpt(scene.title, 10),
+          shape: 'circle',
+          color: index ? '#272727' : '#3c3b3b',
+          font: {
+            color: '#ffffff'
+          }
         }
 
         // if (scene.background) {
@@ -132,8 +137,6 @@ export default {
         //     item.shape = 'circle'
         //   }
         // } else {
-        item.color = '#ffffff'
-        item.shape = 'circle'
         // }
         return item
       })
