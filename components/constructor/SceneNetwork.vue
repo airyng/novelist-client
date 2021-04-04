@@ -69,10 +69,10 @@ export default {
     },
     scenes () {
       return this.$store.state.constructorStorage.scenes
-    },
-    vis () {
-      return process.server ? false : window.vis
     }
+    // vis () {
+    //   return process.server ? false : window.vis
+    // }
   },
   watch: {
     visScriptLoaded (val) {
@@ -113,7 +113,7 @@ export default {
         }
       }
 
-      return new this.vis.DataSet(edges || [])
+      return new window.vis.DataSet(edges || [])
     },
     getNodes () {
       const nodes = this.scenes.map((scene, index) => {
@@ -140,12 +140,14 @@ export default {
         // }
         return item
       })
-      return new this.vis.DataSet(nodes || [])
+      return new window.vis.DataSet(nodes || [])
     },
     init () {
       // wait and reinit if vis not loaded
-      if (!this.vis) {
+      if (!window.vis) {
         setTimeout(() => this.reinit(), 100)
+        // eslint-disable-next-line no-console
+        console.error('vis object not found. Waiting for it.')
         return false
       }
       // create a network
@@ -156,7 +158,7 @@ export default {
         edges: this.getEdges()
       }
 
-      this.network = new this.vis.Network(container, data, this.options)
+      this.network = new window.vis.Network(container, data, this.options)
 
       this.initEvents()
     },
