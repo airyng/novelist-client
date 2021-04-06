@@ -51,7 +51,8 @@ export const getters = {
       return {
         name: '',
         id: '',
-        uid
+        uid,
+        userChoose: []
       }
     }
   },
