@@ -2,7 +2,7 @@
   <div>
     <v-container class="fullsize">
       <v-row class="fullsize">
-        <v-col cols="1" class="d-flex flex-column">
+        <v-col cols="1" class="d-flex flex-column" :class="{ disabled: playmode && !userChoose.includes('view') }">
           <v-avatar
             v-for="(item, index) in blocks"
             :key="index"
@@ -22,7 +22,7 @@
             <span class="caption">Случ.</span>
           </v-avatar>
         </v-col>
-        <v-col cols="5">
+        <v-col cols="5" :class="{ disabled: playmode && !userChoose.includes('view') }">
           <div class="previewsContainer pa-3">
             <div
               v-for="(id, index) in currentSubBlock.ids"
@@ -37,7 +37,7 @@
               />
             </div>
           </div>
-          <div class="mt-5">
+          <div v-if="!playmode" class="mt-5">
             <p class="ma-0">
               Игрок может настроить:
             </p>
@@ -68,6 +68,7 @@
                 v-model="characterName"
                 label="Имя"
                 clearable
+                :class="{ disabled: playmode && !userChoose.includes('name') }"
                 style="max-width: 200px"
                 :counter="maxNameLength"
               />
@@ -85,46 +86,42 @@
       </v-row>
     </v-container>
     <div class="btns-container d-flex flex-column align-center justify-center">
-      <v-tooltip top>
-        <template #activator="{ on, attrs }">
-          <v-btn
-            rounded
-            fab
-            dark
-            depressed
-            class="text-center justify-center mb-4"
-            v-bind="attrs"
-            v-on="on"
-            @click="save"
-          >
-            <v-icon rounded>
-              mdi-content-save-outline
-            </v-icon>
-          </v-btn>
-        </template>
-        <!-- <span>Сохранить</span> -->
-      </v-tooltip>
+      <!-- <v-tooltip top> -->
+      <!-- <template #activator="{ on, attrs }"> -->
+      <v-btn
+        rounded
+        fab
+        dark
+        depressed
+        class="text-center justify-center mb-4"
+        @click="save"
+      >
+        <v-icon rounded>
+          mdi-content-save-outline
+        </v-icon>
+      </v-btn>
+      <!-- </template> -->
+      <!-- <span>Сохранить</span> -->
+      <!-- </v-tooltip> -->
 
-      <v-tooltip top>
-        <template #activator="{ on, attrs }">
-          <v-btn
-            v-if="typeof char === 'object'"
-            rounded
-            fab
-            dark
-            depressed
-            class="text-center justify-center mb-4"
-            v-bind="attrs"
-            v-on="on"
-            @click="remove"
-          >
-            <v-icon rounded>
-              mdi-trash-can-outline
-            </v-icon>
-          </v-btn>
-        </template>
-        <!-- <span>Удалить</span> -->
-      </v-tooltip>
+      <!-- <v-tooltip top> -->
+      <!-- <template #activator="{ on, attrs }"> -->
+      <v-btn
+        v-if="typeof char === 'object' && !playmode"
+        rounded
+        fab
+        dark
+        depressed
+        class="text-center justify-center mb-4"
+        @click="remove"
+      >
+        <v-icon rounded>
+          mdi-trash-can-outline
+        </v-icon>
+      </v-btn>
+      <!-- </template> -->
+      <!-- <span>Удалить</span> -->
+      <!-- </v-tooltip> -->
     </div>
   </div>
 </template>
@@ -133,7 +130,8 @@
 import { ErrorMessage } from '@/plugins/toast'
 export default {
   props: {
-    char: { type: [Object, Boolean], default: false }
+    char: { type: [Object, Boolean], default: false },
+    playmode: { type: Boolean, default: false }
   },
   data () {
     return {
@@ -272,6 +270,34 @@ export default {
       this.currentSubBlock = block
     },
     save () {
+      if (this.playmode) {
+        this.playModeSave()
+      } else {
+        this.editModeSave()
+      }
+    },
+    playModeSave () {
+      if (this.userChoose.includes('name')) {
+        if (!this.characterName || this.characterName.length <= 2) {
+          ErrorMessage({ text: 'Имя персонажа не может быть меньше 2х символов' })
+          return
+        }
+        if (this.characterName.length > this.maxNameLength) {
+          ErrorMessage({ text: 'Имя персонажа не может быть больше ' + this.maxNameLength + ' символов' })
+          return
+        }
+      }
+      const char = { ...this.$store.getters['constructorStorage/getNewCharacter']() }
+      char.userChoose = [...this.userChoose]
+
+      if (this.char.uid) {
+        char.uid = this.char.uid
+      }
+      char.name = this.characterName
+      char.id = this.generatedImageID
+      this.$emit('onCharSaved', char)
+    },
+    editModeSave () {
       if (!this.userChoose.includes('name')) {
         if (!this.characterName || this.characterName.length <= 2) {
           ErrorMessage({ text: 'Имя персонажа не может быть меньше 2х символов' })
@@ -294,11 +320,12 @@ export default {
       char.name = this.characterName
       char.id = this.generatedImageID
       this.$store.dispatch('constructorStorage/updateCharacterList', char)
-      this.$emit('onCharSaved')
+      this.$emit('onCharSaved', char)
     },
     remove () {
+      if (this.playmode) { return }
       this.$store.dispatch('constructorStorage/removeCharacterFromList', this.char)
-      this.$emit('onCharSaved')
+      this.$emit('onCharSaved', false)
     }
   }
 }

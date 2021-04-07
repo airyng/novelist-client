@@ -16,7 +16,7 @@
       class="char-generator__popup"
       @onClose="closeCharacterEditor"
     >
-      <CharacterGenerator :char="selectedCharacter" @onCharSaved="closeCharacterEditor" />
+      <CommonCharacterGenerator :char="selectedCharacter" @onCharSaved="closeCharacterEditor" />
     </ConstructorPopup>
 
     <ConstructorContextCircle :position="contextCirclePos">
@@ -282,19 +282,12 @@ export default {
 </script>
 
 <style lang="sass">
-.games-add-page footer
-  display: none
 
 .bottom-bar
   position: absolute
   z-index: 10
   left: 0
   bottom: 10px
-
-.char-generator__popup .editor-window
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)
-  background-size: 400% 400%
-  animation: move-bg-pos 100s ease infinite
 
 @keyframes move-bg-pos
   0%

@@ -15,6 +15,14 @@ a:hover
 .v-avatar
   cursor: pointer
 
+.games-id-play-page
+  overflow: hidden
+  & footer
+    display: none
+
+.games-add-page footer
+  display: none
+
 .constructor, .game
   width: 100%
   height: calc(100vh - 48px)
@@ -144,3 +152,8 @@ header a
 
 .swal2-container
   font-family: Roboto, sans-serif!important
+
+.char-generator__popup .editor-window
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)
+  background-size: 400% 400%
+  animation: move-bg-pos 100s ease infinite
