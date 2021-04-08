@@ -37,33 +37,43 @@
               />
             </div>
           </div>
-          <div v-if="!playmode" class="mt-5">
-            <p class="ma-0">
-              Игрок может настроить:
-            </p>
-            <div class="d-flex">
-              <v-checkbox
-                v-model="userChoose"
-                class="mt-0 mr-5"
-                label="Внешность"
-                color="white"
-                value="view"
-                hide-details
-              />
-              <v-checkbox
-                v-model="userChoose"
-                class="mt-0 mr-5"
-                label="Имя"
-                color="white"
-                value="name"
-                hide-details
-              />
-            </div>
-          </div>
         </v-col>
         <v-col cols="6">
           <v-row>
             <v-col cols="12" class="d-flex justify-center">
+              <div v-if="!playmode" class="d-flex flex-column">
+                <div class="d-flex">
+                  <v-checkbox
+                    v-model="isMainCharacter"
+                    label="Главный персонаж"
+                    color="white"
+                    hide-details
+                  />
+                </div>
+                <div class="mt-2 d-flex flex-column">
+                  <p class="ma-0" style="color: rgba(0, 0, 0, 0.6)">
+                    Игрок может настроить:
+                  </p>
+                  <div class="d-flex">
+                    <v-checkbox
+                      v-model="userChoose"
+                      class="mt-0 mr-5"
+                      label="Внешность"
+                      color="white"
+                      value="view"
+                      hide-details
+                    />
+                    <v-checkbox
+                      v-model="userChoose"
+                      class="mt-0 mr-5"
+                      label="Имя"
+                      color="white"
+                      value="name"
+                      hide-details
+                    />
+                  </div>
+                </div>
+              </div>
               <v-text-field
                 v-model="characterName"
                 label="Имя"
@@ -191,7 +201,8 @@ export default {
         //   ids: ['blush', 'blush_2', 'sweat', 'tears', 'tears1', 'tears1_1', 'tears1_2', 'tears1_3', 'tears1_4', 'tears1_5', 'tears2', 'tears2_1', 'tears2_2', 'tears2_3', 'tears2_4', 'tears2_5']
         // }
       ],
-      userChoose: []
+      userChoose: [],
+      isMainCharacter: false
     }
   },
   computed: {
@@ -227,6 +238,7 @@ export default {
         this.showItemsSubBlock(this.blocks[0])
         this.characterName = this.char.name
         this.userChoose = this.char.userChoose
+        this.isMainCharacter = this.char.isMainCharacter
       } else if (this.char === true) {
         this.activeItems = [...this.charPartsSettings]
         this.showItemsSubBlock(this.blocks[0])
@@ -293,6 +305,7 @@ export default {
       if (this.char.uid) {
         char.uid = this.char.uid
       }
+      char.isMainCharacter = this.isMainCharacter
       char.name = this.characterName
       char.id = this.generatedImageID
       this.$emit('onCharSaved', char)
@@ -319,6 +332,7 @@ export default {
       }
       char.name = this.characterName
       char.id = this.generatedImageID
+      char.isMainCharacter = this.isMainCharacter
       this.$store.dispatch('constructorStorage/updateCharacterList', char)
       this.$emit('onCharSaved', char)
     },

@@ -52,7 +52,8 @@ export const getters = {
         name: '',
         id: '',
         uid,
-        userChoose: []
+        userChoose: [],
+        isMainCharacter: false
       }
     }
   },

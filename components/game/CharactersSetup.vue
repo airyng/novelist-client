@@ -18,7 +18,7 @@
           >
             <div class="d-flex white--text ml-5 mb-2">
               <span class="mr-2">Настроить:</span>
-              <span v-if="notConfiguredChar.userChoose.includes('name')" class="mr-2">Имя</span>
+              <span v-if="notConfiguredChar.userChoose.includes('name')">Имя</span>
               <span v-if="notConfiguredChar.userChoose.length === 2" class="mr-2">,&nbsp;</span>
               <span v-if="notConfiguredChar.userChoose.includes('view')">Внешность</span>
             </div>
@@ -27,6 +27,12 @@
               :char-id="notConfiguredChar.id"
               class="characterSlot"
             />
+            <p class="mb-0 mt-2 white--text text-center">
+              {{ notConfiguredChar.name }}
+            </p>
+            <p v-if="notConfiguredChar.isMainCharacter" class="mb-0 mt-2 white--text text-center" style="font-weight: bold">
+              Главный персонаж
+            </p>
           </div>
         </v-col>
       </v-row>

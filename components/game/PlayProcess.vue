@@ -98,9 +98,12 @@ export default {
   mounted () {
     this.setCharacterSettings()
     window.addEventListener('resize', () => this.setCharacterSettings())
-    this.goToScene(this.scenes[0])
+    this.goToStart()
   },
   methods: {
+    goToStart () {
+      this.goToScene(this.scenes[0])
+    },
     setCharacterSettings () {
       this.characterHeight = Math.ceil(window.innerHeight / 1.3)
       this.charUpdatedAt = new Date().getTime()
