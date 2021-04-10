@@ -99,7 +99,7 @@ export default {
 
 <style lang="sass" scoped>
 .characterCanvas
-  opacity: 0 // 0.2
+  opacity: 0.2
   &.transition
     transform: translateX(-150vw)
     transition: 0.5s all ease
