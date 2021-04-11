@@ -18,7 +18,13 @@ const excerpt = (text, maxLength) => {
   }
 }
 
+// sleep function for simulating server response delay
+async function sleep (timeout = 1500) {
+  await new Promise(resolve => setTimeout(() => resolve(), timeout))
+}
+
 export {
   excerpt,
-  moveArrElem
+  moveArrElem,
+  sleep
 }

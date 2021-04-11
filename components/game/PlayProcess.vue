@@ -85,12 +85,12 @@ export default {
     }
   },
   watch: {
-    character (newVal, oldVal) {
-      if (newVal.id !== oldVal.id) {
-        // console.log('debug', newVal, oldVal)
-        this.setCharacterSettings()
-      }
-    },
+    // character (newVal, oldVal) {
+    //   if (newVal.id !== oldVal.id) {
+    //     // console.log('debug', newVal, oldVal)
+    //     this.setCharacterSettings()
+    //   }
+    // },
     activeScene () {
       this.startTextTyping()
     }

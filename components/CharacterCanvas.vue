@@ -11,6 +11,7 @@
   </div>
 </template>
 <script>
+import { sleep } from '@/plugins/utils'
 export default {
   props: {
     charId: { type: String, required: true },
@@ -22,7 +23,7 @@ export default {
   data () {
     return {
       canvasID: 0,
-      loading: true,
+      loading: false,
       activeItems: false
     }
   },
@@ -58,18 +59,22 @@ export default {
         this.activeItems.push(part)
       })
     },
-    drawCharacter () {
-      if (process.server || !this.activeItems) { return }
+    async drawCharacter () {
+      if (process.server || !this.activeItems || this.loading) { return }
       const canvas = document.getElementById(this.canvasID)
       if (!canvas) { return }
 
       const context = canvas.getContext('2d')
       const that = this
-      // Clear canvas from previous result
-      context.clearRect(0, 0, canvas.width, canvas.height)
 
       try {
         this.loading = true
+        // Данная задержка необходима для более гладкой анимации ухода персонажа со сцены
+        // и своевременной загрузки нового персонажа
+        if (this.transition) { await sleep(300) }
+
+        // Clear canvas from previous result
+        context.clearRect(0, 0, canvas.width, canvas.height)
         const images = []
         for (let index = 0; index < that.activeItems.length; index++) {
           images[index] = new Image()
