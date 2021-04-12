@@ -12,16 +12,22 @@
 import { EventBus } from '~/plugins/event'
 export default {
   mounted () {
+    let isAutoRefreshStarted = false
     EventBus.$on('logged-in', (settings) => {
-      if (settings) {
-        if (settings.redirect) {
-          this.$router.push(settings.redirect)
-        }
+      // auto refresh auth token
+      if (!isAutoRefreshStarted) {
+        isAutoRefreshStarted = true
+        setInterval(() => this.$store.dispatch('refreshToken'), 1000 * 30 * 5) // refresh each 5 min
+      }
+      if (settings && settings.redirect) {
+        this.$router.push(settings.redirect)
       }
     })
     EventBus.$on('logged-out', (settings) => {
       if (window) {
-        window.location.href = '/' // refresh browser page will reset store state
+        setTimeout(() => {
+          window.location.href = '/' // refresh browser page will reset store state
+        }, 1000)
       }
     })
 

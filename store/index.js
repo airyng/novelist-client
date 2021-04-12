@@ -48,9 +48,11 @@ export const actions = {
   async tryAutoLogin ({ commit, state, dispatch }) {
     if (state.isLoggedIn || state.isProcessingTryAutoLogin) { return true }
     try {
-      const token = this.$atm.getToken()
-      if (!token) { throw new Error ('Unauthorized') }
+      if (!this.$atm.getToken()) { throw new Error ('Unauthorized') }
       commit('setProperty', ['isProcessingTryAutoLogin', true])
+
+      await dispatch('refreshToken')
+
       const userData = await this.$api.getMe() // if cookie present from previous login this will succeed
       if (userData) {
         commit('setProperty', ['userData', userData])
@@ -67,6 +69,11 @@ export const actions = {
     } finally {
       commit('setProperty', ['isProcessingTryAutoLogin', false])
     }
+  },
+
+  async refreshToken () {
+    const newTokenData = await this.$api.refresh(this.$atm.getToken())
+    if (newTokenData) { this.$atm.setToken(newTokenData) }
   },
 
   async logout ({ commit }) {

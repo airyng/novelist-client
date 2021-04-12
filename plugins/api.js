@@ -57,6 +57,19 @@ export default function ({ $axios }, inject) {
       })
   }
 
+  const refresh = (token) => {
+    return $axios.post(getApiURL() + 'auth/refresh', { token })
+      .then((response) => {
+        if (!process.server) {
+          console.log('login refresh', response.data)
+        }
+        return response.data
+      })
+      .catch((e) => {
+        console.error(e)
+      })
+  }
+
   const logout = () => {
     return $axios.post(getApiURL() + 'auth/logout')
       .then((response) => {
@@ -67,7 +80,7 @@ export default function ({ $axios }, inject) {
   }
 
   const getMe = () => {
-    return $axios.post(getApiURL() + 'auth/me')
+    return $axios.get(getApiURL() + 'auth/me')
       .then((response) => {
         if (!process.server) {
           console.log('getMe success', response.data)
@@ -118,6 +131,7 @@ export default function ({ $axios }, inject) {
   const api = {
     // put list of methods here...
     login,
+    refresh,
     logout,
     getMe,
     getApiURL,

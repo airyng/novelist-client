@@ -4,15 +4,21 @@ export default function ({ $axios, $cookiz }, inject) {
   const atm = {}
 
   atm.getToken = function () {
-    return $cookiz.get('access_token')
+    if (process.server) {
+      return $cookiz.get('access_token')
+    } else {
+      return $cookiz.get('access_token') || window.localStorage.getItem('access_token')
+    }
   }
 
   atm.hasToken = function () {
     return !!this.getToken()
   }
 
-  atm._setTokenToHeader = function (token) {
+  atm._setTokenToHeader = function () {
+    const that = this
     $axios.interceptors.request.use(function (config) {
+      const token = that.getToken()
       config.headers.Authorization = 'Bearer ' + token
       return config
     }, function (err) {
@@ -28,7 +34,7 @@ export default function ({ $axios, $cookiz }, inject) {
     // console.log('Trying to save token', tokenData)
 
     if (tokenData.access_token && tokenData.expires_in) {
-      console.log('Saving token', tokenData)
+      // console.log('Saving token', tokenData)
       try {
         $cookiz.set(
           'access_token',
@@ -38,6 +44,9 @@ export default function ({ $axios, $cookiz }, inject) {
             path: '/'
           }
         )
+        if (!process.server) {
+          window.localStorage.setItem('access_token', tokenData.access_token)
+        }
         // console.log('Looks like success', $cookiz.get('access_token'))
       } catch (err) {
         throw new Error(err)
@@ -54,6 +63,8 @@ export default function ({ $axios, $cookiz }, inject) {
   atm.purge = function () {
     $cookiz.remove('access_token')
     this._setTokenToHeader('')
+    if (!process.server) { window.localStorage.removeItem('access_token') }
+    // console.log('after purge atm debug', this.getToken())
   }
 
   atm.init = function () {
