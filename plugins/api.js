@@ -43,6 +43,20 @@ export default function ({ $axios }, inject) {
       })
   }
 
+  const register = (formData) => {
+    return $axios.post(getApiURL() + 'register', formData)
+      .then((response) => {
+        if (!process.server) {
+          console.log('register success', response.data)
+        }
+        return response.data
+      })
+      .catch((e) => {
+        console.error(e)
+        return e.response
+      })
+  }
+
   const login = ({ email, password }) => {
     return $axios.post(getApiURL() + 'auth/login', { email, password })
       .then((response) => {
@@ -130,6 +144,7 @@ export default function ({ $axios }, inject) {
 
   const api = {
     // put list of methods here...
+    register,
     login,
     refresh,
     logout,

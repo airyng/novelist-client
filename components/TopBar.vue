@@ -66,13 +66,13 @@
 
                 <nuxt-link
                   class="px-2 align-self-center"
-                  to="profile/my-games"
+                  to="me/games"
                 >
                   Мои новеллы
                 </nuxt-link>
               </template>
 
-              <nuxt-link class="px-2 align-self-center" to="/profile">
+              <nuxt-link class="px-2 align-self-center" to="/me">
                 {{ user.name }}
               </nuxt-link>
 

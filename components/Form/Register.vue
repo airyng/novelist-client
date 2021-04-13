@@ -5,12 +5,12 @@
     lazy-validation
     @submit.prevent="submitForm"
   >
-    <v-radio-group v-model="formData.sex" row>
+    <v-radio-group v-model="formData.gender_id" row>
       <template #label>
         <div>Ваш пол</div>
       </template>
-      <v-radio label="Женский" value="female" />
-      <v-radio label="Мужской" value="male" />
+      <v-radio label="Женский" value="2" />
+      <v-radio label="Мужской" value="1" />
     </v-radio-group>
 
     <v-text-field
@@ -43,7 +43,7 @@
       :type="showPass ? 'text' : 'password'"
       name="input-10-1"
       label="Пароль"
-      hint="Минимум 5 символов"
+      hint="Минимум 8 символов"
       :error-count="formErrors.password.length"
       :error-messages="formErrors.password"
       counter
@@ -54,15 +54,15 @@
     />
 
     <v-text-field
-      v-model="formData.confirm_password"
+      v-model="formData.password_confirmation"
       :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
       :rules="confirmPassRules"
       :type="showPass ? 'text' : 'password'"
       name="input-10-1"
       label="Повторите пароль"
       hint="Минимум 5 символов"
-      :error-count="formErrors.confirm_password.length"
-      :error-messages="formErrors.confirm_password"
+      :error-count="formErrors.password_confirmation.length"
+      :error-messages="formErrors.password_confirmation"
       counter
       required
       @click="removeErrors"
@@ -82,13 +82,14 @@
   </v-form>
 </template>
 <script>
+// import { SuccessMessage } from '@/plugins/utils'
 export default {
   data: () => ({
     formData: {
       password: '',
-      confirm_password: '',
+      password_confirmation: '',
       email: '',
-      sex: 'female',
+      gender_id: '2',
       name: ''
     },
     valid: false,
@@ -99,7 +100,7 @@ export default {
     ],
     passRules: [
       v => !!v || 'Пароль - обязательное поле',
-      v => v.length >= 5 || 'Минимум 5 символов'
+      v => v.length >= 8 || 'Минимум 8 символов'
     ],
     nameRules: [
       v => !!v || 'Псевдоним - обязательное поле',
@@ -110,7 +111,7 @@ export default {
     ],
     formErrors: {
       password: [],
-      confirm_password: [],
+      password_confirmation: [],
       email: [],
       name: []
     },
@@ -138,42 +139,23 @@ export default {
     removeErrors (type) {
       this.formErrors.email = []
       this.formErrors.password = []
-      this.formErrors.confirm_password = []
+      this.formErrors.password_confirmation = []
       this.formErrors.name = []
     },
     validate () {
       this.$refs.form.validate()
     },
-    submitForm () {
+    async submitForm () {
       this.ajaxSending = true
-
-      // axios.get('/sanctum/csrf-cookie').then((response) => {
-      //   axios.post('/api/register', this.formData)
-      //     .then((response) => {
-      //       this.$root.setUserData(response.data)
-
-      //       Swal.fire({
-      //         title: 'Успешная регистрация!',
-      //         icon: 'success',
-      //         toast: true,
-      //         timer: 3000,
-      //         position: 'bottom',
-      //         timerProgressBar: true,
-      //         showConfirmButton: false
-      //       })
-
-      //       this.$router.push({ name: 'profile' })
-      //     })
-      //     .catch((e) => {
-      //       this.formErrors.email = e.response.data.error.email || []
-      //       this.formErrors.password = e.response.data.error.password || []
-      //       this.formErrors.confirm_password = e.response.data.error.confirm_password || []
-      //       this.formErrors.name = e.response.data.error.name || []
-      //     })
-      //     .finally(() => {
-      //       this.ajaxSending = false
-      //     })
-      // })
+      const result = await this.$api.register(this.formData)
+      console.log('debug', result)
+      // SuccessMessage({ title: 'Успешная регистрация!' })
+      // this.$router.push('/me')
+      // this.formErrors.email = e.response.data.error.email || []
+      // this.formErrors.password = e.response.data.error.password || []
+      // this.formErrors.password_confirmation = e.response.data.error.password_confirmation || []
+      // this.formErrors.name = e.response.data.error.name || []
+      this.ajaxSending = false
     }
   }
 }
