@@ -1,13 +1,22 @@
 <template>
   <div>
-    <canvas
-      :id="canvasID"
-      :width="948"
-      :height="portrait ? 800 : 1920"
-      class="characterCanvas"
-      :class="{ loaded: !loading, transition }"
-      :style="'height:'+height+'px'"
-    />
+    <div style="position: relative">
+      <canvas
+        :id="canvasID"
+        :width="948"
+        :height="portrait ? 800 : 1920"
+        class="characterCanvas"
+        :class="{ loaded: !loading, transition }"
+        :style="'height:'+height+'px'"
+      />
+      <div v-if="!transition && loading" class="fullsize d-flex align-center justify-center" style="position: absolute; left: 0; top: 0;">
+        <img
+          src="@/assets/images/loading.gif"
+          :width="(portrait ? 50 : 100)+'px'"
+          :height="(portrait ? 50 : 100)+'px'"
+        >
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -104,7 +113,7 @@ export default {
 
 <style lang="sass" scoped>
 .characterCanvas
-  opacity: 0.2
+  opacity: 0
   &.transition
     transform: translateX(-150vw)
     transition: 0.5s all ease
