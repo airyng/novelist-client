@@ -26,6 +26,9 @@ export const state = () => ({
 })
 
 export const getters = {
+  version () {
+    return 1
+  },
   getSceneById (state) {
     return (id) => {
       return state.scenes.filter(scene => scene.id === id)[0]

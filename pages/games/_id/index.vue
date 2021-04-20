@@ -27,7 +27,7 @@
           <div class="my-2 d-flex align-center">
             <nuxt-link to="/author/test">
               <v-avatar v-if="item.authorAvatar">
-                <img :src="item.authorAvatar">
+                <img :src="authorAvatar">
               </v-avatar>
             </nuxt-link>
             <nuxt-link to="/author/test">
@@ -63,19 +63,29 @@
 
 <script>
 export default {
-  asyncData ({ $api, params, error }) {
-    // this.scenes = JSON.parse(this.item.json)
-    const item = [] // await $api.getPublishedGameByID(params.id)
+  async asyncData ({ $api, params, error, store }) {
+    let item = false
+    if (store.state.latestGames.length) {
+      item = store.state.latestGames.find(item => item.id === Number(params.id))
+    }
+    if (!item) {
+      item = await $api.getPublishedGameByID(params.id)
+    }
     if (!item) { return error({ statusCode: 404 }) }
     return { item }
   },
   data () {
     return {
-      item: false,
-      scenes: []
+      item: false
     }
   },
   computed: {
+    scenes () {
+      return JSON.parse(this.item.json)
+    },
+    authorAvatar () {
+      return process.env.BACKEND_URL + '/storage/' + this.item.authorAvatar
+    },
     gameLength () {
       if (this.scenes.length >= 500) { return 'Эпический' }
       if (this.scenes.length >= 250) { return 'Большой' }
@@ -84,8 +94,11 @@ export default {
       return 'Скромный'
     },
     itemBanner () {
-      return 'https://novelist.anime-look.ru/storage/backgrounds/September2020/nfqvPsBVxTOpTxMRYGTt.jpg'
-    //   if (this.scenes && this.scenes[0] && this.scenes[0] && this.scenes[0].background && this.scenes[0].background.url) { return this.scenes[0].background.url } else { return '/storage/backgrounds/default.jpg' }
+      if (this.scenes && this.scenes[0] && this.scenes[0] && this.scenes[0].background && this.scenes[0].background.url) {
+        return process.env.BACKEND_URL + this.scenes[0].background.url
+      } else {
+        return process.env.BACKEND_URL + '/storage/backgrounds/default.jpg'
+      }
     }
   },
   methods: {}

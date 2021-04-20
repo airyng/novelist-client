@@ -8,13 +8,15 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="8">
-          <ItemsGrid v-if="latestGames && latestGames.length" :items="latestGames" />
-          <p v-else class="grey--text">
-            Загрузка...
-          </p>
+          <ItemsGrid />
         </v-col>
+
         <v-col cols="4" md="4" class="d-none d-md-block">
-          Sidebar
+          <v-card class="mx-auto" :elevation="0">
+            <v-list-item-content class="pa-2 d-flex align-center justify-center" style="min-height: 200px">
+              Проект находится в разработке
+            </v-list-item-content>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -25,14 +27,14 @@
 
 export default {
   async asyncData ({ store }) {
-    // await store.dispatch('getLatestGames')
+    await store.dispatch('getLatestGames')
   },
   data () {
     return {}
   },
-  computed: {
-    latestGames () {
-      return this.$store.state.latestGames
+  head () {
+    return {
+      title: 'Главная'
     }
   },
   mounted () {},

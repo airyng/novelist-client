@@ -68,10 +68,10 @@ export default {
       if (!this.activeScene.background) { return '' }
 
       if (this.activeScene.background.type === 'image') {
-        return 'background-image: url(' + this.activeScene.background.url + ');'
+        const url = process.env.BACKEND_URL + this.activeScene.background.value
+        return 'background-image: url(' + url + ');'
       } else if (this.activeScene.background.type === 'color') {
-        const hex = this.activeScene.background.value
-        return 'background-color: ' + hex
+        return 'background-color: ' + this.activeScene.background.value
       } else {
         return ''
       }

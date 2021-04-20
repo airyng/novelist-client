@@ -7,10 +7,10 @@ export default function ({ $axios }, inject) {
   // May be will be better to move this setting to nuxt.config.js
   // $axios.defaults.withCredentials = true
 
-  const getApiURL = () => process.env.VUE_APP_API_CLIENT_URL // process.server ? process.env.VUE_APP_API_URL : process.env.VUE_APP_API_CLIENT_URL
+  const getApiURL = () => process.env.API_CLIENT_URL // process.server ? process.env.VUE_APP_API_URL : process.env.VUE_APP_API_CLIENT_URL
 
   const getLatestGames = () => {
-    return $axios.get(getApiURL() + 'game')
+    return $axios.get(getApiURL() + 'game/published')
       .then((response) => {
         if (!process.server) {
           console.log('getLatestGames success', response.data)

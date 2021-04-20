@@ -10,7 +10,6 @@
 </template>
 
 <script>
-// import Swal from 'sweetalert'
 import { SuccessMessage, ErrorMessages } from '@/plugins/toast'
 export default {
   data () {
@@ -54,7 +53,8 @@ export default {
     save () {
       const json = {
         scenes: this.scenes,
-        characters: this.characters
+        characters: this.characters,
+        version: this.$store.getters['constructorStorage/version']
       }
       const data = {
         json: JSON.stringify(json),

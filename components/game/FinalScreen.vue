@@ -39,13 +39,16 @@
 <script>
 // import { InfoMessage } from '@/plugins/toast'
 export default {
+  props: {
+    game: { type: Object, required: true }
+  },
   methods: {
     restart () {
       this.$emit('callToRestart')
     },
     goBackToIntro () {
       //
-      this.$router.push('/')
+      this.$router.push('/games/' + this.game.id)
     },
     goHome () {
       // InfoMessage('Игра окончена')

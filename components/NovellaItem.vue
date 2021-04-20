@@ -1,11 +1,10 @@
 <template>
-  <v-card class="mx-auto">
+  <v-card class="mx-auto" :elevation="0">
     <v-list-item>
-      <nuxt-link to="/author/test">
-        <v-list-item-avatar v-if="item.authorAvatar">
-          <img :src="item.authorAvatar">
+      <nuxt-link :to="'/author/'+item.user_id">
+        <v-list-item-avatar>
+          <img :src="authorAvatar">
         </v-list-item-avatar>
-        <v-list-item-avatar v-else color="grey" />
       </nuxt-link>
 
       <v-list-item-content>
@@ -16,7 +15,7 @@
         </nuxt-link>
 
         <v-list-item-subtitle>
-          <nuxt-link to="/author/test">
+          <nuxt-link :to="'/author/'+item.user_id">
             {{ item.authorName || 'Аноним' }}
           </nuxt-link>
         </v-list-item-subtitle>
@@ -61,22 +60,29 @@ export default {
   props: {
     item: { type: Object, required: true }
   },
-  data () {
-    return {
-      scenes: false
-    }
-  },
   computed: {
+    scenes () {
+      return JSON.parse(this.item.json)
+    },
+    authorAvatar () {
+      return process.env.BACKEND_URL + '/storage/' + this.item.authorAvatar
+    },
     itemExcerpt () {
       return excerpt(this.item.description, 120)
     },
     itemBanner () {
-      return 'https://novelist.anime-look.ru/storage/backgrounds/September2020/nfqvPsBVxTOpTxMRYGTt.jpg'
-    //   if (this.scenes && this.scenes[0] && this.scenes[0] && this.scenes[0].background && this.scenes[0].background.url) { return this.scenes[0].background.url } else { return '/storage/backgrounds/default.jpg' }
+      if (
+        this.scenes &&
+        this.scenes[0] &&
+        this.scenes[0] &&
+        this.scenes[0].background &&
+        (this.scenes[0].background.url || this.scenes[0].background.value)
+      ) {
+        return process.env.BACKEND_URL + (this.scenes[0].background.url || this.scenes[0].background.value)
+      } else {
+        return process.env.BACKEND_URL + '/storage/backgrounds/default.jpg'
+      }
     }
-  },
-  mounted () {
-    // this.scenes = JSON.parse(this.item.json)
   },
   methods: {
     excerpt (text, maxLength) {

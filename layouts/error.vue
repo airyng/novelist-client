@@ -33,8 +33,8 @@ export default {
   },
   data () {
     return {
-      pageNotFound: '404 Not Found',
-      otherError: 'An error occurred'
+      pageNotFound: '404 Страница не найдена',
+      otherError: 'Неизвестная ошибка'
     }
   },
   head () {
@@ -47,8 +47,7 @@ export default {
 }
 </script>
 
-<style scoped>
-h1 {
-  font-size: 20px;
-}
+<style lang="sass" scoped>
+h1
+  font-size: 20px
 </style>

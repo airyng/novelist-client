@@ -14,7 +14,7 @@
       :characters="characters"
       @gameOver="onGameOver"
     />
-    <GameFinalScreen v-else-if="gameStage === 'gameOver'" @callToRestart="restart" />
+    <GameFinalScreen v-else-if="gameStage === 'gameOver'" :game="loadedItem" @callToRestart="restart" />
   <!-- <project-loader
     @onRestoreState="onRestoreState"
   /> -->
@@ -22,18 +22,30 @@
 </template>
 
 <script>
-const defaultGame = {
-  scenes: [
-    { id: 1617138553349, title: 'Сцена 1617138553349', mainText: 'Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1  ', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138591912, actionText: 'Дальше...', to: 1617138591890, condition: false }, { id: 1617138591912, actionText: 'Дальше...', to: 1617138591890, condition: false }], character: 1617138569818 },
-    { id: 1617138591890, title: 'Сцена 1617138591890', mainText: 'Сцена 2', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138593593, actionText: 'Дальше...', to: 1617138593566, condition: false }, { id: 1617138596746, actionText: 'На выход', to: 1617138596717, condition: false }], character: 1617138569818 },
-    { id: 1617138593566, title: 'Сцена 1617138593566', mainText: 'Сцена 3', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138621744, actionText: 'На выход', to: 1617138596717, condition: false }], character: false },
-    { id: 1617138596717, title: 'Финал', mainText: 'Сцена 4', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138650148, actionText: 'Выход', to: 'win', condition: false }], character: 1617138569818 }
-  ],
-  characters: [{ name: 'fjkdsjfs', id: '1.1_6.3_1.1_2.1_1.3_6.4_14', uid: 1617138569818 }]
-}
+// const defaultGame = {
+//   scenes: [
+//     { id: 1617138553349, title: 'Сцена 1617138553349', mainText: 'Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1  ', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138591912, actionText: 'Дальше...', to: 1617138591890, condition: false }, { id: 1617138591912, actionText: 'Дальше...', to: 1617138591890, condition: false }], character: 1617138569818 },
+//     { id: 1617138591890, title: 'Сцена 1617138591890', mainText: 'Сцена 2', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138593593, actionText: 'Дальше...', to: 1617138593566, condition: false }, { id: 1617138596746, actionText: 'На выход', to: 1617138596717, condition: false }], character: 1617138569818 },
+//     { id: 1617138593566, title: 'Сцена 1617138593566', mainText: 'Сцена 3', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138621744, actionText: 'На выход', to: 1617138596717, condition: false }], character: false },
+//     { id: 1617138596717, title: 'Финал', mainText: 'Сцена 4', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138650148, actionText: 'Выход', to: 'win', condition: false }], character: 1617138569818 }
+//   ],
+//   characters: [{ name: 'fjkdsjfs', id: '1.1_6.3_1.1_2.1_1.3_6.4_14', uid: 1617138569818 }]
+// }
 export default {
+  async asyncData ({ $api, params, error, store }) {
+    let loadedItem = false
+    if (store.state.latestGames.length) {
+      loadedItem = store.state.latestGames.find(item => item.id === Number(params.id))
+    }
+    if (!loadedItem) {
+      loadedItem = await $api.getPublishedGameByID(params.id)
+    }
+    if (!loadedItem) { return error({ statusCode: 404 }) }
+    return { loadedItem }
+  },
   data () {
     return {
+      loadedItem: false,
       gameStage: 'charactersSetup',
       scenes: [], // список сцен
       characters: [],
@@ -57,20 +69,19 @@ export default {
   methods: {
     boot () {
       if (process.server) { return false }
-      const localSavedGame = localStorage.getItem('game')
-      if (localSavedGame) {
-        const savedGameObject = JSON.parse(localSavedGame)
-        savedGameObject.json = JSON.parse(savedGameObject.json)
-        // console.log(savedGameObject)
-        this.scenes = [...savedGameObject.json.scenes]
-        this.characters = [...savedGameObject.json.characters]
-      } else {
-        this.scenes = [...defaultGame.scenes]
-        this.characters = [...defaultGame.characters]
+      let game = JSON.parse(this.loadedItem.json)
+
+      // Вероятно проверку и преобразование нужно перенести в отдельный файл
+      // и вызывать методы из него
+      if (!this.isLatestVersion(game)) {
+        game = this.updateGameToLatestVersion(game)
       }
+
+      this.scenes = [...game.scenes]
+      this.characters = [...game.characters]
+
       const notConfiguredCharacters = this.characters.filter(char => char.userChoose?.length)
       if (!notConfiguredCharacters.length) { this.onCharactersSetupFinished() }
-      // eslint-disable-next-line no-console
       this.loaded = true
       // eslint-disable-next-line no-console
       console.log('Game booted.')
@@ -82,6 +93,34 @@ export default {
       } else {
         this.gameStage = this.gameStages[0]
       }
+    },
+    isLatestVersion (game) {
+      // eslint-disable-next-line eqeqeq
+      return game.version && game.version == this.$store.getters['constructorStorage/version']
+    },
+    updateGameToLatestVersion (game) {
+      // Проверка на корректность структуры
+      // Ошибка после нулевой версии
+      if (!game.scenes) {
+        game = {
+          scenes: game,
+          characters: []
+        }
+      }
+      // Ошибка после нулевой версии
+      game.scenes.forEach((element) => {
+        if (!element.background.type) {
+          if (element.background.url) {
+            element.background = {
+              value: element.background.url,
+              type: 'image'
+            }
+          }
+        }
+      })
+
+      game.version = this.$store.getters['constructorStorage/version']
+      return game
     },
     onCharacterUpdated (char) {
       this.characters = this.characters.map((character) => {
