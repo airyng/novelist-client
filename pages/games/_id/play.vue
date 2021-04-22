@@ -31,6 +31,8 @@
 //   ],
 //   characters: [{ name: 'fjkdsjfs', id: '1.1_6.3_1.1_2.1_1.3_6.4_14', uid: 1617138569818 }]
 // }
+import gameChecker from '@/plugins/gameChecker'
+
 export default {
   async asyncData ({ $api, params, error, store }) {
     let loadedItem = false
@@ -71,10 +73,8 @@ export default {
       if (process.server) { return false }
       let game = JSON.parse(this.loadedItem.json)
 
-      // Вероятно проверку и преобразование нужно перенести в отдельный файл
-      // и вызывать методы из него
-      if (!this.isLatestVersion(game)) {
-        game = this.updateGameToLatestVersion(game)
+      if (!gameChecker.isLatestVersion(game)) {
+        game = gameChecker.updateGameToLatestVersion(game)
       }
 
       this.scenes = [...game.scenes]
@@ -93,34 +93,6 @@ export default {
       } else {
         this.gameStage = this.gameStages[0]
       }
-    },
-    isLatestVersion (game) {
-      // eslint-disable-next-line eqeqeq
-      return game.version && game.version == this.$store.getters['constructorStorage/version']
-    },
-    updateGameToLatestVersion (game) {
-      // Проверка на корректность структуры
-      // Ошибка после нулевой версии
-      if (!game.scenes) {
-        game = {
-          scenes: game,
-          characters: []
-        }
-      }
-      // Ошибка после нулевой версии
-      game.scenes.forEach((element) => {
-        if (!element.background.type) {
-          if (element.background.url) {
-            element.background = {
-              value: element.background.url,
-              type: 'image'
-            }
-          }
-        }
-      })
-
-      game.version = this.$store.getters['constructorStorage/version']
-      return game
     },
     onCharacterUpdated (char) {
       this.characters = this.characters.map((character) => {

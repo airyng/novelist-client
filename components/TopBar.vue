@@ -66,7 +66,7 @@
 
                 <nuxt-link
                   class="px-2 align-self-center"
-                  to="me/games"
+                  to="/me/games"
                 >
                   Мои новеллы
                 </nuxt-link>

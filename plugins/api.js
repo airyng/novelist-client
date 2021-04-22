@@ -111,35 +111,16 @@ export default function ({ $axios }, inject) {
   }
 
   const getMyGamesList = () => {
-    // return $axios.get(getApiURL() + '/game/get-my')
-    // .then((response) => {
-    //     if (!process.server) {
-    //       console.log('login success', response.data)
-    //     }
-    //       Swal.fire({
-    //         title: 'Вход выполнен!',
-    //         icon: 'success',
-    //         toast: true,
-    //         timer: 3000,
-    //         position: 'bottom',
-    //         timerProgressBar: true,
-    //         showConfirmButton: false
-    //       })
-    //     return response.data
-    //   })
-    //   .catch((e) => {
-    //     console.error(e)
-    //   //     Swal.fire({
-    //   //       title: 'Ошибка загрузки данных',
-    //   //       text: 'Пожалуйста, обновите страницу',
-    //   //       icon: 'error',
-    //   //       toast: true,
-    //   //       timer: 10000,
-    //   //       position: 'bottom',
-    //   //       timerProgressBar: true,
-    //   //       showConfirmButton: false
-    //   //     })
-    //   })
+    return $axios.get(getApiURL() + 'game/my')
+      .then((response) => {
+        if (!process.server) {
+          console.log('getMyGamesList success', response.data)
+        }
+        return response.data
+      })
+      .catch((e) => {
+        console.error(e)
+      })
   }
 
   const api = {

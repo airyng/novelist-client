@@ -138,15 +138,22 @@
 
 <script>
 import { ErrorMessage } from '@/plugins/toast'
+import gameChecker from '@/plugins/gameChecker'
 
 export default {
-  async asyncData ({ $api }) {
-    await $api.getMyGamesList()
+  async asyncData ({ store }) {
+    await store.dispatch('profile/getMyGames')
   },
-  data: () => ({
-    items: [],
-    loading: false
-  }),
+  data () {
+    return {
+      loading: false
+    }
+  },
+  computed: {
+    items () {
+      return this.$store.state.profile.myGames
+    }
+  },
   methods: {
     unpublish (item) {
       // axios.post('/api/game/unpublish', { id: item.id })
@@ -217,7 +224,12 @@ export default {
       //   })
     },
     getSceneCount (item) {
-      return JSON.parse(item.json).length
+      let game = JSON.parse(item.json)
+
+      if (!gameChecker.isLatestVersion(game)) {
+        game = gameChecker.updateGameToLatestVersion(game)
+      }
+      return game.scenes.length
     },
     goToPage (routePath) {
       this.$router.push(routePath)
@@ -249,14 +261,12 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
-    .v-application--is-ltr .table-options .v-list-item__icon:first-child
-    {
-        margin-right: 4px;
-    }
+<style lang="scss" scoped>
+.v-application--is-ltr .table-options .v-list-item__icon:first-child {
+  margin-right: 4px;
+}
 
-    .v-application--is-ltr .table-options .v-list-item__icon:last-of-type:not(:only-child)
-    {
-        margin-left: 0px;
-    }
+.v-application--is-ltr .table-options .v-list-item__icon:last-of-type:not(:only-child) {
+  margin-left: 0px;
+}
 </style>
