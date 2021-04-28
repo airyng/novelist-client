@@ -18,7 +18,7 @@ export default {
     }
     // Ошибка после нулевой версии
     game.scenes.forEach((element) => {
-      if (!element.background.type) {
+      if (element.background && !element.background.type) {
         if (element.background.url) {
           element.background = {
             value: element.background.url,

@@ -1,5 +1,6 @@
 <template>
   <v-form
+    v-if="formData"
     ref="form"
     v-model="valid"
     lazy-validation
@@ -82,16 +83,10 @@
   </v-form>
 </template>
 <script>
-// import { SuccessMessage } from '@/plugins/utils'
+import { SuccessMessage, ErrorMessages } from '@/plugins/toast'
 export default {
   data: () => ({
-    formData: {
-      password: '',
-      password_confirmation: '',
-      email: '',
-      gender_id: '2',
-      name: ''
-    },
+    formData: false,
     valid: false,
     showPass: false,
     emailRules: [
@@ -135,7 +130,19 @@ export default {
       return !this.valid || this.ajaxSending || !hasAnyContent
     }
   },
+  mounted () {
+    this.formData = this.getDefaultForm()
+  },
   methods: {
+    getDefaultForm () {
+      return {
+        password: '',
+        password_confirmation: '',
+        email: '',
+        gender_id: '2',
+        name: ''
+      }
+    },
     removeErrors (type) {
       this.formErrors.email = []
       this.formErrors.password = []
@@ -147,15 +154,22 @@ export default {
     },
     async submitForm () {
       this.ajaxSending = true
-      const result = await this.$api.register(this.formData)
-      console.log('debug', result)
-      // SuccessMessage({ title: 'Успешная регистрация!' })
-      // this.$router.push('/me')
+      try {
+        await this.$api.register(this.formData)
+        SuccessMessage({ title: 'Регистрация успешна!' })
+        this.formData = this.getDefaultForm()
+        this.$router.push('/me')
+      } catch (err) {
+        ErrorMessages('Что-то пошло не так! Обратитесь к администрации сайта.')
+        // eslint-disable-next-line no-console
+        console.error(err)
+      } finally {
+        this.ajaxSending = false
+      }
       // this.formErrors.email = e.response.data.error.email || []
       // this.formErrors.password = e.response.data.error.password || []
       // this.formErrors.password_confirmation = e.response.data.error.password_confirmation || []
       // this.formErrors.name = e.response.data.error.name || []
-      this.ajaxSending = false
     }
   }
 }

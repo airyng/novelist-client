@@ -75,7 +75,7 @@ export default function ({ $axios }, inject) {
     return $axios.post(getApiURL() + 'auth/refresh', { token })
       .then((response) => {
         if (!process.server) {
-          console.log('login refresh', response.data)
+          console.log('login refresh success', response.data)
         }
         return response.data
       })
@@ -123,6 +123,34 @@ export default function ({ $axios }, inject) {
       })
   }
 
+  const publishGame = (id) => {
+    return $axios.post(getApiURL() + 'game/publish', { id })
+      .then((response) => {
+        if (!process.server) {
+          console.log('publishGame success', response.data)
+        }
+        return response.status
+      })
+      .catch((e) => {
+        console.error(e)
+        return e.response.status
+      })
+  }
+
+  const unpublishGame = (id) => {
+    return $axios.post(getApiURL() + 'game/unpublish', { id })
+      .then((response) => {
+        if (!process.server) {
+          console.log('unpublishGame success', response.data)
+        }
+        return response.status
+      })
+      .catch((e) => {
+        console.error(e)
+        return e.response.status
+      })
+  }
+
   const api = {
     // put list of methods here...
     register,
@@ -133,7 +161,9 @@ export default function ({ $axios }, inject) {
     getApiURL,
     getPublishedGameByID,
     getLatestGames,
-    getMyGamesList
+    getMyGamesList,
+    publishGame,
+    unpublishGame
   }
 
   inject('api', api)

@@ -63,11 +63,7 @@ export default {
   axios: {},
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
-  pwa: {
-    manifest: {
-      lang: 'en'
-    }
-  },
+  pwa: null,
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
@@ -88,7 +84,16 @@ export default {
     // }
   },
 
+  router: {
+    extendRoutes (routes, resolve) {
+      routes.push({
+        name: 'games-edit',
+        path: '/games/:id/edit',
+        component: resolve(__dirname, 'pages/games/add.vue')
+      })
+    }
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-  }
+  build: {}
 }

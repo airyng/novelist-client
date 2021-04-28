@@ -36,9 +36,15 @@ import gameChecker from '@/plugins/gameChecker'
 export default {
   async asyncData ({ $api, params, error, store }) {
     let loadedItem = false
+    // Ищем новеллу в публичном списке "Последние новеллы"
     if (store.state.latestGames.length) {
       loadedItem = store.state.latestGames.find(item => item.id === Number(params.id))
     }
+    // Ищем новеллу в личном списке "Мои новеллы"
+    if (store.state.profile.myGames.length) {
+      loadedItem = store.state.profile.myGames.find(item => item.id === Number(params.id))
+    }
+
     if (!loadedItem) {
       loadedItem = await $api.getPublishedGameByID(params.id)
     }

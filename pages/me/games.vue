@@ -18,6 +18,7 @@
         </template>
         <v-col v-else class="col-12">
           <v-row>
+            <v-col class="col-1" />
             <v-col class="col-3">
               <span>Название</span>
             </v-col>
@@ -37,6 +38,7 @@
             :key="i"
             class="align-items-center"
           >
+            <v-col class="col-1" />
             <v-col class="col-3">
               <span class="d-block text-substr">{{ item.title }}</span>
             </v-col>
@@ -70,11 +72,11 @@
               <span>{{ niceDate( item.updated_at ) }}</span>
             </v-col>
 
-            <v-col class="col-2 table-options">
+            <v-col class="col-2 table-options d-flex align-start justify-start">
               <v-tooltip top>
                 <template #activator="{ on, attrs }">
                   <v-list-item-icon
-                    class="curs-pointer mr-2"
+                    class="curs-pointer mr-2 mt-0"
                     v-bind="attrs"
                     @click="goToPage('/games/'+ item.id +'/edit')"
                     v-on="on"
@@ -88,7 +90,7 @@
               <v-tooltip top>
                 <template #activator="{ on, attrs }">
                   <v-list-item-icon
-                    class="curs-pointer mr-2"
+                    class="curs-pointer mr-2 mt-0"
                     :style=" (item.status == 'draft') ? 'opacity: .5' : ''"
                     v-bind="attrs"
                     @click="goToPlay(item)"
@@ -103,7 +105,7 @@
               <v-tooltip v-if="item.status == 'published'" top>
                 <template #activator="{ on, attrs }">
                   <v-list-item-icon
-                    class="curs-pointer mr-2"
+                    class="curs-pointer mr-2 mt-0"
                     v-bind="attrs"
                     @click="unpublish(item)"
                     v-on="on"
@@ -117,7 +119,7 @@
               <v-tooltip v-else top>
                 <template #activator="{ on, attrs }">
                   <v-list-item-icon
-                    class="curs-pointer mr-2"
+                    class="curs-pointer mr-2 mt-0"
                     :style=" (item.status == 'draft') ? 'opacity: .5' : ''"
                     v-bind="attrs"
                     @click="publish(item)"
@@ -137,8 +139,7 @@
 </template>
 
 <script>
-import { ErrorMessage } from '@/plugins/toast'
-import gameChecker from '@/plugins/gameChecker'
+import { SuccessMessage, ErrorMessage } from '@/plugins/toast'
 
 export default {
   async asyncData ({ store }) {
@@ -155,80 +156,50 @@ export default {
     }
   },
   methods: {
-    unpublish (item) {
-      // axios.post('/api/game/unpublish', { id: item.id })
-      //   .then((response) => {
-      //     if (response.status == 200) {
-      //       Swal.fire({
-      //         title: 'Готово!',
-      //         text: 'Новелла "' + item.title + '" деактивирована!',
-      //         icon: 'success',
-      //         toast: true,
-      //         timer: 5000,
-      //         position: 'bottom',
-      //         timerProgressBar: true,
-      //         showConfirmButton: false
-      //       })
-      //       item.status = response.data.status
-      //     }
-      //   })
-      //   .catch((e) => {
-      //     console.error(e)
-      //     Swal.fire({
-      //       title: 'Ошибка!',
-      //       text: 'Попробуйте позже',
-      //       icon: 'error',
-      //       toast: true,
-      //       timer: 5000,
-      //       position: 'bottom',
-      //       timerProgressBar: true,
-      //       showConfirmButton: false
-      //     })
-      //   })
+    async unpublish (item) {
+      const responseStatus = await this.$api.unpublishGame(item.id)
+      if (responseStatus === 200) {
+        SuccessMessage({
+          text: 'Новелла "' + item.title + '" деактивирована!'
+        })
+
+        this.$store.dispatch('profile/updateMyGames', this.items.map((gameItem) => {
+          if (gameItem.id === item.id) {
+            gameItem.status = 'test_drive'
+          }
+          return gameItem
+        }))
+      } else {
+        ErrorMessage({
+          text: 'Попробуйте позже'
+        })
+      }
     },
-    publish (item) {
+    async publish (item) {
       if (item.status === 'draft') {
         ErrorMessage({ text: 'Публикация доступна только для новелл со статусом "Тест-Драйв"' })
-        // return
+        return
       }
+      const responseStatus = await this.$api.publishGame(item.id)
+      if (responseStatus === 200) {
+        SuccessMessage({
+          text: 'Новелла "' + item.title + '" успешно опубликована!'
+        })
 
-      // axios.post('/api/game/publish', { id: item.id })
-      //   .then((response) => {
-      //     if (response.status == 200) {
-      //       Swal.fire({
-      //         title: 'Готово!',
-      //         text: 'Новелла "' + item.title + '" успешно опубликована!',
-      //         icon: 'success',
-      //         toast: true,
-      //         timer: 5000,
-      //         position: 'bottom',
-      //         timerProgressBar: true,
-      //         showConfirmButton: false
-      //       })
-
-      //       item.status = response.data.status
-      //     }
-      //   })
-      //   .catch((e) => {
-      //     console.error(e)
-      //     Swal.fire({
-      //       title: 'Ошибка!',
-      //       text: 'Попробуйте позже',
-      //       icon: 'error',
-      //       toast: true,
-      //       timer: 5000,
-      //       position: 'bottom',
-      //       timerProgressBar: true,
-      //       showConfirmButton: false
-      //     })
-      //   })
+        this.$store.dispatch('profile/updateMyGames', this.items.map((gameItem) => {
+          if (gameItem.id === item.id) {
+            gameItem.status = 'published'
+          }
+          return gameItem
+        }))
+      } else {
+        ErrorMessage({
+          text: 'Попробуйте позже'
+        })
+      }
     },
     getSceneCount (item) {
-      let game = JSON.parse(item.json)
-
-      if (!gameChecker.isLatestVersion(game)) {
-        game = gameChecker.updateGameToLatestVersion(game)
-      }
+      const game = JSON.parse(item.json)
       return game.scenes.length
     },
     goToPage (routePath) {
