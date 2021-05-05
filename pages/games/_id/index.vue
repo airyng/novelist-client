@@ -24,7 +24,7 @@
             </v-tooltip>
           </div>
 
-          <div class="my-2 d-flex align-center">
+          <div class="novella-infohead">
             <nuxt-link to="/author/test">
               <v-avatar v-if="item.authorAvatar">
                 <img :src="authorAvatar">
@@ -69,7 +69,7 @@ export default {
       item = store.state.latestGames.find(item => item.id === Number(params.id))
     }
     if (!item) {
-      item = await $api.getPublishedGameByID(params.id)
+      item = await $api.getGameByID(params.id)
     }
     if (!item) { return error({ statusCode: 404 }) }
     return { item }
@@ -108,6 +108,16 @@ export default {
 <style lang="sass" scoped>
 h1
   word-break: break-word
+
+.novella-infohead
+  margin: 8px 0
+  display: flex
+  align-items: center
+  @media (max-width: 600px)
+    flex-direction: column
+    align-items: start
+    & .v-avatar
+      margin-left: 16px
 
 .banner
   background-position: center

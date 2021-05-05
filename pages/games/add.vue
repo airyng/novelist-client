@@ -162,12 +162,17 @@
     <ConstructorProjectSaver
       ref="projectSaver"
     />
+    <ConstructorProjectLoader
+      @onRestoreState="onRestoreState"
+    />
   </div>
 </template>
 
 <script>
 import { EventBus } from '@/plugins/event'
 import Swal from 'sweetalert2'
+import gameChecker from '@/plugins/gameChecker'
+
 export default {
   data () {
     return {
@@ -276,13 +281,28 @@ export default {
     },
     saveProject () {
       this.$refs.projectSaver.beginSaving()
+    },
+    onRestoreState (gameData) {
+      // console.log('debug gameData', gameData)
+      this.$store.dispatch('constructorStorage/updateProjectID', gameData.id)
+      this.$store.dispatch('constructorStorage/updateMainSettings', {
+        title: gameData.title,
+        description: gameData.description,
+        onTestDrive: (gameData.status !== 'draft')
+      })
+
+      let game = JSON.parse(gameData.json)
+      if (!gameChecker.isLatestVersion(game)) {
+        game = gameChecker.updateGameToLatestVersion(game)
+      }
+      this.$store.dispatch('constructorStorage/updateAllScenes', game.scenes)
+      this.$store.dispatch('constructorStorage/updateAllCharacters', game.characters)
     }
   }
 }
 </script>
 
 <style lang="sass">
-
 .bottom-bar
   position: absolute
   z-index: 10

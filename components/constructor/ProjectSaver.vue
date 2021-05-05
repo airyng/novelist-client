@@ -50,7 +50,9 @@ export default {
         this.isLoading = false
       }
     },
-    save () {
+    async save () {
+      this.clearErrors()
+
       const json = {
         scenes: this.scenes,
         characters: this.characters,
@@ -63,17 +65,15 @@ export default {
         onTestDrive: this.mainInfo.onTestDrive,
         id: this.id
       }
-      localStorage.setItem('game', JSON.stringify(data))
+      // localStorage.setItem('game', JSON.stringify(data))
       // console.log('saved')
-      // const response = await axios.post('/api/game/save', data)
+      const responseStatus = await this.$api.saveGame(data)
 
-      // if (response.status != 200) {
-      //   this.addError('Неизвестная ошибка. Проверьте все сцены на наличие ошибок.')
-      //   return false
-      // }
-
-      // this.$emit('saved', response.data.game.id)
-
+      if (responseStatus !== 200) {
+        this.addError('Неизвестная ошибка. Проверьте все сцены на наличие ошибок.')
+        this.showErrors()
+        return false
+      }
       return true
     },
     async validateAndSave () {

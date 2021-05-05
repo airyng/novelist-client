@@ -17,8 +17,10 @@
   justify-content: center
   align-items: center
   background-color: rgb(68,68,68)
-  z-index: 9
+  z-index: 999
   & h1
     font-size: 5em
     color: white
+    @media (max-width: 500px)
+      font-size: 3em
 </style>

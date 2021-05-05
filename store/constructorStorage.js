@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { EventBus } from '~/plugins/event'
 import { ErrorMessage } from '~/plugins/toast'
 
@@ -137,11 +138,24 @@ export const actions = {
     EventBus.$emit('callToReinitSceneNetwork')
   },
 
+  updateProjectID ({ commit, state }, ID) {
+    if (!state.projectID) {
+      commit('setProperty', ['projectID', ID])
+    } else {
+      console.error('Unable to set projectID')
+    }
+  },
+
   updateScene ({ commit, state }, scene) {
     const scenes = state.scenes.map((item) => {
       if (item.id === scene.id) { item = scene }
       return item
     })
+    commit('setProperty', ['scenes', scenes])
+    EventBus.$emit('callToReinitSceneNetwork')
+  },
+
+  updateAllScenes ({ commit, state }, scenes) {
     commit('setProperty', ['scenes', scenes])
     EventBus.$emit('callToReinitSceneNetwork')
   },
@@ -210,6 +224,11 @@ export const actions = {
     }
     commit('setProperty', ['characters', characters])
   },
+
+  updateAllCharacters ({ state, commit }, characters) {
+    commit('setProperty', ['characters', characters])
+  },
+
   removeCharacterFromList ({ state, commit }, character) {
     const characters = state.characters.filter(char => char.uid !== character.uid)
     commit('setProperty', ['characters', characters])

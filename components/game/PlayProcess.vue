@@ -36,7 +36,7 @@
 
           <div class="mainTextBlock" @click="skipTextTyping">
             <span v-if="character" class="charName">{{ character.name }}</span>
-            <p class="pa-5 mb-0" :class="{'mt-5': character}">
+            <p class="pa-5 mb-0 mainText" :class="{'mt-5': character}">
               {{ mainText }}
             </p>
           </div>
@@ -238,6 +238,9 @@ export default {
   position: relative
   color: white
   cursor: pointer
+  & .mainText
+    height: 100%
+    overflow: hidden auto
   & .charName
     position: absolute
     top: -10px

@@ -26,11 +26,11 @@ export default function ({ $axios }, inject) {
       })
   }
 
-  const getPublishedGameByID = (id) => {
+  const getGameByID = (id) => {
     return $axios.get(getApiURL() + `game/${id}`)
       .then((response) => {
         if (!process.server) {
-          console.log('getPublishedGameByID success', response.data)
+          console.log('getGameByID success', response.data)
         }
         return response.data
       })
@@ -40,6 +40,7 @@ export default function ({ $axios }, inject) {
           title: 'Ошибка загрузки данных',
           text: 'Пожалуйста, обновите страницу'
         })
+        return false
       })
   }
 
@@ -151,6 +152,20 @@ export default function ({ $axios }, inject) {
       })
   }
 
+  const saveGame = (game) => {
+    return $axios.post(getApiURL() + 'game/save', game)
+      .then((response) => {
+        if (!process.server) {
+          console.log('saveGame success', response.data)
+        }
+        return response.status
+      })
+      .catch((e) => {
+        console.error(e)
+        return e.response.status
+      })
+  }
+
   const api = {
     // put list of methods here...
     register,
@@ -159,11 +174,12 @@ export default function ({ $axios }, inject) {
     logout,
     getMe,
     getApiURL,
-    getPublishedGameByID,
+    getGameByID,
     getLatestGames,
     getMyGamesList,
     publishGame,
-    unpublishGame
+    unpublishGame,
+    saveGame
   }
 
   inject('api', api)

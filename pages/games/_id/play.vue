@@ -15,9 +15,6 @@
       @gameOver="onGameOver"
     />
     <GameFinalScreen v-else-if="gameStage === 'gameOver'" :game="loadedItem" @callToRestart="restart" />
-  <!-- <project-loader
-    @onRestoreState="onRestoreState"
-  /> -->
   </div>
 </template>
 
@@ -34,7 +31,7 @@
 import gameChecker from '@/plugins/gameChecker'
 
 export default {
-  async asyncData ({ $api, params, error, store }) {
+  async asyncData ({ $api, params, error, store, route }) {
     let loadedItem = false
     // Ищем новеллу в публичном списке "Последние новеллы"
     if (store.state.latestGames.length) {
@@ -46,7 +43,7 @@ export default {
     }
 
     if (!loadedItem) {
-      loadedItem = await $api.getPublishedGameByID(params.id)
+      loadedItem = await $api.getGameByID(params.id)
     }
     if (!loadedItem) { return error({ statusCode: 404 }) }
     return { loadedItem }
@@ -71,7 +68,6 @@ export default {
     }
   },
   mounted () {
-    // данные загружаются из компонента project loader
     this.boot()
   },
   methods: {
