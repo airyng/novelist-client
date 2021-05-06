@@ -152,7 +152,12 @@ export default {
   },
   computed: {
     items () {
-      return this.$store.state.profile.myGames
+      const games = this.$store.state.profile.myGames.map((item) => {
+        item.updated_at_timestamp = new Date(item.updated_at).getTime()
+        return item
+      })
+      // сортировка по дате обновления
+      return games.sort((a, b) => b.updated_at_timestamp - a.updated_at_timestamp)
     }
   },
   methods: {

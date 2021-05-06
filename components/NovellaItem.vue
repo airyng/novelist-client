@@ -38,7 +38,7 @@
           Играть
         </v-btn>
       </nuxt-link>
-      <nuxt-link :to="'/games/'+ item.id">
+      <nuxt-link v-if="!isSmallMobileScreen" :to="'/games/'+ item.id">
         <v-btn depressed text color="deep-purple">
           Подробнее
         </v-btn>
@@ -56,7 +56,9 @@
 
 <script>
 import { excerpt } from '@/plugins/utils'
+import { screen } from '@/mixins/screen'
 export default {
+  mixins: [screen],
   props: {
     item: { type: Object, required: true }
   },

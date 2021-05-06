@@ -25,6 +25,7 @@
             <CharacterCanvas
               :updated-at="charUpdatedAt"
               :char-id="notConfiguredChar.id"
+              :height="charHeight"
               class="characterSlot"
             />
             <p class="mb-0 mt-2 white--text text-center">
@@ -68,7 +69,9 @@
 </template>
 
 <script>
+import { screen } from '@/mixins/screen'
 export default {
+  mixins: [screen],
   props: {
     characters: { type: Array, required: true }
   },
@@ -82,8 +85,22 @@ export default {
     isCharacterPopupShow () { return !!this.selectedCharacter },
     notConfiguredCharacters () {
       return this.characters.filter(char => char.userChoose.length)
+    },
+    charHeight () {
+      // eslint-disable-next-line no-unused-expressions
+      if (!process.server) {
+        if (this.windowWidth >= 1024) {
+          return 450
+        } else if (this.windowWidth >= 400) {
+          return 300
+        } else {
+          return 250
+        }
+      }
+      return 500
     }
   },
+  mounted () {},
   methods: {
     updateCharacter (char) {
       this.selectedCharacter = false
@@ -107,6 +124,8 @@ export default {
   overflow-x: auto
   display: flex
   justify-content: center
+  @media (max-width: 959px)
+    justify-content: start
 
 .characterSlot
   border: 1px solid white
@@ -115,6 +134,7 @@ export default {
   cursor: pointer
   transition: .3s all ease
   margin: 0 20px
+  width: 230px
   &:hover
     background: rgba(255,255,255,50%)
 </style>

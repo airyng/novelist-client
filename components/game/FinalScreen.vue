@@ -70,4 +70,7 @@ export default {
   & h2
     font-size: 2em
     color: white
+  & button
+    @media (max-width: 500px)
+      font-size: 0.7em
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="position: relative">
+    <div class="d-flex justify-center" style="position: relative">
       <canvas
         :id="canvasID"
         :width="948"
@@ -43,6 +43,7 @@ export default {
   },
   watch: {
     updatedAt () {
+      this.convertIdToItems()
       this.drawCharacter()
     },
     charId () {
@@ -75,7 +76,6 @@ export default {
 
       const context = canvas.getContext('2d')
       const that = this
-
       try {
         this.loading = true
         // Данная задержка необходима для более гладкой анимации ухода персонажа со сцены

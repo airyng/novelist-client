@@ -1,4 +1,15 @@
 export const screen = {
+  data () {
+    return {
+      windowWidth: 1000
+    }
+  },
+  mounted () {
+    window.addEventListener('resize', () => {
+      this.windowWidth = document.body.clientWidth
+    })
+    this.windowWidth = document.body.clientWidth
+  },
   methods: {
     getScreenBreakpoint () {
       return this.$vuetify.breakpoint.name // xl, lg, md, sm, xs
@@ -31,6 +42,10 @@ export const screen = {
     isMobileScreen () {
       if (process.server) { return true }
       return this.screenName === 'screen-small-to-medium-tablet' || this.screenName === 'screen-mobile'
+    },
+    isSmallMobileScreen () {
+      if (process.server) { return true }
+      return this.screenName === 'screen-mobile'
     }
   }
 }

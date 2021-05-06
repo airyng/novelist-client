@@ -1,14 +1,20 @@
 <template>
   <div>
     <v-container class="fullsize">
-      <v-row class="fullsize">
-        <v-col cols="1" class="d-flex flex-column" :class="{ disabled: playmode && !userChoose.includes('view') }">
+      <v-row class="fullsize generatorContainer">
+        <v-col
+          cols="12"
+          md="1"
+          class="spriteCategoriesButtons"
+          :class="{ disabled: playmode && !userChoose.includes('view'), 'flex-column': windowWidth > 959 }"
+        >
           <v-avatar
             v-for="(item, index) in blocks"
             :key="index"
             :color="currentSubBlock.folder === item.folder ? '#ffffffb3' : '#ffffff4d'"
             size="50"
-            class="mb-5 folderIcon"
+            class="folderIcon"
+            :class="{ 'mb-5': windowWidth > 959 }"
             @click="showItemsSubBlock(item)"
           >
             <span class="caption" :class="{'white--text': currentSubBlock.folder !== item.folder}">{{ item.title }}</span>
@@ -16,13 +22,13 @@
           <v-avatar
             color="#ffffffb3"
             size="50"
-            class="mb-5"
+            :class="{ 'mb-5': windowWidth > 959 }"
             @click="setRandomSubBlocks"
           >
             <span class="caption">Случ.</span>
           </v-avatar>
         </v-col>
-        <v-col cols="5" :class="{ disabled: playmode && !userChoose.includes('view') }">
+        <v-col cols="12" md="5" :class="{ disabled: playmode && !userChoose.includes('view') }">
           <div class="previewsContainer pa-3">
             <div
               v-for="(id, index) in currentSubBlock.ids"
@@ -34,13 +40,18 @@
               <CommonItemCanvasPreview
                 :folder="currentSubBlock.folder"
                 :name="currentSubBlock.nameBase + id"
+                :height="windowWidth > 959 ? 200 : 150"
               />
             </div>
           </div>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="12" md="6">
           <v-row>
-            <v-col cols="12" class="d-flex justify-center">
+            <v-col
+              cols="12"
+              class="d-flex"
+              :class="{'justify-center': windowWidth > 959}"
+            >
               <div v-if="!playmode" class="d-flex flex-column">
                 <div class="d-flex">
                   <v-checkbox
@@ -78,8 +89,8 @@
                 v-model="characterName"
                 label="Имя"
                 clearable
+                class="nameInput"
                 :class="{ disabled: playmode && !userChoose.includes('name') }"
-                style="max-width: 200px"
                 :counter="maxNameLength"
               />
             </v-col>
@@ -138,7 +149,9 @@
 
 <script>
 import { ErrorMessage } from '@/plugins/toast'
+import { screen } from '@/mixins/screen'
 export default {
+  mixins: [screen],
   props: {
     char: { type: [Object, Boolean], default: false },
     playmode: { type: Boolean, default: false }
@@ -220,16 +233,23 @@ export default {
   watch: {
     char () {
       this.init()
+    },
+    windowWidth () {
+      this.setCharacterSettings()
     }
   },
   mounted () {
     this.init()
     this.setCharacterSettings()
-    window.addEventListener('resize', () => this.setCharacterSettings())
+    window.addEventListener('resize', () => {
+      this.setCharacterSettings()
+    })
   },
   methods: {
     setCharacterSettings () {
-      this.characterHeight = Math.ceil(window.innerHeight / 1.4)
+      let scaleRate = 1.4
+      if (this.windowWidth <= 959) { scaleRate = 2.5 }
+      this.characterHeight = Math.ceil(window.innerHeight / scaleRate)
       this.charUpdatedAt = new Date().getTime()
     },
     init () {
@@ -346,6 +366,10 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.generatorContainer
+  @media (max-width: 959px)
+    flex-direction: column-reverse
+
 .btns-container
   position: absolute
   top: 65px
@@ -356,6 +380,12 @@ export default {
   right: 230px
   bottom: -10px
   left: auto
+  @media (max-width: 1200px)
+    right: 150px
+  @media (max-width: 959px)
+    bottom: 275px
+    right: 50%
+    transform: translateX(50%)
 
 .previewsContainer
   overflow: hidden auto
@@ -365,6 +395,16 @@ export default {
   justify-content: center
   flex-wrap: wrap
   border-radius: 5px
+  @media (max-width: 959px)
+    display: -webkit-inline-box
+    height: 200px
+    position: absolute
+    left: 0
+    bottom: 75px
+    width: 100%
+    border-radius: 0
+    overflow: auto hidden
+    flex-wrap: nowrap
 
 .previewItem
   width: 100%
@@ -376,8 +416,31 @@ export default {
   background: rgb(255 255 255 / 30%)
   cursor: pointer
   transition: .3s all ease
+  @media (max-width: 959px)
+    max-width: 150px
   &:hover
     background: rgb(255 255 255 / 50%)
   &.active
     background: rgb(255 255 255 / 70%)
+
+.nameInput
+  max-width: 200px
+  @media (max-width: 959px)
+    max-width: 80%
+
+.spriteCategoriesButtons
+  display: flex
+  @media (max-width: 959px)
+    position: absolute
+    bottom: 0
+    left: 0
+    width: 100%
+    justify-content: space-evenly
+    align-items: center
+    background: rgba(255, 255, 255, 0.15)
+  @media (max-width: 600px)
+    justify-content: flex-start
+    overflow: auto hidden
+    & > *
+      margin: 0 10px
 </style>
