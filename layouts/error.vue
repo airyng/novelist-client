@@ -5,13 +5,21 @@
         <h1 v-if="error.statusCode === 404">
           {{ pageNotFound }}
         </h1>
+        <h1 v-if="error.statusCode === 401">
+          {{ accessDenied }}
+        </h1>
         <h1 v-else>
           {{ otherError }}
         </h1>
       </v-col>
     </v-row>
     <v-row>
-      <v-col class="d-flex justify-center">
+      <v-col class="d-flex justify-center flex-column align-center">
+        <NuxtLink v-if="error.statusCode === 401" to="/signin">
+          <v-btn depressed dark color="indigo" class="mb-5">
+            Авторизоваться
+          </v-btn>
+        </NuxtLink>
         <NuxtLink to="/">
           <v-btn depressed dark color="indigo">
             На главную
@@ -33,7 +41,8 @@ export default {
   },
   data () {
     return {
-      pageNotFound: '404 Страница не найдена',
+      pageNotFound: '404 - Страница не найдена',
+      accessDenied: '401 - Доступ запрещен',
       otherError: 'Неизвестная ошибка'
     }
   },

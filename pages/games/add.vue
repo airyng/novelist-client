@@ -174,6 +174,7 @@ import Swal from 'sweetalert2'
 import gameChecker from '@/plugins/gameChecker'
 
 export default {
+  middleware: ['authenticated'],
   data () {
     return {
       selectedCharacter: false,

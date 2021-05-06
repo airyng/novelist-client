@@ -142,6 +142,7 @@
 import { SuccessMessage, ErrorMessage } from '@/plugins/toast'
 
 export default {
+  middleware: ['authenticated'],
   async asyncData ({ store }) {
     await store.dispatch('profile/getMyGames')
   },

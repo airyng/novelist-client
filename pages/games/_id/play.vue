@@ -31,6 +31,7 @@
 import gameChecker from '@/plugins/gameChecker'
 
 export default {
+  middleware: ['authenticated'],
   async asyncData ({ $api, params, error, store, route }) {
     let loadedItem = false
     // Ищем новеллу в публичном списке "Последние новеллы"
