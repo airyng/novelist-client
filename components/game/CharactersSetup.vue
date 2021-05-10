@@ -100,7 +100,11 @@ export default {
       return 500
     }
   },
-  mounted () {},
+  mounted () {
+    if (!this.characters || !this.characters.length) {
+      this.goNextStage()
+    }
+  },
   methods: {
     updateCharacter (char) {
       this.selectedCharacter = false

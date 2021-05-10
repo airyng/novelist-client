@@ -50,7 +50,7 @@ export default function ({ $axios }, inject) {
         if (!process.server) {
           console.log('register success', response.data)
         }
-        return response.data
+        return response
       })
       .catch((e) => {
         console.error(e)

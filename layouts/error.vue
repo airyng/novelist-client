@@ -2,29 +2,12 @@
   <v-container class="mt-10">
     <v-row>
       <v-col class="text-center">
-        <h1 v-if="error.statusCode === 404">
-          {{ pageNotFound }}
-        </h1>
-        <h1 v-if="error.statusCode === 401">
-          {{ accessDenied }}
-        </h1>
+        <ErrorsNotFound v-if="error.statusCode === 404" />
+        <ErrorsNotAuthenticated v-else-if="error.statusCode === 401" />
+        <ErrorsAccessDenied v-else-if="error.statusCode === 403" />
         <h1 v-else>
-          {{ otherError }}
+          {{ error.statusCode || 'X Error' }} - {{ otherError }}
         </h1>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="d-flex justify-center flex-column align-center">
-        <NuxtLink v-if="error.statusCode === 401" to="/signin">
-          <v-btn depressed dark color="indigo" class="mb-5">
-            Авторизоваться
-          </v-btn>
-        </NuxtLink>
-        <NuxtLink to="/">
-          <v-btn depressed dark color="indigo">
-            На главную
-          </v-btn>
-        </NuxtLink>
       </v-col>
     </v-row>
   </v-container>
@@ -41,8 +24,6 @@ export default {
   },
   data () {
     return {
-      pageNotFound: '404 - Страница не найдена',
-      accessDenied: '401 - Доступ запрещен',
       otherError: 'Неизвестная ошибка'
     }
   },
@@ -55,8 +36,3 @@ export default {
   }
 }
 </script>
-
-<style lang="sass" scoped>
-h1
-  font-size: 20px
-</style>

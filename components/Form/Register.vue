@@ -155,10 +155,24 @@ export default {
     async submitForm () {
       this.ajaxSending = true
       try {
-        await this.$api.register(this.formData)
-        SuccessMessage({ title: 'Регистрация успешна!' })
-        this.formData = this.getDefaultForm()
-        this.$router.push('/me')
+        const result = await this.$api.register(this.formData)
+        if (result.status === 200) {
+          SuccessMessage({ title: 'Регистрация успешна!' })
+          this.formData = this.getDefaultForm()
+          // console.log('debug success', result)
+          this.removeErrors()
+        } else {
+          for (const key in result.data.errors) {
+            if (Object.hasOwnProperty.call(result.data.errors, key)) {
+              let element = result.data.errors[key]
+              if (element === 'The email has already been taken.') {
+                element = 'Указанный email уже используется'
+              }
+              ErrorMessages(element)
+            }
+          }
+        }
+        // this.$router.push('/me')
       } catch (err) {
         ErrorMessages('Что-то пошло не так! Обратитесь к администрации сайта.')
         // eslint-disable-next-line no-console

@@ -1,6 +1,12 @@
 <template>
   <div>
     <GameLoadingScreen v-if="!loaded" />
+    <GameStartScreen
+      v-else-if="gameStage === 'startScreen'"
+      :game="loadedItem"
+      @callToStart="onStartNew"
+      @loadGame="onLoadGame"
+    />
     <GameCharactersSetup
       v-else-if="gameStage === 'charactersSetup'"
       :characters="characters"
@@ -12,6 +18,7 @@
       ref="playProcess"
       :scenes="scenes"
       :characters="characters"
+      :start-on-scene="lastActiveScene"
       @gameOver="onGameOver"
     />
     <GameFinalScreen v-else-if="gameStage === 'gameOver'" :game="loadedItem" @callToRestart="restart" />
@@ -19,20 +26,12 @@
 </template>
 
 <script>
-// const defaultGame = {
-//   scenes: [
-//     { id: 1617138553349, title: 'Сцена 1617138553349', mainText: 'Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1 Сцена 1  ', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138591912, actionText: 'Дальше...', to: 1617138591890, condition: false }, { id: 1617138591912, actionText: 'Дальше...', to: 1617138591890, condition: false }], character: 1617138569818 },
-//     { id: 1617138591890, title: 'Сцена 1617138591890', mainText: 'Сцена 2', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138593593, actionText: 'Дальше...', to: 1617138593566, condition: false }, { id: 1617138596746, actionText: 'На выход', to: 1617138596717, condition: false }], character: 1617138569818 },
-//     { id: 1617138593566, title: 'Сцена 1617138593566', mainText: 'Сцена 3', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138621744, actionText: 'На выход', to: 1617138596717, condition: false }], character: false },
-//     { id: 1617138596717, title: 'Финал', mainText: 'Сцена 4', background: { type: 'color', value: '#1A237EFF' }, actions: [{ id: 1617138650148, actionText: 'Выход', to: 'win', condition: false }], character: 1617138569818 }
-//   ],
-//   characters: [{ name: 'fjkdsjfs', id: '1.1_6.3_1.1_2.1_1.3_6.4_14', uid: 1617138569818 }]
-// }
 import gameChecker from '@/plugins/gameChecker'
+import GameAutoSaveManager from '@/plugins/gameAutoSaveManager'
 
 export default {
   middleware: ['authenticated'],
-  async asyncData ({ $api, params, error, store, route }) {
+  async asyncData ({ $api, params, error, store }) {
     let loadedItem = false
     // Ищем новеллу в публичном списке "Последние новеллы"
     if (store.state.latestGames.length) {
@@ -47,21 +46,26 @@ export default {
       loadedItem = await $api.getGameByID(params.id)
     }
     if (!loadedItem) { return error({ statusCode: 404 }) }
+
+    if (loadedItem.status === 'draft') { return error({ statusCode: 403 }) }
     return { loadedItem }
   },
   data () {
     return {
       loadedItem: false,
-      gameStage: 'charactersSetup',
+      gameStage: 'startScreen',
       scenes: [], // список сцен
       characters: [],
       projectID: null, // ID новеллы
-      loaded: false
+      loaded: false,
+      lastActiveScene: null,
+      gameAutoSaveManager: null
     }
   },
   computed: {
     gameStages () {
       return [
+        'startScreen',
         'charactersSetup',
         'playProcess',
         'gameOver'
@@ -82,19 +86,33 @@ export default {
 
       this.scenes = [...game.scenes]
       this.characters = [...game.characters]
-
-      const notConfiguredCharacters = this.characters.filter(char => char.userChoose?.length)
-      if (!notConfiguredCharacters.length) { this.onCharactersSetupFinished() }
+      // const notConfiguredCharacters = this.characters.filter(char => char.userChoose?.length)
+      // if (!notConfiguredCharacters.length) { this.onCharactersSetupFinished() }
+      this.projectID = this.loadedItem.id
       this.loaded = true
       // eslint-disable-next-line no-console
       console.log('Game booted.')
     },
+    onStartNew () {
+      this.gameStage = this.gameStages[1]
+    },
+    onLoadGame (saveObj) {
+      this.lastActiveScene = saveObj.lastSceneID
+      this.characters = saveObj.characters
+      this.onCharactersSetupFinished()
+    },
     restart () {
+      // Сбрасываем автосохранение
+      this.gameAutoSaveManager = new GameAutoSaveManager()
+      this.gameAutoSaveManager.delete(this.projectID)
+      this.lastActiveScene = null
+      // Сбрасываем автосохранение - конец
+
       const notConfiguredCharacters = this.characters.filter(char => char.userChoose?.length)
       if (!notConfiguredCharacters.length) {
         this.onCharactersSetupFinished()
       } else {
-        this.gameStage = this.gameStages[0]
+        this.gameStage = this.gameStages[1]
       }
     },
     onCharacterUpdated (char) {
@@ -111,11 +129,11 @@ export default {
       // this.goToScene(this.scenes[0])
     },
     onCharactersSetupFinished () {
-      this.gameStage = this.gameStages[1]
+      this.gameStage = this.gameStages[2]
       this.$refs.playProcess?.goToStart()
     },
     onGameOver () {
-      this.gameStage = this.gameStages[2]
+      this.gameStage = this.gameStages[3]
     }
   }
 }

@@ -47,10 +47,12 @@
 </template>
 
 <script>
+import GameAutoSaveManager from '@/plugins/gameAutoSaveManager'
 export default {
   props: {
     scenes: { type: Array, required: true },
-    characters: { type: Array, required: true }
+    characters: { type: Array, required: true },
+    startOnScene: { type: [Number, String], default: null }
   },
   data () {
     return {
@@ -60,7 +62,8 @@ export default {
       mainText: '',
       textSkiped: false,
       actionsShowed: false,
-      sceneHistory: []
+      sceneHistory: [],
+      gameAutoSaveManager: null
     }
   },
   computed: {
@@ -96,13 +99,19 @@ export default {
     }
   },
   mounted () {
+    this.gameAutoSaveManager = new GameAutoSaveManager()
     this.setCharacterSettings()
     window.addEventListener('resize', () => this.setCharacterSettings())
+
     this.goToStart()
   },
   methods: {
     goToStart () {
-      this.goToScene(this.scenes[0])
+      if (this.startOnScene) {
+        this.goToScene(this.scenes.find(item => Number(item.id) === Number(this.startOnScene)))
+      } else {
+        this.goToScene(this.scenes[0])
+      }
     },
     setCharacterSettings () {
       this.characterHeight = Math.ceil(window.innerHeight / 1.3)
@@ -112,9 +121,11 @@ export default {
       if (typeof elem === 'number') {
         this.activeScene = this.getSceneById(elem)
         this.addSceneToHistory(this.activeScene)
+        this.gameAutoSaveManager.save({ gameID: this.$route.params.id, lastSceneID: elem, characters: this.characters })
       } else if (typeof elem === 'object' && typeof elem.id === 'number') {
         this.activeScene = this.getSceneById(elem.id)
         this.addSceneToHistory(this.activeScene)
+        this.gameAutoSaveManager.save({ gameID: this.$route.params.id, lastSceneID: elem.id, characters: this.characters })
       } else if (elem === 'quit') {
         this.$emit('gameOver')
       }
