@@ -73,16 +73,14 @@ export default {
     return {
       nameSearchKey: '',
       activeBack: null,
-      activeCategory: false,
-      backs: [],
-      categories: []
+      activeCategory: false
     }
   },
   computed: {
     filteredBacks () {
       if (!this.nameSearchKey && !this.activeCategory) { return this.backs }
 
-      let backs = this.backs
+      let backs = [...this.backs]
 
       if (this.nameSearchKey) {
         backs = this.backs.filter((item) => {
@@ -112,24 +110,33 @@ export default {
       }
 
       return backs
+    },
+    backs () {
+      return this.$store.state.constructorStorage.backgrounds
+    },
+    categories () {
+      return this.$store.state.constructorStorage.backgroundCategories
     }
   },
   mounted () {
-    this.getBacks()
-    this.getBackCats()
+    this.loadBacks()
+    this.loadBackCats()
   },
   methods: {
     changeBack (back) {
       this.activeBack = back
       this.$emit('OnBackChanged', this.activeBack)
     },
-    getBacks () {
-    //   axios.get('/api/game/get-backgrounds').then((res) => {
-    //     this.backs = res.data
-    //     this.changeBack(res.data[0]) // устанавливаем первый бекграунд, как активный
-    //   })
+    async loadBacks () {
+      if (!this.backs.length) {
+        await this.$store.dispatch('constructorStorage/loadBackgrounds')
+        this.changeBack(this.backs[0])
+      }
     },
-    getBackCats () {
+    loadBackCats () {
+      if (!this.categories.length) {
+        this.$store.dispatch('constructorStorage/loadBackgroundCategories')
+      }
     //   axios.get('/api/game/get-background-categories').then((res) => {
     //     this.categories = res.data.map((item) => {
     //       item.value = item.text = item.name

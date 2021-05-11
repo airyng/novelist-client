@@ -1,11 +1,11 @@
 <template>
   <div>
     <v-navigation-drawer
-      v-if="isMobileScreen"
       v-model="drawer"
       absolute
       dark
       style="z-index: 9;"
+      class="m-show"
     >
       <v-list nav dense>
         <v-list-item-group active-class="deep-purple--text text--accent-4">
@@ -33,11 +33,11 @@
         <v-row>
           <v-col class="d-flex align-center">
             <v-app-bar-nav-icon
-              v-if="isMobileScreen"
+              class="m-show"
               @click="drawer = true"
             />
 
-            <template v-else>
+            <div class="d-show">
               <template v-for="(item, index) in items">
                 <nuxt-link
                   v-if="user || !item.onlyAuth && !user"
@@ -49,12 +49,12 @@
                   {{ item.title }}
                 </nuxt-link>
               </template>
-            </template>
+            </div>
 
             <v-spacer />
 
             <template v-if="user">
-              <template v-if="!isMobileScreen">
+              <div class="d-show">
                 <nuxt-link
                   class="px-2"
                   to="/games/add"
@@ -70,7 +70,7 @@
                 >
                   Мои новеллы
                 </nuxt-link>
-              </template>
+              </div>
 
               <nuxt-link class="px-2 align-self-center" to="/me">
                 {{ user.name }}

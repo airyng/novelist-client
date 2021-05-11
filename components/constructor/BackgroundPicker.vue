@@ -14,11 +14,11 @@
         @onValueChanged="colorPicked"
       />
 
-      <!-- <ConstructorBackgroundImagePicker
+      <ConstructorBackgroundImagePicker
         v-show="isBackImageType"
         class="pt-0"
         @OnBackChanged="imagePicked"
-      /> -->
+      />
     </v-col>
   </v-row>
 </template>

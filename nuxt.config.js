@@ -85,13 +85,13 @@ export default {
   },
 
   router: {
-    extendRoutes (routes, resolve) {
-      routes.push({
-        // name: 'games-edit',
-        path: '/games/:id/edit',
-        component: resolve(__dirname, 'pages/games/add.vue')
-      })
-    }
+    // extendRoutes (routes, resolve) {
+    //   routes.push({
+    //     name: 'games-edit',
+    //     path: '/games/:id/edit',
+    //     component: resolve(__dirname, 'pages/games/add.vue')
+    //   })
+    // }
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

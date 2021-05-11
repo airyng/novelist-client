@@ -5,6 +5,16 @@
   color: inherit
   text-decoration: none
 
+.m-show
+  display: none
+  @media (max-width: 992px)
+    display: inherit
+
+.d-show
+  display: inherit
+  @media (max-width: 992px)
+    display: none
+
 .fullsize
   width: 100%
   height: 100%
@@ -25,7 +35,7 @@ a:hover
 
 .games-add-page footer
   display: none
-.games-edit-page footer
+.games-id-edit-page footer
   display: none
 
 .constructor, .game

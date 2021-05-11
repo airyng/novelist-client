@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" :elevation="0">
+  <v-card class="novella-item mx-auto" :elevation="0">
     <v-list-item>
       <nuxt-link :to="'/author/'+item.user_id">
         <v-list-item-avatar>
@@ -38,7 +38,7 @@
           Играть
         </v-btn>
       </nuxt-link>
-      <nuxt-link v-if="!isSmallMobileScreen" :to="'/games/'+ item.id">
+      <nuxt-link class="more-button" :to="'/games/'+ item.id">
         <v-btn depressed text color="deep-purple">
           Подробнее
         </v-btn>
@@ -93,3 +93,10 @@ export default {
   }
 }
 </script>
+
+<style lang="sass" scoped>
+.novella-item
+  .more-button
+    @media (max-width: 500px)
+      display: none
+</style>

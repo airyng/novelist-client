@@ -262,7 +262,7 @@ export default {
       }
     },
     setBackground (backObj) {
-      this.scene.background = backObj.hexa ? { type: 'color', value: backObj.hexa } : false
+      this.scene.background = backObj && backObj.hexa ? { type: 'color', value: backObj.hexa } : false
     }
   }
 }

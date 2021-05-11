@@ -3,6 +3,7 @@
 </template>
 <script>
 import { SuccessMessage, ErrorMessage } from '@/plugins/toast'
+import { sleep } from '@/plugins/utils'
 export default {
   data () {
     return {
@@ -69,30 +70,42 @@ export default {
     },
     callToRestoreStateFromData (gameData) {
       this.$router.push({
-        name: 'games-edit',
+        name: 'games-id-edit',
         params: { id: gameData.id, game: gameData }
       })
       this.boot()
     },
-    onRestoreState (gameData) {
-      this.validateGameState(gameData)
-      this.$emit('onRestoreState', gameData)
+    async onRestoreState (gameData) {
+      if (await this.validateGameState(gameData)) {
+        this.$emit('onRestoreState', gameData)
+      } else {
+        this.$router.push({ name: '404' })
+      }
     },
-    validateGameState (gameData) {
+    async validateGameState (gameData) {
+      while (!this.user.id) {
+        // Ждем получения данных пользователя
+        await sleep(100)
+      }
       // Если не автор пытается загрузить редактор
-      if (gameData.user_id !== this.user.id && this.$route.name === 'games-edit') { this.$router.push({ name: '404' }) }
+      if (gameData.user_id !== this.user.id && this.$route.name === 'games-id-edit') { return false }
       // Если пытаются поиграть в черновик
-      if (gameData.status === 'draft' && this.$route.name === 'games-play') { this.$router.push({ name: '404' }) }
+      if (gameData.status === 'draft' && this.$route.name === 'games-id-play') { return false }
       // Если в тестдрайв пытается зайти не автор
-      if (gameData.status === 'test_drive' && gameData.user_id !== this.user.id) { this.$router.push({ name: '404' }) }
+      if (gameData.status === 'test_drive' && gameData.user_id !== this.user.id) { return false }
+      return true
     },
     // Определяем текущий роут и решаем как загружать данные, если нужно вообще
     boot () {
-      if (this.$route.name === 'games-add') {
+      const routeName = this.$route.name
+      // if (this.$route.fullPath.indexOf('/edit')) {
+      //   routeName = 'games-edit'
+      // }
+      if (routeName === 'games-add') {
         // this.checkForLastUnpublishedProject()
-      } else if (this.$route.name === 'games-edit' && this.gameData) {
+      } else if (routeName === 'games-id-edit' && this.gameData) {
         this.onRestoreState(this.gameData)
-      } else if (this.$route.name === 'games-play' || (this.$route.name === 'games-edit' && !this.gameData)) {
+      } else if (routeName === 'games-id-play' || (routeName === 'games-id-edit' && !this.gameData)) {
         this.loadDataFromServer()
       }
     }

@@ -166,6 +166,19 @@ export default function ({ $axios }, inject) {
       })
   }
 
+  const getBackgrounds = () => {
+    return $axios.get(getApiURL() + 'game/get-backgrounds')
+      .then((response) => {
+        if (!process.server) {
+          console.log('getBackgrounds success', response.data)
+        }
+        return response.data
+      })
+      .catch((e) => {
+        throw new Error(e)
+      })
+  }
+
   const api = {
     // put list of methods here...
     register,
@@ -179,7 +192,8 @@ export default function ({ $axios }, inject) {
     getMyGamesList,
     publishGame,
     unpublishGame,
-    saveGame
+    saveGame,
+    getBackgrounds
   }
 
   inject('api', api)

@@ -23,7 +23,9 @@ export const state = () => ({
   scenes: [], // список сцен
   projectID: null, // ID новеллы
   mainInfo: null,
-  characters: []
+  characters: [],
+  backgrounds: [],
+  backgroundCategories: []
 })
 
 export const getters = {
@@ -232,5 +234,15 @@ export const actions = {
   removeCharacterFromList ({ state, commit }, character) {
     const characters = state.characters.filter(char => char.uid !== character.uid)
     commit('setProperty', ['characters', characters])
+  },
+
+  async loadBackgrounds ({ commit }) {
+    const result = await this.$api.getBackgrounds()
+    commit('setProperty', ['backgrounds', result])
+  },
+
+  async loadBackgroundCategories ({ commit }) {
+    const result = await this.$api.getBackgroundCategories()
+    commit('setProperty', ['backgroundCategories', result])
   }
 }
