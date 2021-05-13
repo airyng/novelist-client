@@ -167,10 +167,23 @@ export default function ({ $axios }, inject) {
   }
 
   const getBackgrounds = () => {
-    return $axios.get(getApiURL() + 'game/get-backgrounds')
+    return $axios.get(getApiURL() + 'background/list')
       .then((response) => {
         if (!process.server) {
           console.log('getBackgrounds success', response.data)
+        }
+        return response.data
+      })
+      .catch((e) => {
+        throw new Error(e)
+      })
+  }
+
+  const getBackgroundCategories = () => {
+    return $axios.get(getApiURL() + 'background/categories')
+      .then((response) => {
+        if (!process.server) {
+          console.log('getBackgroundCategories success', response.data)
         }
         return response.data
       })
@@ -193,7 +206,8 @@ export default function ({ $axios }, inject) {
     publishGame,
     unpublishGame,
     saveGame,
-    getBackgrounds
+    getBackgrounds,
+    getBackgroundCategories
   }
 
   inject('api', api)

@@ -28,9 +28,11 @@
         height="194"
       />
       <v-card-text>
-        {{ itemExcerpt }}
+        <div>{{ itemExcerpt }}</div>
       </v-card-text>
     </nuxt-link>
+
+    <CommonAutoSaveDetectionIcon :novella-id="item.id" class="ml-3" />
 
     <v-card-actions>
       <nuxt-link :to="'/games/'+ item.id + '/play'">

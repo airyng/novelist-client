@@ -107,42 +107,44 @@
       </v-row>
     </v-container>
     <div class="btns-container d-flex flex-column align-center justify-center">
-      <!-- <v-tooltip top> -->
-      <!-- <template #activator="{ on, attrs }"> -->
-      <v-btn
-        rounded
-        fab
-        dark
-        depressed
-        class="text-center justify-center mb-4"
-        @click="save"
-      >
-        <v-icon rounded>
-          mdi-content-save-outline
-        </v-icon>
-      </v-btn>
-      <!-- </template> -->
-      <!-- <span>Сохранить</span> -->
-      <!-- </v-tooltip> -->
+      <v-tooltip top>
+        <template #activator="{ on }">
+          <v-btn
+            rounded
+            fab
+            dark
+            depressed
+            class="text-center justify-center mb-4"
+            @click="save"
+            v-on="on"
+          >
+            <v-icon rounded>
+              mdi-content-save-outline
+            </v-icon>
+          </v-btn>
+        </template>
+        <span>Сохранить</span>
+      </v-tooltip>
 
-      <!-- <v-tooltip top> -->
-      <!-- <template #activator="{ on, attrs }"> -->
-      <v-btn
-        v-if="typeof char === 'object' && !playmode"
-        rounded
-        fab
-        dark
-        depressed
-        class="text-center justify-center mb-4"
-        @click="remove"
-      >
-        <v-icon rounded>
-          mdi-trash-can-outline
-        </v-icon>
-      </v-btn>
-      <!-- </template> -->
-      <!-- <span>Удалить</span> -->
-      <!-- </v-tooltip> -->
+      <v-tooltip top>
+        <template #activator="{ on }">
+          <v-btn
+            v-if="typeof char === 'object' && !playmode"
+            rounded
+            fab
+            dark
+            depressed
+            class="text-center justify-center mb-4"
+            @click="remove"
+            v-on="on"
+          >
+            <v-icon rounded>
+              mdi-trash-can-outline
+            </v-icon>
+          </v-btn>
+        </template>
+        <span>Удалить</span>
+      </v-tooltip>
     </div>
   </div>
 </template>

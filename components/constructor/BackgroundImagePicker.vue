@@ -10,13 +10,16 @@
             label="Поиск по названию"
           />
         </v-col>
-
+        <!-- TODO: скорее всего, что бы избежать чрезмерного кол-ва узлов в дом дереве, нужно показывать только изображения в категории -->
+        <!-- Предварительно устанавливать дефолтную категорию и убедиться, что все изображения имеют хотя бы одну категорию -->
         <v-col cols="12" md="6" class="pt-0">
           <v-select
             v-model="activeCategory"
             :items="categories"
             class="pt-0"
             label="Поиск по категории"
+            item-text="name"
+            item-value="id"
             :disabled="!categories.length"
             :clearable="true"
           />
@@ -35,7 +38,7 @@
                 class="d-flex align-center back-item"
                 dark
                 height="200"
-                :style="'background-image: url('+back.url_medium+');'"
+                :style="'background-image: url('+BACKEND_URL + back.url_medium+');'"
                 @click="changeBack(back)"
               >
                 <v-scroll-y-transition>
@@ -56,13 +59,15 @@
           </v-col>
         </template>
 
-        <template v-else>
-          <v-col>
-            <p>Фоны не найдены...</p>
-          </v-col>
-        </template>
+        <v-col v-else>
+          <p>Изображения не найдены...</p>
+        </v-col>
       </v-row>
     </v-item-group>
+
+    <p v-else>
+      Загрузка...
+    </p>
   </div>
 </template>
 
@@ -77,6 +82,9 @@ export default {
     }
   },
   computed: {
+    BACKEND_URL () {
+      return process.env.BACKEND_URL
+    },
     filteredBacks () {
       if (!this.nameSearchKey && !this.activeCategory) { return this.backs }
 
@@ -99,12 +107,11 @@ export default {
           for (let index = 0; index < item.categories.length; index++) {
             const category = item.categories[index]
 
-            if (category.name === this.activeCategory) {
+            if (category.id === this.activeCategory) {
               result = true
               break
             }
           }
-
           return result
         })
       }
@@ -125,7 +132,7 @@ export default {
   methods: {
     changeBack (back) {
       this.activeBack = back
-      this.$emit('OnBackChanged', this.activeBack)
+      this.$emit('OnBackChanged', this.BACKEND_URL + this.activeBack.url)
     },
     async loadBacks () {
       if (!this.backs.length) {

@@ -3,19 +3,18 @@
     <v-col class="pb-0 d-flex align-center" cols="1">
       <v-switch v-model="isBackImageType" class="pb-0" />
     </v-col>
-    <v-col cols="11" class="pb-0 curs-pointer d-flex align-center" @click="isBackImageType = !isBackImageType">
-      <span v-if="isBackImageType">Цвет / <b>Изображение</b></span>
-      <span v-else><b>Цвет</b> / Изображение</span>
+    <v-col cols="11" class="pb-0 d-flex align-center">
+      <span v-if="isBackImageType" class="curs-pointer" @click="isBackImageType = !isBackImageType">Цвет / <b>Изображение</b></span>
+      <span v-else class="curs-pointer" @click="isBackImageType = !isBackImageType"><b>Цвет</b> / Изображение</span>
     </v-col>
     <v-col class="pt-0" cols="12">
       <ConstructorWideColorPicker
-        v-show="!isBackImageType"
+        v-if="!isBackImageType"
         class="pt-0"
         @onValueChanged="colorPicked"
       />
-
       <ConstructorBackgroundImagePicker
-        v-show="isBackImageType"
+        v-else
         class="pt-0"
         @OnBackChanged="imagePicked"
       />
@@ -27,9 +26,7 @@
 export default {
   data () {
     return {
-      isBackImageType: false,
-      rgbaStyle: null,
-      imageStyle: null
+      isBackImageType: false
     }
   },
   watch: {
@@ -39,19 +36,13 @@ export default {
   },
   methods: {
     colorPicked (value) {
-      this.rgbaStyle = value
-      this.OnBackChanged()
+      this.OnBackChanged({ type: 'color', value: value.hexa })
     },
-    imagePicked (data) {
-      this.imageStyle = data
-      this.OnBackChanged()
+    imagePicked (value) {
+      this.OnBackChanged({ type: 'image', value })
     },
-    OnBackChanged () {
-      if (this.isBackImageType) {
-        this.$emit('OnBackChanged', this.imageStyle)
-      } else {
-        this.$emit('OnBackChanged', this.rgbaStyle)
-      }
+    OnBackChanged (styleObj) {
+      this.$emit('OnBackChanged', styleObj)
     }
   }
 }

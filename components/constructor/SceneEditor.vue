@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="sceneid && scene"
-    class="d-flex flex-column fullsize position-relative"
+    class="d-flex flex-column fullsize position-relative scene-container"
     :style="backgroundStyle"
   >
     <v-container fluid>
@@ -98,7 +98,7 @@
                 </v-icon>
               </v-btn>
             </template>
-            <!-- <span>Выбрать фон</span> -->
+            <span>Выбрать фон</span>
           </v-tooltip>
         </template>
 
@@ -127,7 +127,7 @@
                 </v-icon>
               </v-btn>
             </template>
-            <!-- <span>Добавить персонажа</span> -->
+            <span>Добавить персонажа</span>
           </v-tooltip>
         </template>
 
@@ -174,12 +174,16 @@ export default {
   },
   computed: {
     backgroundStyle () {
+      const defaultStyle = 'background-color: #333'
       if (!this.scene.background) {
-        return 'background-color: white'
+        return defaultStyle
       } else if (this.scene.background.type === 'color') {
         return 'background-color: ' + this.scene.background.value
+      } else if (this.scene.background.type === 'image') {
+        return 'background-image: url(' + this.scene.background.value + ')'
+      } else {
+        return defaultStyle
       }
-      return 'background-image: url(' + this.scene.background.value + ')'
     },
     settings () {
       return this.$store.state.constructorStorage.settings
@@ -262,13 +266,16 @@ export default {
       }
     },
     setBackground (backObj) {
-      this.scene.background = backObj && backObj.hexa ? { type: 'color', value: backObj.hexa } : false
+      this.scene.background = backObj || false
     }
   }
 }
 </script>
 
 <style lang="sass">
+.scene-container
+  background-size: cover
+  background-position: center
 .mainTextBlock
   max-height: 150px
   background-color: #444

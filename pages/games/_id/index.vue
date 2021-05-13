@@ -35,6 +35,7 @@
             </nuxt-link>
             <span class="ml-4 grey--text">Опубликовано: {{ item.published_at }}</span>
             <span class="ml-4 grey--text">Объем: {{ gameLength }}</span>
+            <CommonAutoSaveDetectionIcon :novella-id="item.id" class="ml-4" />
           </div>
 
           <h1 class="mt-2">
@@ -62,6 +63,7 @@
 </template>
 
 <script>
+import GameAutoSaveManager from '@/plugins/gameAutoSaveManager'
 export default {
   async asyncData ({ $api, params, error, store }) {
     let item = false
@@ -99,6 +101,11 @@ export default {
       } else {
         return process.env.BACKEND_URL + '/storage/backgrounds/default.jpg'
       }
+    },
+    hasAutosave () {
+      if (process.server) { return false }
+      const gameAutoSaveManager = new GameAutoSaveManager()
+      return gameAutoSaveManager.getSave(this.$route.params.id)
     }
   },
   methods: {}

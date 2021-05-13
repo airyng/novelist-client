@@ -71,12 +71,15 @@ export default {
       if (!this.activeScene.background) { return '' }
 
       if (this.activeScene.background.type === 'image') {
-        const url = process.env.BACKEND_URL + this.activeScene.background.value
+        let url = this.activeScene.background.value
+        if (!url.includes('http')) {
+          url = process.env.BACKEND_URL + url
+        }
         return 'background-image: url(' + url + ');'
       } else if (this.activeScene.background.type === 'color') {
         return 'background-color: ' + this.activeScene.background.value
       } else {
-        return ''
+        return 'background-color: #333'
       }
     },
     character () {
