@@ -15,8 +15,8 @@
         </nuxt-link>
 
         <v-list-item-subtitle>
-          <nuxt-link :to="'/author/'+item.user_id">
-            {{ item.authorName || 'Аноним' }}
+          <nuxt-link v-if="computedAuthorName" :to="'/author/'+item.user_id">
+            {{ computedAuthorName }}
           </nuxt-link>
         </v-list-item-subtitle>
       </v-list-item-content>
@@ -62,7 +62,8 @@ import { screen } from '@/mixins/screen'
 export default {
   mixins: [screen],
   props: {
-    item: { type: Object, required: true }
+    item: { type: Object, required: true },
+    authorName: { type: String, default: null }
   },
   computed: {
     scenes () {
@@ -70,6 +71,9 @@ export default {
     },
     authorAvatar () {
       return process.env.BACKEND_URL + '/storage/' + this.item.authorAvatar
+    },
+    computedAuthorName () {
+      return this.authorName || this.item.authorName || false
     },
     itemExcerpt () {
       return excerpt(this.item.description, 120)

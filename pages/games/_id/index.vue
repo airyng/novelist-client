@@ -25,13 +25,13 @@
           </div>
 
           <div class="novella-infohead">
-            <nuxt-link to="/author/test">
+            <nuxt-link :to="'/author/'+item.user_id">
               <v-avatar v-if="item.authorAvatar">
                 <img :src="authorAvatar">
               </v-avatar>
             </nuxt-link>
-            <nuxt-link to="/author/test">
-              <span class="ml-4">{{ item.authorName || 'Аноним' }}</span>
+            <nuxt-link v-if="computedAuthorName" :to="'/author/'+item.user_id">
+              <span class="ml-4">{{ computedAuthorName }}</span>
             </nuxt-link>
             <span class="ml-4 grey--text">Опубликовано: {{ item.published_at }}</span>
             <span class="ml-4 grey--text">Объем: {{ gameLength }}</span>
@@ -87,6 +87,9 @@ export default {
     },
     authorAvatar () {
       return process.env.BACKEND_URL + '/storage/' + this.item.authorAvatar
+    },
+    computedAuthorName () {
+      return this.authorName || this.item.authorName || false
     },
     gameLength () {
       if (this.scenes.length >= 500) { return 'Эпический' }

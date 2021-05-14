@@ -78,8 +78,8 @@ export const actions = {
 
   async logout ({ commit }) {
     try {
-      await this.$api.logout()
       this.$atm.purge() // clear header and cookies
+      await this.$api.logout()
       commit('setProperty', ['isLoggedIn', false])
       commit('setProperty', ['userData', null])
     } finally {

@@ -1,7 +1,6 @@
 <template>
   <v-card
     v-if="user"
-    class="mx-auto"
     max-width="344"
     outlined
   >

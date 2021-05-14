@@ -63,8 +63,11 @@ export default function ({ $axios, $cookiz }, inject) {
   atm.purge = function () {
     $cookiz.remove('access_token')
     this._setTokenToHeader('')
-    if (!process.server) { window.localStorage.removeItem('access_token') }
-    // console.log('after purge atm debug', this.getToken())
+    if (!process.server) {
+      window.localStorage.removeItem('access_token')
+      console.log('purge')
+    }
+    console.log('after purge atm debug', this.getToken())
   }
 
   atm.init = function () {

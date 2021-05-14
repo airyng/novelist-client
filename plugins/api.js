@@ -192,6 +192,20 @@ export default function ({ $axios }, inject) {
       })
   }
 
+  const getUser = (id) => {
+    return $axios.get(getApiURL() + `user/${id}`)
+      .then((response) => {
+        if (!process.server) {
+          console.log('getUser success', response.data)
+        }
+        return response.data
+      })
+      .catch((e) => {
+        console.error(e)
+        return false
+      })
+  }
+
   const api = {
     // put list of methods here...
     register,
@@ -207,7 +221,8 @@ export default function ({ $axios }, inject) {
     unpublishGame,
     saveGame,
     getBackgrounds,
-    getBackgroundCategories
+    getBackgroundCategories,
+    getUser
   }
 
   inject('api', api)

@@ -23,8 +23,17 @@ async function sleep (timeout = 1500) {
   await new Promise(resolve => setTimeout(() => resolve(), timeout))
 }
 
+const getGenderTranslation = (gender) => {
+  const genders = {
+    Male: 'Мужской',
+    Female: 'Женский'
+  }
+  return genders[gender]
+}
+
 export {
   excerpt,
   moveArrElem,
-  sleep
+  sleep,
+  getGenderTranslation
 }
