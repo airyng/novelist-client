@@ -16,7 +16,7 @@ export default {
       { hid: 'description', name: 'description', content: '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico?v2' }
     ]
   },
 
@@ -56,7 +56,7 @@ export default {
   env: {
     ...envObject.parsed,
     // ...
-    appVersion: '0.1.2'
+    appVersion: '0.2.0'
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

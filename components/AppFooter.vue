@@ -2,9 +2,14 @@
   <div>
     <footer v-if="!hideFooter">
       <v-banner>
-        <p class="grey--text ma-0">
-          Новелист. Версия сервиса: {{ appVersion }}
-        </p>
+        <div class="footer-content">
+          <span class="grey--text ma-0">
+            По всем вопросам: <a href="mailto:hello-novelist@anime-look.ru">hello-novelist@anime-look.ru</a>
+          </span>
+          <span class="grey--text ma-0">
+            Новеллист. v{{ appVersion }}
+          </span>
+        </div>
       </v-banner>
     </footer>
 
@@ -59,6 +64,22 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+footer
+  color: $mainTextColor
+  background-color: $subBackColor
+
+.footer-content
+  display: flex
+  justify-content: space-between
+  width: 100%
+  padding-right: 8px
+  @media (max-width: 992px)
+    padding: 10px
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    text-align: center
+
 .report-btn
     position: fixed
     bottom: 15px

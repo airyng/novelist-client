@@ -13,7 +13,6 @@
       <div>
         <v-toolbar
           flat
-          color="deep-purple"
           dark
         >
           <v-toolbar-title>{{ title }}</v-toolbar-title>

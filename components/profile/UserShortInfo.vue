@@ -3,6 +3,7 @@
     v-if="user"
     max-width="344"
     outlined
+    class="profileCard"
   >
     <v-list-item three-line>
       <v-list-item-content>
@@ -16,7 +17,7 @@
       </v-list-item-content>
 
       <v-list-item-avatar v-if="user.avatar" size="62">
-        <img :src="'/storage/'+user.avatar">
+        <img :src="avatar">
       </v-list-item-avatar>
       <v-list-item-avatar v-else size="62" color="grey" />
     </v-list-item>
@@ -32,6 +33,9 @@ export default {
   computed: {
     user () {
       return this.$store.state.userData
+    },
+    avatar () {
+      return process.env.BACKEND_URL + '/storage/' + this.user.avatar
     }
   },
   mounted () {
@@ -39,3 +43,12 @@ export default {
   }
 }
 </script>
+
+<style lang="sass" scoped>
+#app .profileCard .theme--light.v-list-item
+  color: $mainTextColor!important
+  background-color: $subBackColor!important
+  & a
+    color: $mainTextColor
+
+</style>

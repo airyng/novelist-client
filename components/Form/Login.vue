@@ -22,8 +22,8 @@
       :rules="passRules"
       :type="showPass ? 'text' : 'password'"
       name="input-10-1"
-      label="Password"
-      hint="At least 5 characters"
+      label="Пароль"
+      hint="Как минимум 8 символов"
       :error-count="formErrors.password.length"
       :error-messages="formErrors.password"
       counter
@@ -36,8 +36,8 @@
     <v-btn
       :disabled="isButtonDisabled"
       depressed
-      color="success"
-      class="mr-4"
+      dark
+      class="mr-4 mainTextColor"
       @click="submitForm"
     >
       Войти
@@ -56,12 +56,12 @@ export default {
     valid: false,
     showPass: false,
     emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+      v => !!v || 'Поле E-mail обязательно для заполнения',
+      v => /.+@.+\..+/.test(v) || 'Поле E-mail должно быть корректным'
     ],
     passRules: [
-      v => !!v || 'Password is required',
-      v => v.length >= 5 || 'Min 5 characters'
+      v => !!v || 'Поле Пароль обязательно для заполнения',
+      v => v.length >= 8 || 'Как минимум 8 символов'
     ],
     formErrors: {
       password: [],

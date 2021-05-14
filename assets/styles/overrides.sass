@@ -1,9 +1,29 @@
 .container .row
   margin: 0
 
-#app .v-application a
-  color: #000
+#app
+  & .theme--dark.v-btn, & .v-btn & .v-btn .v-icon
+    color: $mainTextColor
+#app .v-btn
+  color: $mainTextColor
 
+#app .theme--light.v-card, #app .v-dialog__content .container
+  background-color: $subBackColor
+  color: $mainTextColor
+
+#app .theme--light.v-input input, #app .theme--light.v-input textarea, #app .theme--light.v-counter
+  color: $mainTextColor
+
+#app.v-application .primary--text
+  color: $mainTextColor!important
+  caret-color: $mainTextColor!important
+
+#app .theme--light.v-messages, #app .theme--light.v-input, #app .theme--light.v-label, #app .theme--light.v-text-field > .v-input__control > .v-input__slot:before
+  color: $mainTextColor!important
+  border-color: $mainTextColor!important
+#app .mdi:before
+  color: $mainTextColor
+  
 .v-tooltip__content
   z-index: 999!important
 

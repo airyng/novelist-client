@@ -74,8 +74,8 @@
     <v-btn
       :disabled="isButtonDisabled"
       depressed
-      color="success"
-      class="mr-4"
+      dark
+      class="mr-4 mainTextColor"
       @click="submitForm"
     >
       Зарегистрироваться

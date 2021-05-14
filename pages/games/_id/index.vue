@@ -4,24 +4,21 @@
       <v-col>
         <template v-if="item">
           <div class="banner rounded" :style="'background-image: url('+itemBanner+')'" :alt="item.title">
-            <v-tooltip top>
-              <template #activator="{ on, attrs }">
-                <nuxt-link :to="'/games/'+ item.id + '/play'">
-                  <v-btn
-                    class="play-btn"
-                    v-bind="attrs"
-                    fab
-                    dark
-                    depressed
-                    small
-                    v-on="on"
-                  >
-                    <v-icon>mdi-gamepad-variant-outline</v-icon>
-                  </v-btn>
-                </nuxt-link>
-              </template>
-              <span>Играть</span>
-            </v-tooltip>
+            <h1 class="mt-2">
+              {{ excerpt(item.title, 100) }}
+            </h1>
+            <nuxt-link :to="'/games/'+ item.id + '/play'">
+              <v-btn
+                class="play-btn"
+                v-bind="attrs"
+                fab
+                dark
+                depressed
+                small
+              >
+                <v-icon>mdi-gamepad-variant-outline</v-icon>
+              </v-btn>
+            </nuxt-link>
           </div>
 
           <div class="novella-infohead">
@@ -38,17 +35,13 @@
             <CommonAutoSaveDetectionIcon :novella-id="item.id" class="ml-4" />
           </div>
 
-          <h1 class="mt-2">
-            {{ item.title }}
-          </h1>
           <div>{{ item.description }}</div>
 
           <nuxt-link :to="'/games/'+ item.id + '/play'">
             <v-btn
               text
               depressed
-              color="deep-purple"
-              class="mt-2 pa-1"
+              class="mt-2 py-1 px-2"
             >
               <v-icon>mdi-gamepad-variant-outline</v-icon>&nbsp;Играть
             </v-btn>
@@ -63,6 +56,7 @@
 </template>
 
 <script>
+import { excerpt } from '@/plugins/utils'
 import GameAutoSaveManager from '@/plugins/gameAutoSaveManager'
 export default {
   async asyncData ({ $api, params, error, store }) {
@@ -111,14 +105,25 @@ export default {
       return gameAutoSaveManager.getSave(this.$route.params.id)
     }
   },
-  methods: {}
+  methods: {
+    excerpt (text, maxLength) {
+      return excerpt(text, maxLength)
+    }
+  }
 }
 </script>
 
 <style lang="sass" scoped>
 h1
   word-break: break-word
-
+  position: absolute
+  bottom: 0
+  left: 0
+  padding: 10px 10px 20px 20px
+  width: 100%
+  background: linear-gradient( 0deg, rgb(30 30 30) 0%, rgba(0,0,0,0) 100%)
+  @media (max-width: 500px)
+    font-size: 1.3em
 .novella-infohead
   margin: 8px 0
   display: flex
@@ -135,6 +140,7 @@ h1
   height: 200px
   width: 100%
   position: relative
+  animation: move-bg-vertically 60s ease infinite
   @media (min-width: 500px)
     height: 300px
   @media (min-width: 1200px)
@@ -147,4 +153,6 @@ h1
     position: absolute
     bottom: -20px
     right: 2%
+    z-index: 2
+
 </style>

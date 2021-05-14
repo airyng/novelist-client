@@ -1,6 +1,12 @@
 <template>
   <div>
     <v-container>
+      <v-row>
+        <v-col cols="12">
+          <CommonBestGames />
+        </v-col>
+      </v-row>
+
       <v-row justify="center">
         <v-col class="col-12 pb-0">
           <h2 class="pl-3">
@@ -16,7 +22,11 @@
         <v-col cols="4" md="4" class="d-none d-md-block">
           <v-card class="mx-auto mt-3" :elevation="0">
             <v-list-item-content class="pa-2 d-flex align-center justify-center" style="min-height: 200px">
-              Проект находится в разработке
+              <div class="text-center">
+                <p class="ma-0">
+                  Здесь могла быть <br>ваша реклама :)
+                </p>
+              </div>
             </v-list-item-content>
           </v-card>
         </v-col>

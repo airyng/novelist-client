@@ -25,7 +25,7 @@
     <nuxt-link :to="'/games/'+ item.id">
       <v-img
         :src="itemBanner"
-        height="194"
+        height="200"
       />
       <v-card-text>
         <div>{{ itemExcerpt }}</div>
@@ -36,12 +36,12 @@
 
     <v-card-actions>
       <nuxt-link :to="'/games/'+ item.id + '/play'">
-        <v-btn depressed text color="deep-purple">
+        <v-btn depressed text>
           Играть
         </v-btn>
       </nuxt-link>
       <nuxt-link class="more-button" :to="'/games/'+ item.id">
-        <v-btn depressed text color="deep-purple">
+        <v-btn depressed text>
           Подробнее
         </v-btn>
       </nuxt-link>
@@ -102,6 +102,10 @@ export default {
 
 <style lang="sass" scoped>
 .novella-item
+  color: $mainTextColor
+  background-color: $subBackColor
+  & .v-list-item__subtitle, & .v-list-item__title
+    color: $mainTextColor
   .more-button
     @media (max-width: 500px)
       display: none

@@ -4,7 +4,14 @@
       <div v-if="value">
         <div class="editor-overlay" @click="close" />
         <div class="editor-window constructor">
-          <v-btn class="closeBtn" fab small depressed @click="close">
+          <v-btn
+            class="closeBtn"
+            fab
+            small
+            dark
+            depressed
+            @click="close"
+          >
             <v-icon>mdi-close</v-icon>
           </v-btn>
           <slot>...</slot>
@@ -33,6 +40,7 @@ export default {
   right: 10px
   top: 10px
   z-index: 1
+  color: $mainBackColor!important
 .editor-overlay
   width: 100%
   height: 100%

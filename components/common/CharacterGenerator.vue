@@ -11,13 +11,12 @@
           <v-avatar
             v-for="(item, index) in blocks"
             :key="index"
-            :color="currentSubBlock.folder === item.folder ? '#ffffffb3' : '#ffffff4d'"
             size="50"
             class="folderIcon"
-            :class="{ 'mb-5': windowWidth > 959 }"
+            :class="{ 'mb-5': windowWidth > 959, 'active': currentSubBlock.folder === item.folder }"
             @click="showItemsSubBlock(item)"
           >
-            <span class="caption" :class="{'white--text': currentSubBlock.folder !== item.folder}">{{ item.title }}</span>
+            <span class="caption">{{ item.title }}</span>
           </v-avatar>
           <v-avatar
             color="#ffffffb3"
@@ -389,6 +388,9 @@ export default {
     right: 50%
     transform: translateX(50%)
 
+.disabled .previewsContainer
+  opacity: 0
+
 .previewsContainer
   overflow: hidden auto
   height: 650px
@@ -432,6 +434,8 @@ export default {
 
 .spriteCategoriesButtons
   display: flex
+  &.disabled
+    opacity: 0
   @media (max-width: 959px)
     position: absolute
     bottom: 0
@@ -445,4 +449,9 @@ export default {
     overflow: auto hidden
     & > *
       margin: 0 10px
+  & .v-avatar
+    color: $mainBackColor!important
+    background-color: rgba(255, 255, 255, 0.5)
+    &.active
+      background-color: rgba(255, 255, 255, 0.8)
 </style>

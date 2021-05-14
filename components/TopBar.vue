@@ -25,9 +25,10 @@
     </v-navigation-drawer>
 
     <v-app-bar
-      color="deep-purple accent-4"
+      class="appBar"
       dense
       dark
+      :elevation="0"
     >
       <v-container>
         <v-row>
@@ -59,7 +60,7 @@
                   class="px-2"
                   to="/games/add"
                 >
-                  <v-btn dark>
+                  <v-btn dark :elevation="0">
                     + Новелла
                   </v-btn>
                 </nuxt-link>
@@ -76,7 +77,7 @@
                 {{ user.name }}
               </nuxt-link>
 
-              <v-btn x-small fab dark @click="logout">
+              <v-btn x-small fab dark :elevation="0" @click="logout">
                 <v-icon small>
                   mdi-home-export-outline
                 </v-icon>
@@ -135,8 +136,10 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.appBar
+  background-color: $subBackColor!important
 a
-  color: white
+  color: $mainTextColor
   text-decoration: none
   text-transform: uppercase
   font-weight: bold

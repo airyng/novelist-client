@@ -2,7 +2,7 @@
   <span v-if="hasAutosave">
     <v-tooltip top>
       <template #activator="{ on }">
-        <v-icon v-on="on">mdi-content-save-cog-outline</v-icon>
+        <v-icon class="mainTextColor" v-on="on">mdi-content-save-cog-outline</v-icon>
       </template>
       <span>Обнаружено автосохранение</span>
     </v-tooltip>

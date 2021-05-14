@@ -85,11 +85,14 @@ export default {
   position: absolute
   top: 0
   left: 0
-  background-color: rgb(68,68,68)
-  color: white
+  background-color: $mainBackColor
+  color: $mainTextColor
   & h2
     font-size: 2em
-    color: white
+    color: $mainTextColor
+    max-width: 600px
+    margin: auto
+    overflow: hidden
   & button
     @media (max-width: 500px)
       font-size: 0.7em

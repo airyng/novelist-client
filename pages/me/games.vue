@@ -81,7 +81,9 @@
                     @click="goToPage('/games/'+ item.id +'/edit')"
                     v-on="on"
                   >
-                    <v-icon>mdi-pencil</v-icon>
+                    <v-icon class="mainTextColor">
+                      mdi-pencil
+                    </v-icon>
                   </v-list-item-icon>
                 </template>
                 <span>Редактировать</span>
@@ -96,7 +98,9 @@
                     @click="goToPlay(item)"
                     v-on="on"
                   >
-                    <v-icon>mdi-gamepad-variant-outline</v-icon>
+                    <v-icon class="mainTextColor">
+                      mdi-gamepad-variant-outline
+                    </v-icon>
                   </v-list-item-icon>
                 </template>
                 <span>Играть</span>
@@ -110,7 +114,9 @@
                     @click="unpublish(item)"
                     v-on="on"
                   >
-                    <v-icon>mdi-backspace-outline</v-icon>
+                    <v-icon class="mainTextColor">
+                      mdi-backspace-outline
+                    </v-icon>
                   </v-list-item-icon>
                 </template>
                 <span>Деактивировать</span>
@@ -125,7 +131,9 @@
                     @click="publish(item)"
                     v-on="on"
                   >
-                    <v-icon>mdi-send</v-icon>
+                    <v-icon class="mainTextColor">
+                      mdi-send
+                    </v-icon>
                   </v-list-item-icon>
                 </template>
                 <span>Опубликовать</span>
