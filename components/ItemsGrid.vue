@@ -5,7 +5,7 @@
       :key="index"
       cols="12"
     >
-      <NovellaItem :item="item" :author-name="authorName" />
+      <NovellaItem :item="item" :author-name="authorName" :author-avatar="authorAvatar" />
     </v-col>
   </v-row>
   <p v-else class="grey--text">
@@ -17,7 +17,8 @@
 export default {
   props: {
     items: { type: Array, default: null },
-    authorName: { type: String, default: null }
+    authorName: { type: String, default: null },
+    authorAvatar: { type: String, default: null }
   },
   computed: {
     latestGames () {

@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col cols="12" sm="4">
-          <img :src="avatar">
+          <img class="avatar" :src="avatar">
           <h2>{{ item.name }}</h2>
           <p>
             Дата регистрации:
@@ -20,7 +20,7 @@
         </v-col>
         <v-col cols="12" sm="8">
           <h2>Новеллы автора</h2>
-          <ItemsGrid :items="item.published_games" :author-name="item.name" />
+          <ItemsGrid :items="item.published_games" :author-name="item.name" :author-avatar="item.avatar" />
         </v-col>
       </v-row>
     </v-container>
@@ -57,3 +57,9 @@ export default {
   }
 }
 </script>
+
+<style lang="sass" scoped>
+.avatar
+  width: 100%
+  border-radius: 12px
+</style>

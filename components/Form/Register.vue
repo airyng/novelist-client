@@ -61,7 +61,7 @@
       :type="showPass ? 'text' : 'password'"
       name="input-10-1"
       label="Повторите пароль"
-      hint="Минимум 5 символов"
+      hint="Минимум 8 символов"
       :error-count="formErrors.password_confirmation.length"
       :error-messages="formErrors.password_confirmation"
       counter
@@ -165,9 +165,15 @@ export default {
           for (const key in result.data.errors) {
             if (Object.hasOwnProperty.call(result.data.errors, key)) {
               let element = result.data.errors[key]
-              if (element === 'The email has already been taken.') {
-                element = 'Указанный email уже используется'
-              }
+              element = element.map((item) => {
+                if (item === 'The email has already been taken.') {
+                  item = 'Указанный email уже используется'
+                }
+                if (item === 'The password confirmation does not match.') {
+                  item = 'Пароли не совпадают'
+                }
+                return item
+              })
               ErrorMessages(element)
             }
           }

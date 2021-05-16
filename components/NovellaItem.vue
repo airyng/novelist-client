@@ -3,7 +3,7 @@
     <v-list-item>
       <nuxt-link :to="'/author/'+item.user_id">
         <v-list-item-avatar>
-          <img :src="authorAvatar">
+          <img :src="computedAuthorAvatar">
         </v-list-item-avatar>
       </nuxt-link>
 
@@ -63,14 +63,21 @@ export default {
   mixins: [screen],
   props: {
     item: { type: Object, required: true },
-    authorName: { type: String, default: null }
+    authorName: { type: String, default: null },
+    authorAvatar: { type: String, default: null }
   },
   computed: {
     scenes () {
       return JSON.parse(this.item.json)
     },
-    authorAvatar () {
-      return process.env.BACKEND_URL + '/storage/' + this.item.authorAvatar
+    computedAuthorAvatar () {
+      if (this.authorAvatar) {
+        return process.env.BACKEND_URL + '/storage/' + this.authorAvatar
+      } else if (this.item.authorAvatar) {
+        return process.env.BACKEND_URL + '/storage/' + this.item.authorAvatar
+      } else {
+        return process.env.BACKEND_URL + '/storage/users/default.png'
+      }
     },
     computedAuthorName () {
       return this.authorName || this.item.authorName || false

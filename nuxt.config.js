@@ -16,7 +16,7 @@ export default {
       { hid: 'description', name: 'description', content: '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico?v2' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico?v3' }
     ]
   },
 
@@ -63,7 +63,17 @@ export default {
   axios: {},
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
-  pwa: null,
+  pwa: {
+    meta: {
+      name: 'Новеллист'
+    },
+    manifest: {
+      name: 'Новеллист',
+      short_name: 'Новеллист',
+      lang: 'ru',
+      background_color: '#000000'
+    }
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
