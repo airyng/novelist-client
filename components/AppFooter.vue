@@ -52,7 +52,7 @@ export default {
       return false // this.$route.meta.hideFooter === true
     },
     user () {
-      return false // this.$root.getUserData()
+      return this.$store.state.userData
     }
   },
   methods: {

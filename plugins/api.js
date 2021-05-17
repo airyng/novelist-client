@@ -206,6 +206,20 @@ export default function ({ $axios }, inject) {
       })
   }
 
+  const sendReport = (formData) => {
+    return $axios.post(getApiURL() + 'report/send', formData)
+      .then((response) => {
+        if (!process.server) {
+          console.log('getUser sendReport', response)
+        }
+        return response
+      })
+      .catch((e) => {
+        console.error(e)
+        return e.response
+      })
+  }
+
   const api = {
     // put list of methods here...
     register,
@@ -222,7 +236,8 @@ export default function ({ $axios }, inject) {
     saveGame,
     getBackgrounds,
     getBackgroundCategories,
-    getUser
+    getUser,
+    sendReport
   }
 
   inject('api', api)

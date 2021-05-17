@@ -161,6 +161,7 @@ export default {
           this.formData = this.getDefaultForm()
           // console.log('debug success', result)
           this.removeErrors()
+          this.$store.dispatch('authorize', result.data)
         } else {
           for (const key in result.data.errors) {
             if (Object.hasOwnProperty.call(result.data.errors, key)) {

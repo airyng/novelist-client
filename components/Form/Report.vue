@@ -23,8 +23,8 @@
     <v-btn
       :disabled="isButtonDisabled"
       depressed
-      color="success"
-      class="mr-4"
+      dark
+      class="mr-4 mt-4"
       @click="submitForm"
     >
       Отправить
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import { SuccessMessage } from '@/plugins/toast'
+
 export default {
   data: () => ({
     formData: {
@@ -73,31 +75,21 @@ export default {
     validate () {
       this.$refs.form.validate()
     },
-    submitForm () {
+    async submitForm () {
       this.ajaxSending = true
 
-      // axios.post('/api/send-report', this.formData)
-      //   .then((response) => {
-      //     this.ajaxSending = false
+      const response = await this.$api.sendReport(this.formData)
 
-      //     Swal.fire({
-      //       title: 'Сообщение успешно отправлено!',
-      //       icon: 'success',
-      //       toast: true,
-      //       timer: 3000,
-      //       position: 'bottom',
-      //       timerProgressBar: true,
-      //       showConfirmButton: false
-      //     })
-      //     this.formData.text = ''
-      //     this.$emit('onFormSent')
-      //   })
-      //   .catch((e) => {
-      //     this.formErrors.text = e.response.data.error.text || []
-      //   })
-      //   .finally(() => {
-      //     this.ajaxSending = false
-      //   })
+      if (response.status === 200) {
+        this.formData.text = ''
+        this.$emit('onFormSent')
+        SuccessMessage({
+          title: 'Сообщение успешно отправлено!'
+        })
+      } else {
+        this.formErrors.text = response.data.error.text || []
+      }
+      this.ajaxSending = false
     }
   }
 }
