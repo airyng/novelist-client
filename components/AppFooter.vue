@@ -82,6 +82,6 @@ footer
 
 .report-btn
     position: fixed
-    bottom: 15px
+    bottom: 60px
     right: 15px
 </style>

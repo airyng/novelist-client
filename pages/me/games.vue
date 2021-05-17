@@ -12,9 +12,19 @@
           </p>
         </template>
         <template v-else-if="!items.length">
-          <p class="grey--text">
-            Вы еще не создали ни одной новеллы
-          </p>
+          <div class="d-flex align-center justify-center flex-column">
+            <p class="grey--text">
+              Вы еще не создали ни одной новеллы. Но можете начать отсюда:
+            </p>
+            <nuxt-link
+              class="px-2"
+              to="/games/add"
+            >
+              <v-btn dark :elevation="0">
+                + Новелла
+              </v-btn>
+            </nuxt-link>
+          </div>
         </template>
         <v-col v-else class="col-12">
           <v-row>
