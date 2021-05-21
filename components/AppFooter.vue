@@ -14,7 +14,7 @@
     </footer>
 
     <CustomDialog
-      v-if="user"
+      v-if="user && isNotGame"
       ref="reportForm"
       title="Сообщить о проблеме"
     >
@@ -53,6 +53,9 @@ export default {
     },
     user () {
       return this.$store.state.userData
+    },
+    isNotGame () {
+      return !['games-id-play', 'games-id-edit', 'games-add'].includes(this.$route.name)
     }
   },
   methods: {
