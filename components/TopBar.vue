@@ -110,7 +110,7 @@ export default {
           path: '/'
         },
         {
-          title: 'О сайте',
+          title: 'О проекте',
           path: '/about'
         }
         // {
