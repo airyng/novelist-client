@@ -129,6 +129,7 @@ export const actions = {
       onTestDrive: false
     }
     commit('setProperty', ['scenes', []])
+    commit('setProperty', ['characters', []])
     commit('setProperty', ['projectID', null])
     commit('setProperty', ['mainInfo', mainInfo])
   },
