@@ -9,6 +9,26 @@ const moveArrElem = (arr, oldIndex, newIndex) => {
   return arr
 }
 
+const getGameBannerFromScenes = (_scenes) => {
+  const scenes = Array.isArray(_scenes) ? [..._scenes] : { ..._scenes.scenes }
+  if (
+    scenes &&
+    scenes[0] &&
+    scenes[0] &&
+    scenes[0].background &&
+    (scenes[0].background.url || scenes[0].background.value)
+  ) {
+    const url = scenes[0].background.url || scenes[0].background.value
+    if (url.indexOf(process.env.BACKEND_URL) === 0) {
+      return url
+    } else {
+      return process.env.BACKEND_URL + url
+    }
+  } else {
+    return process.env.BACKEND_URL + '/storage/backgrounds/default.jpg'
+  }
+}
+
 const excerpt = (text, maxLength) => {
   if (!text || !text.length) { return '...' }
   if (text.length <= maxLength) {
@@ -35,5 +55,6 @@ export {
   excerpt,
   moveArrElem,
   sleep,
-  getGenderTranslation
+  getGenderTranslation,
+  getGameBannerFromScenes
 }

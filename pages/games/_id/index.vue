@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { excerpt } from '@/plugins/utils'
+import { excerpt, getGameBannerFromScenes } from '@/plugins/utils'
 import GameAutoSaveManager from '@/plugins/gameAutoSaveManager'
 export default {
   async asyncData ({ $api, params, error, store }) {
@@ -93,11 +93,7 @@ export default {
       return 'Скромный'
     },
     itemBanner () {
-      if (this.scenes && this.scenes[0] && this.scenes[0] && this.scenes[0].background && this.scenes[0].background.url) {
-        return process.env.BACKEND_URL + this.scenes[0].background.url
-      } else {
-        return process.env.BACKEND_URL + '/storage/backgrounds/default.jpg'
-      }
+      return getGameBannerFromScenes(this.scenes)
     },
     hasAutosave () {
       if (process.server) { return false }

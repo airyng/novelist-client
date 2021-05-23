@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { excerpt } from '@/plugins/utils'
+import { excerpt, getGameBannerFromScenes } from '@/plugins/utils'
 import { screen } from '@/mixins/screen'
 export default {
   mixins: [screen],
@@ -86,17 +86,7 @@ export default {
       return excerpt(this.item.description, 120)
     },
     itemBanner () {
-      if (
-        this.scenes &&
-        this.scenes[0] &&
-        this.scenes[0] &&
-        this.scenes[0].background &&
-        (this.scenes[0].background.url || this.scenes[0].background.value)
-      ) {
-        return process.env.BACKEND_URL + (this.scenes[0].background.url || this.scenes[0].background.value)
-      } else {
-        return process.env.BACKEND_URL + '/storage/backgrounds/default.jpg'
-      }
+      return getGameBannerFromScenes(this.scenes)
     }
   },
   methods: {

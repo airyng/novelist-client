@@ -33,7 +33,7 @@
                         <v-list-item-icon>
                           <v-avatar v-if="_scene.background && _scene.background.type === 'image'">
                             <img
-                              :src="_scene.background.url_small"
+                              :src="_scene.background.value"
                               :alt="_scene.title"
                             >
                           </v-avatar>

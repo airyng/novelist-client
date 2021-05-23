@@ -272,7 +272,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" soped>
 .scene-container
   background-size: cover
   background-position: center

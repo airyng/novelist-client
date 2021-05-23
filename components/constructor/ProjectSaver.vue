@@ -110,8 +110,10 @@ export default {
       for (let index = 0; index < this.scenes.length; index++) {
         const scene = this.scenes[index]
 
-        if (this.isSceneHasEmptyAction(scene)) { this.addError("Не во всех сценах указан текст 'экшенов'. Например, в " + scene.title) }
-        // return false
+        if (this.isSceneHasEmptyAction(scene)) {
+          this.addError("Не во всех сценах указан текст 'экшенов'. Например, в " + scene.title)
+          return false
+        }
       }
     },
     checkForOverloadTextBoxes () {
@@ -144,7 +146,7 @@ export default {
       for (let index = 0; index < scene.actions.length; index++) {
         const action = scene.actions[index]
 
-        if (!action.to || !action.actionText.length) {
+        if (!action.actionText.length) {
           return true
         }
       }

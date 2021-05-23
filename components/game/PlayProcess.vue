@@ -150,9 +150,9 @@ export default {
 
       let isConditionMatch = false
 
-      if (action.condition.type === 'scene_visited' && !isActionExistInHistory) {
+      if (action.condition.type === 'scene_visited' && isActionExistInHistory) {
         isConditionMatch = true
-      } else if (action.condition.type === 'scene_not_visited' && isActionExistInHistory) {
+      } else if (action.condition.type === 'scene_not_visited' && !isActionExistInHistory) {
         isConditionMatch = true
       }
 

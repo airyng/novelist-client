@@ -7,9 +7,20 @@
 #app .v-btn
   color: $mainTextColor
 
+#app .theme--light.v-list
+  background-color: $subBackColor
+
+#app .theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled)
+  color: $mainTextColor!important
+
 #app .theme--light.v-card, #app .v-dialog__content .container
   background-color: $subBackColor
   color: $mainTextColor
+
+#app .v-list-item--active.active
+  background: linear-gradient(90deg, rgb(39 39 39), #424242)
+  color: white
+  border-radius: 4px
 
 #app .theme--light.v-input input, #app .theme--light.v-input textarea, #app .theme--light.v-counter
   color: $mainTextColor

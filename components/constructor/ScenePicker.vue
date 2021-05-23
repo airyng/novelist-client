@@ -12,7 +12,7 @@
           </v-col>
 
           <v-col cols="12">
-            <v-btn depressed color="purple" rounded dark @click="callToAddingScene">
+            <v-btn depressed rounded dark @click="callToAddingScene">
               Добавить сцену
             </v-btn>
           </v-col>
@@ -27,7 +27,7 @@
                   <v-list-item-icon>
                     <v-avatar v-if="_scene.background && _scene.background.type === 'image'">
                       <img
-                        :src="_scene.background.url_small"
+                        :src="_scene.background.value"
                         :alt="_scene.title"
                       >
                     </v-avatar>
