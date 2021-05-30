@@ -53,7 +53,11 @@ export default {
           navigationButtons: true
         },
         layout: {
-          hierarchical: false
+          hierarchical: {
+            enabled: true,
+            nodeSpacing: 200,
+            sortMethod: 'directed' // hubsize, directed
+          }
         },
         physics: false
       }
