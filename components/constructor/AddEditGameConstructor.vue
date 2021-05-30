@@ -237,14 +237,12 @@ export default {
       }
     },
     onSceneNetworkClicked (payload) {
+      this.hideContextCircle()
       if (payload) {
-        this.hideContextCircle()
         setTimeout(() => {
           this.contextCirclePos = payload.position
           this.preSelectedSceneID = payload.sceneID
         }, 0)
-      } else {
-        this.hideContextCircle()
       }
       // console.log(payload)
     },

@@ -53,10 +53,7 @@ export default {
           navigationButtons: true
         },
         layout: {
-          hierarchical: {
-            enabled: true,
-            nodeSpacing: 200
-          }
+          hierarchical: false
         },
         physics: false
       }
@@ -171,13 +168,17 @@ export default {
     sceneTransitionsEvent () {
       this.network.on('click', (params) => {
         if (params.nodes.length) {
-          const pos = this.network.getPosition(params.nodes[0])
-          const scale = this.network.getScale() // get Scale
-          const canvas = document.querySelector('#' + this.containerID)
-          const viewPos = this.network.getViewPosition()
+          // const pos = this.network.getPosition(params.nodes[0])
+          // const scale = this.network.getScale() // get Scale
+          // const canvas = document.querySelector('#' + this.containerID)
+          // const viewPos = this.network.getViewPosition()
+          // const position = {
+          //   x: (canvas.clientWidth / 2) + (pos.x * scale) - (viewPos.x),
+          //   y: (canvas.clientHeight / 2) + (pos.y * scale) - (viewPos.y)
+          // }
           const position = {
-            x: (canvas.clientWidth / 2) + pos.x - (viewPos.x * scale),
-            y: (canvas.clientHeight / 2) + pos.y - (viewPos.y * scale)
+            x: params.event.center.x,
+            y: params.event.center.y
           }
           this.$emit('clicked', { position, sceneID: params.nodes[0] })
         } else {
