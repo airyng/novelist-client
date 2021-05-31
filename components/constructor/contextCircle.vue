@@ -41,7 +41,7 @@ export default {
   width: 180px
   height: 180px
   z-index: 10
-  transform: translate(-50%, -50%)
+  transform: translate(-50%, -80%)
   & .sceneActions__group
     position: relative
     width: 100%

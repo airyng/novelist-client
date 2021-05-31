@@ -255,6 +255,9 @@ export default {
   & .mainText
     height: 100%
     overflow: hidden auto
+    white-space: pre-line
+    display: flex
+    align-items: flex-start
   & .charName
     position: absolute
     top: -10px
