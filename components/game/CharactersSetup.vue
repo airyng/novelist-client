@@ -101,7 +101,7 @@ export default {
     }
   },
   mounted () {
-    if (!this.characters || !this.characters.length) {
+    if (!this.notConfiguredCharacters?.length) {
       this.goNextStage()
     }
   },
