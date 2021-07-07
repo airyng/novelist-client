@@ -99,6 +99,26 @@
     </ConstructorContextCircle>
 
     <div class="bottom-bar">
+      <v-tooltip v-if="showPlayBtn" top>
+        <template #activator="{ on, attrs }">
+          <v-btn
+            rounded
+            fab
+            dark
+            depressed
+            v-bind="attrs"
+            class="ml-5 mb-5"
+            v-on="on"
+            @click="goToPlay"
+          >
+            <v-icon rounded>
+              mdi-gamepad-variant-outline
+            </v-icon>
+          </v-btn>
+        </template>
+        <span>Тест-Драйв</span>
+      </v-tooltip>
+
       <v-tooltip top>
         <template #activator="{ on, attrs }">
           <v-btn
@@ -146,8 +166,10 @@
 
         <ConstructorMainSceneInfo ref="mainSceneInfo" />
       </CustomDialog>
+    </div>
 
-      <div class=" left-right-stroke">
+    <div class="char-bar">
+      <div class="left-right-stroke">
         <ConstructorCharacterList with-add-btn @onCharacterClick="openCharacterEditor" />
       </div>
     </div>
@@ -161,6 +183,7 @@
 
     <ConstructorProjectSaver
       ref="projectSaver"
+      @saved="onSaved"
     />
     <ConstructorProjectLoader
       @onRestoreState="onRestoreState"
@@ -181,7 +204,8 @@ export default {
       selectedSceneID: false,
       visScriptLoaded: false,
       contextCirclePos: false,
-      preSelectedSceneID: false // for contextMenu
+      preSelectedSceneID: false, // for contextMenu
+      showPlayBtn: false
     }
   },
   head: {
@@ -213,6 +237,9 @@ export default {
       this.$store.dispatch('constructorStorage/addScene', newScene)
       return newScene
     },
+    goToPlay () {
+      this.$router.push('/games/' + this.$route.params.id + '/play')
+    },
     onSceneSelected (id) {
       this.closeSceneEditor()
       this.selectedSceneID = id
@@ -229,6 +256,9 @@ export default {
     },
     closeCharacterEditor () {
       this.selectedCharacter = false
+    },
+    onSaved (payload) {
+      this.showPlayBtn = payload.onTestDrive
     },
     mainSettingsDialogStateChanged (val) {
       if (!val) {
@@ -303,10 +333,17 @@ export default {
 
 <style lang="sass">
 .bottom-bar
-  position: absolute
+  position: fixed
   z-index: 10
+  left: 10px
+  bottom: 220px
+  width: 100px
+
+.char-bar
+  position: fixed
   left: 0
-  bottom: 10px
+  bottom: 0
+  z-index: 10
 
 @keyframes move-bg-pos
   0%

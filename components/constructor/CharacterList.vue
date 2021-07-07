@@ -15,10 +15,12 @@
       <span>{{ char.name }}</span>
     </div>
 
-    <div v-if="withAddBtn" class="charPreview" @click="openCharacterEditor()">
-      <v-icon dark x-large>
-        mdi-account-multiple-plus-outline
-      </v-icon>
+    <div v-if="withAddBtn" class="charPreview d-block" @click="openCharacterEditor()">
+      <div class="charPreview" style="border: none">
+        <v-icon dark x-large>
+          mdi-account-multiple-plus-outline
+        </v-icon>
+      </div>
     </div>
   </div>
 </template>
@@ -54,6 +56,8 @@ export default {
   padding: 10px
   display: flex
   align-items: center
+  max-width: 500px
+  overflow: scroll hidden
 
 .charPreview
   display: flex
@@ -63,6 +67,7 @@ export default {
   cursor: pointer
   flex-direction: column
   border-radius: 12px
+  border: 1px solid transparent
   height: 190px
   &:hover
     border: 1px solid white

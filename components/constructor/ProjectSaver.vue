@@ -44,7 +44,6 @@ export default {
       } else {
         this.isLoading = true
 
-        // if (await this.save()) { this.showSuccess() } else { this.showErrors() }
         await this.save() ? this.showSuccess() : this.showErrors()
 
         this.isLoading = false
@@ -99,11 +98,16 @@ export default {
         return false
       }
 
-      if (await this.save()) { this.showSuccess() } else { this.showErrors() }
+      if (await this.save()) {
+        this.showSuccess()
+      } else {
+        this.showErrors()
+      }
 
       this.isLoading = false
     },
     showSuccess () {
+      this.$emit('saved', { onTestDrive: this.mainInfo.onTestDrive })
       SuccessMessage({ title: 'Сохранено!' })
     },
     checkForEmptyActions () {
@@ -208,13 +212,6 @@ export default {
         }
       }
       ErrorMessages(swalObj)
-      // Swal.mixin({
-      //   title: 'Ошибка!',
-      //   icon: 'error',
-      //   toast: true,
-      //   position: 'bottom'
-      // })
-      //   .queue(swalObj)
     },
     isSceneHasExit (scene) { // проверяем, если ли в сцене хотя бы один выход
       let sceneHasExit = false
@@ -258,11 +255,6 @@ export default {
       }
       return sceneIDs
     }
-    // removeAction(scene, action){
-    //     var index = scene.actions.indexOf(action)
-
-    //     if(index >= 0) scene.actions.splice(index, 1)
-    // },
   }
 }
 </script>
