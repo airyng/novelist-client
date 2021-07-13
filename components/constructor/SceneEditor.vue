@@ -106,6 +106,7 @@
       </CustomDialog>
 
       <CustomDialog
+        v-show="!character"
         ref="characterPickerDialog"
         title="Добавить персонажа"
       >
@@ -113,7 +114,6 @@
           <v-tooltip top>
             <template #activator="{ on, attrs }">
               <v-btn
-                v-show="!character"
                 rounded
                 fab
                 dark
@@ -134,26 +134,49 @@
         <ConstructorCharacterPicker @onCharacterPicked="addCharacter" />
       </CustomDialog>
 
-      <v-tooltip top>
-        <template #activator="{ on, attrs }">
-          <v-btn
-            v-show="character"
-            rounded
-            fab
-            dark
-            depressed
-            class="text-center justify-center mb-4"
-            v-bind="attrs"
-            v-on="on"
-            @click="removeCharacter"
-          >
-            <v-icon rounded>
-              mdi-account-minus
-            </v-icon>
-          </v-btn>
-        </template>
-        <span>Убрать персонажа</span>
-      </v-tooltip>
+      <div v-show="character">
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              rounded
+              fab
+              dark
+              depressed
+              class="text-center justify-center mb-4"
+              v-bind="attrs"
+              v-on="on"
+              @click="removeCharacter"
+            >
+              <v-icon rounded>
+                mdi-account-minus
+              </v-icon>
+            </v-btn>
+          </template>
+          <span>Убрать персонажа</span>
+        </v-tooltip>
+      </div>
+      <div v-show="character">
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              v-show="character"
+              rounded
+              fab
+              dark
+              depressed
+              class="text-center justify-center mb-4"
+              v-bind="attrs"
+              v-on="on"
+              @click="toggleCharSide"
+            >
+              <v-icon rounded>
+                {{ scene.showCharFromRight ? 'mdi-account-arrow-left-outline' : 'mdi-account-arrow-right-outline' }}
+              </v-icon>
+            </v-btn>
+          </template>
+          <span>Сторона появления персонажа</span>
+        </v-tooltip>
+      </div>
     </div>
   </div>
 </template>
@@ -204,6 +227,9 @@ export default {
   methods: {
     removeCharacter () {
       this.scene.character = false
+    },
+    toggleCharSide () {
+      this.scene.showCharFromRight = !this.scene.showCharFromRight
     },
     setCharacterSettings () {
       this.characterHeight = Math.ceil(window.innerHeight / 1.3)

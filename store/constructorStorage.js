@@ -44,7 +44,8 @@ export const getters = {
         mainText: '',
         background: null,
         actions: [],
-        character: false
+        character: false,
+        showCharFromRight: false
       }
     }
   },

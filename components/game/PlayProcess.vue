@@ -3,10 +3,12 @@
     <v-container class="d-flex flex-column fullsize" style="max-width: 1200px">
       <CharacterCanvas
         v-if="character"
+        ref="character"
         :updated-at="charUpdatedAt"
         :char-id="character.id"
         :height="characterHeight"
         transition
+        :from-right="activeScene.showCharFromRight"
         class="character"
       />
       <v-row class="text-blocks">
@@ -120,18 +122,29 @@ export default {
       this.characterHeight = Math.ceil(window.innerHeight / 1.3)
       this.charUpdatedAt = new Date().getTime()
     },
-    goToScene (elem) { // Переходим на новую сцену
+    // Переходим на новую сцену
+    async goToScene (elem) {
+      let nextScene = null
+
       if (typeof elem === 'number') {
-        this.activeScene = this.getSceneById(elem)
-        this.addSceneToHistory(this.activeScene)
-        this.gameAutoSaveManager.save({ gameID: this.$route.params.id, lastSceneID: elem, characters: this.characters })
+        nextScene = this.getSceneById(elem)
       } else if (typeof elem === 'object' && typeof elem.id === 'number') {
-        this.activeScene = this.getSceneById(elem.id)
-        this.addSceneToHistory(this.activeScene)
-        this.gameAutoSaveManager.save({ gameID: this.$route.params.id, lastSceneID: elem.id, characters: this.characters })
+        nextScene = this.getSceneById(elem.id)
       } else if (elem === 'quit') {
         this.$emit('gameOver')
+        return
       }
+
+      // Анимируем уход персонажа
+      if (this.character && this.$refs.character) {
+        if (nextScene.character !== this.activeScene.character) {
+          await this.$refs.character.hideCharacter()
+        }
+      }
+
+      this.activeScene = nextScene
+      this.addSceneToHistory(this.activeScene)
+      this.gameAutoSaveManager.save({ gameID: this.$route.params.id, lastSceneID: nextScene.id, characters: this.characters })
     },
     addSceneToHistory (scene) {
       this.sceneHistory.push(scene.id)

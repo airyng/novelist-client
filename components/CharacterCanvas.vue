@@ -6,7 +6,7 @@
         :width="948"
         :height="portrait ? 800 : 1920"
         class="characterCanvas"
-        :class="{ loaded: !loading, transition }"
+        :class="{ loaded: !loading, transition, fromRight }"
         :style="'height:'+height+'px'"
       />
       <div v-if="!transition && loading" class="fullsize d-flex align-center justify-center" style="position: absolute; left: 0; top: 0;">
@@ -27,7 +27,8 @@ export default {
     updatedAt: { type: Number, default: 0 },
     height: { type: [String, Number], default: 500 },
     portrait: { type: Boolean, default: false },
-    transition: { type: Boolean, default: false }
+    transition: { type: Boolean, default: false }, // Флаг необходимости проигрывания анимации сразу после прогрузки спрайтов
+    fromRight: { type: Boolean, default: false } // Флаг необходимости выводить персонажа с правой стороны
   },
   data () {
     return {
@@ -47,6 +48,9 @@ export default {
       this.drawCharacter()
     },
     charId () {
+      // Переменная используется для контроля анимации, по этому ее необходимо сбрасывать
+      // до дефолтного значения
+      this.loading = false
       this.convertIdToItems()
       this.drawCharacter()
     }
@@ -106,6 +110,14 @@ export default {
         // eslint-disable-next-line no-console
         console.error(err)
       }
+    },
+    hideCharacter () {
+      return new Promise((resolve) => {
+        this.loading = true
+        setTimeout(() => {
+          resolve(true)
+        }, 500) // Делаем задержку на время анимации .transition
+      })
     }
   }
 }
@@ -120,4 +132,20 @@ export default {
   &.loaded
     transform: translateX(0)
     opacity: 1
+  &.fromRight
+    transform: translateX(150vw)
+    &.loaded
+      transform: translateX(60vw)
+      @media (max-width: 1620px)
+        transform: translateX(50vw)
+      @media (max-width: 1300px)
+        transform: translateX(40vw)
+      @media (max-width: 1060px)
+        transform: translateX(30vw)
+      @media (max-width: 900px)
+        transform: translateX(20vw)
+      @media (max-width: 550px)
+        transform: translateX(10vw)
+      @media (max-width: 500px)
+        transform: translateX(0)
 </style>

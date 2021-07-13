@@ -238,7 +238,9 @@ export default {
       return newScene
     },
     goToPlay () {
-      this.$router.push('/games/' + this.$route.params.id + '/play')
+      // Перезагружаем страницу вместо плавного перехода
+      // затем, чтобы обновился кеш и подтянулись свежие изменения
+      window.location = '/games/' + this.$route.params.id + '/play'
     },
     onSceneSelected (id) {
       this.closeSceneEditor()
