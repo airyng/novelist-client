@@ -13,7 +13,7 @@
       />
       <v-row class="text-blocks">
         <v-col class="d-flex flex-column justify-end" cols="12">
-          <div class="actions">
+          <div v-if="!activeScene.goNextWithoutChoice" class="actions">
             <div
               class="actions-container"
               :class="{ showed: actionsShowed}"
@@ -36,8 +36,9 @@
             </div>
           </div>
 
-          <div class="mainTextBlock" @click="skipTextTyping">
+          <div class="mainTextBlock" :class="{ 'curs-pointer': activeScene.goNextWithoutChoice || !textSkiped }" @click="onClickToMainText">
             <span v-if="character" class="charName">{{ character.name }}</span>
+            <span v-if="activeScene.goNextWithoutChoice && textSkiped" class="goNextLable">Нажмите, чтобы продолжить</span>
             <p class="pa-5 mb-0 mainText" :class="{'mt-5': character}">
               {{ mainText }}
             </p>
@@ -111,6 +112,15 @@ export default {
     this.goToStart()
   },
   methods: {
+    onClickToMainText () {
+      // При если текст весь выведен и есть возможность перейти дальше без выбора, то переходим
+      // Иначе сбрасываем анимацию текста
+      if (this.textSkiped && this.activeScene.goNextWithoutChoice) {
+        this.goToScene(this.activeScene.actions[0].to)
+      } else {
+        this.skipTextTyping()
+      }
+    },
     goToStart () {
       if (this.startOnScene) {
         this.goToScene(this.scenes.find(item => Number(item.id) === Number(this.startOnScene)))
@@ -202,6 +212,7 @@ export default {
           // Это конец анимации текста
           // нужно показать экшены
           that.actionsShowed = true
+          that.textSkiped = true
         }
       }
       typeWriter() // start
@@ -264,7 +275,6 @@ export default {
   background-color: #444444e6
   position: relative
   color: white
-  cursor: pointer
   & .mainText
     height: 100%
     overflow: hidden auto
@@ -281,6 +291,13 @@ export default {
     overflow: hidden
     max-width: 300px
     background-color: rgb(68 68 68)
+  & .goNextLable
+    position: absolute
+    bottom: 10px
+    right: 10px
+    color: #8c8c8c
+    animation: fadeUp .5s
+
   &::after, &::before
     content: ''
     position: absolute
@@ -309,4 +326,13 @@ export default {
   @media (max-width: 768px)
     left: 0
 
+@keyframes fadeUp
+  0%
+    transform: translateY(50px)
+    opacity: 0
+  70%
+    opacity: 0.1
+  100%
+    transform: translateY(0)
+    opacity: 1
 </style>

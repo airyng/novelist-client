@@ -39,13 +39,14 @@ export const getters = {
       const id = new Date().getTime()
       const title = state.scenes.length ? 'Сцена ' + id : 'Старт'
       return {
-        id,
-        title,
-        mainText: '',
-        background: null,
-        actions: [],
-        character: false,
-        showCharFromRight: false
+        id, // Уникальный идентификатор сцены
+        title, // Заголовок сцены (не виден во время игры)
+        mainText: '', // Основной текст сцены
+        background: null, // Данные о фоне
+        actions: [], // Список экшнов (действий)
+        character: false, // ID персонажа
+        showCharFromRight: false, // Флаг необходимости отображать анимацию появления персонажа справа
+        goNextWithoutChoice: false // Флаг возможности перехода к следующей сцене без клика по экшену. Переход произойдет по двойному клику на блок текста
       }
     }
   },
@@ -179,7 +180,7 @@ export const actions = {
     dispatch('addScene', newScene)
 
     // Устанавливаем экшн переход с копии на новую сцену
-    dispatch('addAction', { scene: sceneToCopy, actionParams: { text: 'Дальше...', to: newScene.id } })
+    dispatch('addAction', { scene: sceneToCopy, actionParams: { text: 'Далее...', to: newScene.id } })
   },
 
   deleteActionToScene ({ dispatch, state }, sceneID) {

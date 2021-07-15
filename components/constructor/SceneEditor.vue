@@ -13,7 +13,7 @@
               type="text"
               name="sceneTitle"
               :maxlength="settings.maxSceneTitleLength"
-              :style="'outline: none; width:' + scene.title.length * 20 + 'px; cursor: pointer; min-width: 50px!important'"
+              :style="'outline: none; width:' + (scene.title.length * 20) + 'px; cursor: pointer; min-width: 50px!important'"
             >
           </h1>
         </v-col>
@@ -27,6 +27,8 @@
           :updated-at="charUpdatedAt"
           :char-id="character.id"
           :height="characterHeight"
+          transition
+          :from-right="scene.showCharFromRight"
           class="character"
         />
         <v-col class="d-flex flex-column justify-end" cols="12">
@@ -43,7 +45,8 @@
               @onSave="saveAction"
               @onRemove="removeAction"
               @onOrderChange="changeActionOrder"
-              @OnGoToScene="goToScene"
+              @onGoToScene="goToScene"
+              @onSaveSceneParams="saveSceneParams"
             />
           </div>
           <v-btn
@@ -225,6 +228,12 @@ export default {
     window.addEventListener('resize', () => this.setCharacterSettings())
   },
   methods: {
+    // Изменяем поле по ключу key значением value внутри объекта scene
+    saveSceneParams (payload) {
+      // if (Object.prototype.hasOwnProperty.call(this.scene, payload.key)) {
+      this.scene[payload.key] = payload.value
+      // }
+    },
     removeCharacter () {
       this.scene.character = false
     },
@@ -331,6 +340,6 @@ export default {
 
 .character
   position: absolute
-  left: 200px
+  left: 50px
   bottom: -10px
 </style>

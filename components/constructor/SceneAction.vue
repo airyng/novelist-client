@@ -34,7 +34,7 @@
         dark
         @input="save"
       />
-      <div class="d-flex pt-2">
+      <div class="d-flex mt-n6 align-center">
         <v-tooltip v-if="hasCondition" top>
           <template #activator="{ on, attrs }">
             <v-chip
@@ -152,6 +152,19 @@
             mdi-close
           </v-icon>
         </v-btn>
+
+        <v-tooltip v-if="activeScene.actions.length === 1" top>
+          <template #activator="{ on, attrs }">
+            <div class="d-flex" v-bind="attrs" v-on="on">
+              <v-switch
+                v-model="activeScene.goNextWithoutChoice"
+                class="ml-2 pb-0"
+                @change="saveGoNextWithoutChoice"
+              />
+            </div>
+          </template>
+          <span>Продолжить без выбора</span>
+        </v-tooltip>
       </div>
     </div>
 
@@ -229,6 +242,9 @@ export default {
     this.setLocalAction()
   },
   methods: {
+    saveGoNextWithoutChoice () {
+      this.$emit('onSaveSceneParams', { key: 'goNextWithoutChoice', value: this.activeScene.goNextWithoutChoice })
+    },
     excerpt (text, maxLength) {
       return excerpt(text, maxLength)
     },
@@ -259,7 +275,7 @@ export default {
       this.save()
     },
     OnGoToScene (toScene) {
-      this.$emit('OnGoToScene', toScene)
+      this.$emit('onGoToScene', toScene)
     },
     openActionConditionPicker () {
       this.conditionPickerDialog = true
