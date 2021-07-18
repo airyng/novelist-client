@@ -51,11 +51,32 @@
               </v-icon>
             </v-btn>
           </template>
-          <span>Дублировать</span>
+          <span>Дублировать c переходом</span>
         </v-tooltip>
       </template>
 
       <template #second>
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              rounded
+              fab
+              dark
+              depressed
+              v-bind="attrs"
+              v-on="on"
+              @click="duplicateScene(preSelectedSceneID, false)"
+            >
+              <v-icon rounded>
+                mdi-content-copy
+              </v-icon>
+            </v-btn>
+          </template>
+          <span>Дублировать</span>
+        </v-tooltip>
+      </template>
+
+      <template #third>
         <v-tooltip top>
           <template #activator="{ on, attrs }">
             <v-btn
@@ -76,7 +97,7 @@
         </v-tooltip>
       </template>
 
-      <template #third>
+      <!-- <template #fourth>
         <v-tooltip top>
           <template #activator="{ on, attrs }">
             <v-btn
@@ -93,9 +114,9 @@
               </v-icon>
             </v-btn>
           </template>
-          <!-- <span>Основная информация</span> -->
+          <span>Основная информация</span>
         </v-tooltip>
-      </template>
+      </template> -->
     </ConstructorContextCircle>
 
     <div class="bottom-bar">
@@ -305,10 +326,16 @@ export default {
       this.$store.dispatch('constructorStorage/deleteScene', sceneID)
       this.$store.dispatch('constructorStorage/deleteActionToScene', sceneID)
     },
-    duplicateScene (sceneID) {
-      const sceneCopy = this.scenes.find(scene => scene.id === sceneID)
+    duplicateScene (sceneID, setTransition = true) {
+      const sceneCopy = { ...this.scenes.find(scene => scene.id === sceneID) }
+      // Сбрасываем переход без выбора
+      if (setTransition) {
+        sceneCopy.goNextWithoutChoice = false
+        this.$store.dispatch('constructorStorage/updateScene', sceneCopy)
+      }
+
       this.hideContextCircle()
-      this.$store.dispatch('constructorStorage/copyScene', sceneCopy)
+      this.$store.dispatch('constructorStorage/copyScene', { sceneToCopy: sceneCopy, setTransition })
     },
     saveProject () {
       this.$refs.projectSaver.beginSaving()

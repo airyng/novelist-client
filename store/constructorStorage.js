@@ -171,7 +171,7 @@ export const actions = {
     EventBus.$emit('callToReinitSceneNetwork')
   },
 
-  copyScene ({ dispatch, getters }, sceneToCopy) {
+  copyScene ({ dispatch, getters }, { sceneToCopy, setTransition = false }) {
     if (!sceneToCopy) { return }
     const newScene = getters.getEmptyScene()
     newScene.background = sceneToCopy.background
@@ -180,7 +180,9 @@ export const actions = {
     dispatch('addScene', newScene)
 
     // Устанавливаем экшн переход с копии на новую сцену
-    dispatch('addAction', { scene: sceneToCopy, actionParams: { text: 'Далее...', to: newScene.id } })
+    if (setTransition) {
+      dispatch('addAction', { scene: sceneToCopy, actionParams: { text: 'Далее...', to: newScene.id } })
+    }
   },
 
   deleteActionToScene ({ dispatch, state }, sceneID) {
