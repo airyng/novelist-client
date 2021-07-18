@@ -1,6 +1,10 @@
 <template>
   <div>
-    <ConstructorCharacterList v-if="characters.length" class="justify-space-around" @onCharacterClick="pickCharacter" />
+    <ConstructorCharacterList
+      v-if="characters.length"
+      max-width="800"
+      @onCharacterClick="pickCharacter"
+    />
     <v-alert
       v-else
       outlined

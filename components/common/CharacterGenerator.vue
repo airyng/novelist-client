@@ -311,8 +311,8 @@ export default {
     },
     playModeSave () {
       if (this.userChoose.includes('name')) {
-        if (!this.characterName || this.characterName.length <= 2) {
-          ErrorMessage({ text: 'Имя персонажа не может быть меньше 2х символов' })
+        if (!this.characterName || this.characterName.length < 3) {
+          ErrorMessage({ text: 'Имя персонажа не может быть меньше 3х символов' })
           return
         }
         if (this.characterName.length > this.maxNameLength) {
@@ -333,8 +333,8 @@ export default {
     },
     editModeSave () {
       if (!this.userChoose.includes('name')) {
-        if (!this.characterName || this.characterName.length <= 2) {
-          ErrorMessage({ text: 'Имя персонажа не может быть меньше 2х символов' })
+        if (!this.characterName || this.characterName.length < 3) {
+          ErrorMessage({ text: 'Имя персонажа не может быть меньше 3х символов' })
           return
         }
         if (this.characterName.length > this.maxNameLength) {

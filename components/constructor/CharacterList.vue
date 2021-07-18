@@ -1,5 +1,5 @@
 <template>
-  <div class="characterList-container">
+  <div class="characterList-container" :style="`max-width: ${maxWidth}px`">
     <div
       v-for="char in characters"
       :key="char.uid"
@@ -28,7 +28,8 @@
 <script>
 export default {
   props: {
-    withAddBtn: { type: Boolean, default: false }
+    withAddBtn: { type: Boolean, default: false },
+    maxWidth: { type: [String, Number], default: '500' }
   },
   data () {
     return {
@@ -56,8 +57,8 @@ export default {
   padding: 10px
   display: flex
   align-items: center
-  max-width: 500px
-  overflow: scroll hidden
+  overflow-x: scroll
+  height: 200px
 
 .charPreview
   display: flex
