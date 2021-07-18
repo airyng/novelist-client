@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 // backend api calls
-import { ErrorMessage, SuccessMessage } from '@/plugins/toast'
+import { ErrorMessage } from '@/plugins/toast'
 
 export default function ({ $axios }, inject) {
   if (!$axios) { return }
@@ -100,9 +100,9 @@ export default function ({ $axios }, inject) {
         if (!process.server) {
           console.log('getMe success', response.data)
         }
-        SuccessMessage({
-          title: 'Вход выполнен!'
-        })
+        // SuccessMessage({
+        //   title: 'Вход выполнен!'
+        // })
         return response.data
       })
       .catch((e) => {
