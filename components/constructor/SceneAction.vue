@@ -254,14 +254,6 @@ export default {
     setLocalAction () {
       this.localAction = { ...this.action }
     },
-    // setDataFromProps () {
-    // if (this.localActiveScene !== this.activeScene) {
-    //   this.localActiveScene = { ...this.activeScene }
-    // }
-    //   if (this.localAction !== this.action) {
-    //     this.localAction = { ...this.action }
-    //   }
-    // },
     setQuitAction () {
       const action = this.localAction
       const data = { type: 'quit', action }

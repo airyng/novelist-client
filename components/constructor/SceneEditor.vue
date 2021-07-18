@@ -264,6 +264,9 @@ export default {
     // Возможно управление экшнами стоит вынести в отдельный компонент
     // который будет отвечать только за них
     addAction () {
+      // При добавлении экшна необходимо сбрасывать значение goNextWithoutChoice
+      this.scene.goNextWithoutChoice = false
+
       this.$store.dispatch('constructorStorage/addAction', { scene: this.scene })
       this.getSceneFromStorage()
     },
