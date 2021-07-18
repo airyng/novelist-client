@@ -114,7 +114,7 @@ export default {
       for (let index = 0; index < this.scenes.length; index++) {
         const scene = this.scenes[index]
 
-        if (this.isSceneHasEmptyAction(scene)) {
+        if (!scene.goNextWithoutChoice && this.isSceneHasEmptyAction(scene)) {
           this.addError("Не во всех сценах указан текст 'экшенов'. Например, в " + scene.title)
           return false
         }
