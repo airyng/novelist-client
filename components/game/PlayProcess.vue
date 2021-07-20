@@ -50,6 +50,7 @@
 </template>
 
 <script>
+// Менеджер автосохранений игрового процесса
 import GameAutoSaveManager from '@/plugins/gameAutoSaveManager'
 export default {
   props: {

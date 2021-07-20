@@ -1,5 +1,6 @@
 import lsm from '@/plugins/localStorageManager'
 
+// Менеджер автосохранений игрового процесса
 class gameAutoSaveManager {
   savedGames = []
 

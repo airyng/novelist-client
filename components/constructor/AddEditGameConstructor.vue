@@ -21,17 +21,24 @@
 
     <ConstructorContextCircle :position="contextCirclePos">
       <template #zero>
-        <v-btn
-          rounded
-          fab
-          dark
-          depressed
-          @click="onSceneSelected(preSelectedSceneID)"
-        >
-          <v-icon small rounded>
-            mdi-open-in-new
-          </v-icon>
-        </v-btn>
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              rounded
+              fab
+              dark
+              depressed
+              v-bind="attrs"
+              v-on="on"
+              @click="onSceneSelected(preSelectedSceneID)"
+            >
+              <v-icon small rounded>
+                mdi-open-in-new
+              </v-icon>
+            </v-btn>
+          </template>
+          <span>Править сцену</span>
+        </v-tooltip>
       </template>
 
       <template #first>
@@ -248,6 +255,9 @@ export default {
     this.boot()
     EventBus.$on('onAddSceneAndLinkAndGo', this.addSceneAndLinkToActAndOpen)
   },
+  beforeDestroy () {
+    EventBus.$off('onAddSceneAndLinkAndGo', this.addSceneAndLinkToActAndOpen)
+  },
   methods: {
     boot () {
       this.$store.dispatch('constructorStorage/setStateToDefault')
@@ -264,15 +274,16 @@ export default {
       window.location = '/games/' + this.$route.params.id + '/play'
     },
     onSceneSelected (id) {
-      this.closeSceneEditor()
+      this.closeSceneEditor(false)
       this.selectedSceneID = id
       setTimeout(() => {
         this.hideContextCircle()
       }, 500)
     },
-    closeSceneEditor () {
+    closeSceneEditor (doAutoSave = true) {
       this.$refs.sceneEditor?.save()
       this.selectedSceneID = false
+      if (doAutoSave) { this.autoSave() }
     },
     openCharacterEditor (char) {
       this.selectedCharacter = char || true
@@ -340,8 +351,15 @@ export default {
     saveProject () {
       this.$refs.projectSaver.beginSaving()
     },
+    // Метод сохранения данных при условии
+    // что новелла в статусе "черновик"
+    autoSave () {
+      if (this.$refs?.projectSaver?.mainInfo && !this.$refs.projectSaver.mainInfo.onTestDrive) {
+        console.log('autosaving...')
+        this.$refs.projectSaver.beginSaving(false)
+      }
+    },
     onRestoreState (gameData) {
-      // console.log('debug gameData', gameData)
       this.$store.dispatch('constructorStorage/updateProjectID', gameData.id)
       this.$store.dispatch('constructorStorage/updateMainSettings', {
         title: gameData.title,

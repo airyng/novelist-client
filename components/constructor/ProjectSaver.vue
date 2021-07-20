@@ -36,7 +36,7 @@ export default {
     }
   },
   methods: {
-    async beginSaving () {
+    async beginSaving (withResultMessage = true) {
       // Если режим установлен на тест-драйв, то валидируем
       // иначе просто сохраняем
       if (this.mainInfo.onTestDrive) {
@@ -44,7 +44,7 @@ export default {
       } else {
         this.isLoading = true
 
-        await this.save() ? this.showSuccess() : this.showErrors()
+        await this.save() ? this.showSuccess(withResultMessage) : this.showErrors()
 
         this.isLoading = false
       }
@@ -106,9 +106,11 @@ export default {
 
       this.isLoading = false
     },
-    showSuccess () {
+    showSuccess (withResultMessage = true) {
       this.$emit('saved', { onTestDrive: this.mainInfo.onTestDrive })
-      SuccessMessage({ title: 'Сохранено!' })
+      if (withResultMessage) {
+        SuccessMessage({ title: 'Сохранено!' })
+      }
     },
     checkForEmptyActions () {
       for (let index = 0; index < this.scenes.length; index++) {

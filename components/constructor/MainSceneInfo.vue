@@ -32,6 +32,14 @@
         <span v-if="localMainInfo.onTestDrive">Черновик / <b>Тест-Драйв</b></span>
         <span v-else><b>Черновик</b> / Тест-Драйв</span>
       </v-col>
+      <v-col cols="12" class="d-flex align-items-center mt-0 pt-0">
+        <v-label v-if="!localMainInfo.onTestDrive" x-small>
+          В этом режиме: включено автосохранение.
+        </v-label>
+        <v-label v-else x-small>
+          В этом режиме: ручное сохранение, автопроверка работоспособности новеллы, возможность протестировать и опубликовать игру.
+        </v-label>
+      </v-col>
     </v-row>
   </div>
 </template>
@@ -51,11 +59,6 @@ export default {
     settings () {
       return this.$store.state.constructorStorage.settings.mainInfo
     }
-  },
-  watch: {
-    // localMainInfo (val) {
-    //   this.$emit('input', val)
-    // }
   },
   mounted () {
     this.setDataFromProps()
