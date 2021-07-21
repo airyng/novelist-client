@@ -1,3 +1,26 @@
+// Scrollbar styles
+*, html 
+  scrollbar-width: thin
+  scrollbar-color: $purpleColor rgba(255, 255, 255, 0)
+
+*::-webkit-scrollbar,
+html *::-webkit-scrollbar 
+  height: 6px
+  width: 6px
+
+*::-webkit-scrollbar-track,
+html *::-webkit-scrollbar-track 
+  background: rgba(255, 255, 255, 0)
+
+*::-webkit-scrollbar-thumb,
+html *::-webkit-scrollbar-thumb 
+  background-color: $purpleColor
+  border-radius: 5px
+  border: 1px solid rgba(255, 255, 255, 0)
+// Scrollbar styles - end
+body  
+  background-color: $mainBackColor
+
 .v-main
   background: $mainBackColor
   color: $mainTextColor
@@ -160,11 +183,6 @@ header a
 
 .swal2-header
   margin-right: 5px
-
-// .text-substr
-//   overflow: hidden
-//   text-overflow: ellipsis
-//   white-space: nowrap
 
 .position-relative
   position: relative

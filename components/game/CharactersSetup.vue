@@ -126,6 +126,7 @@ export default {
 .charactersList
   width: 100%
   overflow-x: auto
+  overflow-y: hidden
   display: flex
   justify-content: center
   @media (max-width: 959px)

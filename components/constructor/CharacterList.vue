@@ -58,6 +58,7 @@ export default {
   display: flex
   align-items: center
   overflow-x: scroll
+  overflow-y: hidden
   height: 200px
 
 .charPreview
