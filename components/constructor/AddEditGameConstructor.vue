@@ -91,6 +91,7 @@
               fab
               dark
               depressed
+              :disabled="isFirstScene(preSelectedSceneID)"
               v-bind="attrs"
               v-on="on"
               @click="callToDeleteScene(preSelectedSceneID)"
@@ -262,6 +263,15 @@ export default {
     boot () {
       this.$store.dispatch('constructorStorage/setStateToDefault')
       this.addNewScene()
+    },
+    /**
+     * Проверяем является ли переданная сцена(id) первой (стартовой)
+     * @param {Number} sceneID Идентификатор сцены
+     * @returns {Boolean}
+     */
+    isFirstScene (sceneID) {
+      const index = this.scenes.findIndex(item => item.id === sceneID)
+      return index === 0
     },
     addNewScene () { // Создаем новую сцену и возвращаем ее
       const newScene = this.$store.getters['constructorStorage/getEmptyScene']()

@@ -56,7 +56,7 @@ export default {
   env: {
     ...envObject.parsed,
     // ...
-    appVersion: '0.2.0'
+    appVersion: '0.2.1'
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
