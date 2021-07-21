@@ -28,7 +28,10 @@
           </v-avatar>
         </v-col>
         <v-col cols="12" md="5" :class="{ disabled: playmode && !userChoose.includes('view') }">
-          <div class="previewsContainer pa-3">
+          <div
+            ref="previewsContainer"
+            class="previewsContainer pa-3"
+          >
             <div
               v-for="(id, index) in currentSubBlock.ids"
               :key="index"
@@ -51,7 +54,7 @@
               class="d-flex"
               :class="{'justify-center': windowWidth > 959}"
             >
-              <div v-if="!playmode" class="d-flex flex-column">
+              <div v-if="!playmode" class="d-flex flex-column" style="z-index: 8">
                 <div class="d-flex">
                   <v-checkbox
                     v-model="isMainCharacter"
@@ -284,6 +287,7 @@ export default {
         const element = this.blocks[index]
         this.setActiveAsset(element.folder, element.ids[Math.floor(Math.random() * element.ids.length)])
       }
+      this.scrollCurrentSubBlockToTop()
     },
     setInitialAssets () {
       for (let index = 0; index < this.blocks.length; index++) {
@@ -301,6 +305,12 @@ export default {
     },
     showItemsSubBlock (block) {
       this.currentSubBlock = block
+      this.scrollCurrentSubBlockToTop()
+    },
+    scrollCurrentSubBlockToTop () {
+      setTimeout(() => {
+        this.$refs.previewsContainer.scrollTop = 0
+      }, 0)
     },
     save () {
       if (this.playmode) {
