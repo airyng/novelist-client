@@ -71,9 +71,10 @@ export const actions = {
     }
   },
 
-  async refreshToken () {
+  async refreshToken ({ dispatch }) {
     const newTokenData = await this.$api.refresh(this.$atm.getToken())
     if (newTokenData) { this.$atm.setToken(newTokenData) }
+    else { dispatch('logout') }
   },
 
   async logout ({ commit }) {

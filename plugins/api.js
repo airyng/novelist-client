@@ -82,6 +82,7 @@ export default function ({ $axios }, inject) {
       })
       .catch((e) => {
         console.error(e)
+        return false
       })
   }
 

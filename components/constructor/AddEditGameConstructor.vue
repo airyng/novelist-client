@@ -355,7 +355,6 @@ export default {
     // что новелла в статусе "черновик"
     autoSave () {
       if (this.$refs?.projectSaver?.mainInfo && !this.$refs.projectSaver.mainInfo.onTestDrive) {
-        console.log('autosaving...')
         this.$refs.projectSaver.beginSaving(false)
       }
     },
