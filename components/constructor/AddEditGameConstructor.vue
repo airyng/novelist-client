@@ -221,7 +221,7 @@
 </template>
 
 <script>
-import { EventBus } from '@/plugins/event'
+// import { EventBus } from '@/plugins/event'
 import Swal from 'sweetalert2'
 import gameChecker from '@/plugins/gameChecker'
 
@@ -254,11 +254,11 @@ export default {
   },
   mounted () {
     this.boot()
-    EventBus.$on('onAddSceneAndLinkAndGo', this.addSceneAndLinkToActAndOpen)
+    // EventBus.$on('onAddSceneAndLinkAndGo', this.addSceneAndLinkToActAndOpen)
   },
-  beforeDestroy () {
-    EventBus.$off('onAddSceneAndLinkAndGo', this.addSceneAndLinkToActAndOpen)
-  },
+  // beforeDestroy () {
+  // EventBus.$off('onAddSceneAndLinkAndGo', this.addSceneAndLinkToActAndOpen)
+  // },
   methods: {
     boot () {
       this.$store.dispatch('constructorStorage/setStateToDefault')
@@ -322,7 +322,7 @@ export default {
     },
     hideContextCircle (params) {
       this.contextCirclePos = false
-      this.contextCircleScale = false
+      // this.contextCircleScale = false
     },
     callToDeleteScene (sceneID) {
       Swal.fire({

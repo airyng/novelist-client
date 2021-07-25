@@ -140,6 +140,7 @@ export const actions = {
     const scenes = [...state.scenes]
     scenes.push(scene)
     commit('setProperty', ['scenes', scenes])
+    console.log('addScene')
     EventBus.$emit('callToReinitSceneNetwork')
   },
 
@@ -157,17 +158,20 @@ export const actions = {
       return item
     })
     commit('setProperty', ['scenes', scenes])
+    console.log('updateScene')
     EventBus.$emit('callToReinitSceneNetwork')
   },
 
   updateAllScenes ({ commit, state }, scenes) {
     commit('setProperty', ['scenes', scenes])
+    console.log('updateAllScenes')
     EventBus.$emit('callToReinitSceneNetwork')
   },
 
   deleteScene ({ commit, state }, sceneID) {
     const scenes = state.scenes.filter(scene => scene.id !== sceneID)
     commit('setProperty', ['scenes', scenes])
+    console.log('deleteScene')
     EventBus.$emit('callToReinitSceneNetwork')
   },
 
