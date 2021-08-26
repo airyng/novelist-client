@@ -5,7 +5,7 @@ import { ErrorMessage } from '~/plugins/toast'
 export const state = () => ({
   settings: { // настройки редактора
     mainTextMaxLength: 500,
-    mainTextMinLength: 5,
+    mainTextMinLength: 3, // Минимальное кол-во текста в основном текстбоксе
     actionTextMaxLength: 100,
     maxActionsLength: 3,
     maxSceneTitleLength: 50,
@@ -18,7 +18,8 @@ export const state = () => ({
         minLength: 20,
         maxLength: 500
       }
-    }
+    },
+    maxCharactersLength: 10 // Максимально допустипое кол-во персонажей для создания в рамках одной новеллы
   },
   scenes: [], // список сцен
   projectID: null, // ID новеллы
@@ -42,7 +43,10 @@ export const getters = {
         id, // Уникальный идентификатор сцены
         title, // Заголовок сцены (не виден во время игры)
         mainText: '', // Основной текст сцены
-        background: null, // Данные о фоне
+        background: { // Данные о фоне
+          type: 'color',
+          value: '#9E9E9EFF'
+        },
         actions: [], // Список экшнов (действий)
         character: false, // ID персонажа
         showCharFromRight: false, // Флаг необходимости отображать анимацию появления персонажа справа

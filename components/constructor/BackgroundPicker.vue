@@ -10,11 +10,13 @@
     <v-col class="pt-0" cols="12">
       <ConstructorWideColorPicker
         v-if="!isBackImageType"
+        :value="value"
         class="pt-0"
         @onValueChanged="colorPicked"
       />
       <ConstructorBackgroundImagePicker
         v-else
+        :value="value"
         class="pt-0"
         @OnBackChanged="imagePicked"
       />
@@ -24,15 +26,22 @@
 
 <script>
 export default {
+  props: {
+    activeType: { type: String, default: 'image' },
+    value: { type: String, default: null }
+  },
   data () {
     return {
       isBackImageType: false
     }
   },
   watch: {
-    isBackImageType (val) {
-      this.OnBackChanged()
+    activeType () {
+      this.isBackImageType = this.activeType === 'image'
     }
+  },
+  created () {
+    this.isBackImageType = this.activeType === 'image'
   },
   methods: {
     colorPicked (value) {

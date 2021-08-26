@@ -36,12 +36,19 @@
             </div>
           </div>
 
-          <div class="mainTextBlock" :class="{ 'curs-pointer': activeScene.goNextWithoutChoice || !textSkiped }" @click="onClickToMainText">
+          <div
+            class="mainTextBlock"
+            :class="{
+              'curs-pointer': activeScene.goNextWithoutChoice || !textSkiped,
+              'pt-5': character
+            }"
+            @click="onClickToMainText"
+          >
             <span v-if="character" class="charName">{{ character.name }}</span>
             <span v-if="activeScene.goNextWithoutChoice && textSkiped" class="goNextLable">Нажмите, чтобы продолжить</span>
-            <p class="pa-5 mb-0 mainText" :class="{'mt-5': character}">
+            <span class="pa-5 mb-0 mainText">
               {{ mainText }}
-            </p>
+            </span>
           </div>
         </v-col>
       </v-row>
@@ -280,8 +287,13 @@ export default {
     height: 100%
     overflow: hidden auto
     white-space: pre-line
-    display: flex
-    align-items: flex-start
+    -webkit-touch-callout: none
+    -webkit-user-select: none
+    -khtml-user-select: none
+    -moz-user-select: none
+    -ms-user-select: none
+    user-select: none
+
   & .charName
     position: absolute
     top: -10px

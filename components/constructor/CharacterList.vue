@@ -15,7 +15,7 @@
       <span>{{ char.name }}</span>
     </div>
 
-    <div v-if="withAddBtn" class="charPreview d-block" @click="openCharacterEditor()">
+    <div v-if="withAddBtn && characters.length < maxCharsLength" class="charPreview d-block" @click="openCharacterEditor()">
       <div class="charPreview" style="border: none">
         <v-icon dark x-large>
           mdi-account-multiple-plus-outline
@@ -37,6 +37,9 @@ export default {
     }
   },
   computed: {
+    maxCharsLength () {
+      return this.$store.state.constructorStorage.settings.maxCharactersLength
+    },
     characters () {
       return this.$store.state.constructorStorage.characters
     }

@@ -9,9 +9,11 @@
         <v-col cols="12">
           <h1 class="d-inline-block py-2 big-white-txt-shadow" style="outline: none" contenteditable="true">
             <input
+              v-if="scene.title"
               v-model="scene.title"
               type="text"
               name="sceneTitle"
+              onFocus="this.select()"
               :maxlength="settings.maxSceneTitleLength"
               :style="'outline: none; width:' + (scene.title.length * 20) + 'px; cursor: pointer; min-width: 50px!important'"
             >
@@ -105,7 +107,11 @@
           </v-tooltip>
         </template>
 
-        <ConstructorBackgroundPicker @OnBackChanged="setBackground" />
+        <ConstructorBackgroundPicker
+          :value="scene.background.value"
+          :active-type="scene.background.type"
+          @OnBackChanged="setBackground"
+        />
       </CustomDialog>
 
       <CustomDialog
@@ -199,6 +205,9 @@ export default {
     }
   },
   computed: {
+    back () {
+      return this.scene?.background?.value
+    },
     backgroundStyle () {
       const defaultStyle = 'background-color: #333'
       if (!this.scene.background) {

@@ -113,7 +113,7 @@
 
           <v-list>
             <v-list-item
-              @click="openScenePicker()"
+              @click="openScenePicker"
             >
               <v-list-item-title>
                 Переход на сцену
@@ -121,7 +121,15 @@
             </v-list-item>
 
             <v-list-item
-              @click="openActionConditionPicker()"
+              @click="addNewScene"
+            >
+              <v-list-item-title>
+                Добавить сцену
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item
+              @click="openActionConditionPicker"
             >
               <v-list-item-title>
                 Переход по условию
@@ -274,6 +282,11 @@ export default {
     },
     onConditionPickerDialogStateChanged (data) { // Метод под вопросом
       this.conditionPickerDialog = data
+    },
+    addNewScene () {
+      const newScene = this.$store.getters['constructorStorage/getEmptyScene']()
+      this.$store.dispatch('constructorStorage/addScene', newScene)
+      this.setAction({ type: 'scene', scene: newScene })
     },
     setCondition (data) {
       this.localAction.condition = data
