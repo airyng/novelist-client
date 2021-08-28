@@ -82,6 +82,8 @@
 </template>
 
 <script>
+import lsm from '@/plugins/localStorageManager'
+
 export default {
   name: 'BackgroundImagePicker',
   props: {
@@ -173,6 +175,7 @@ export default {
     }
   },
   async mounted () {
+    lsm.init()
     await Promise.all([
       this.loadBacks(),
       this.loadBackCats()
@@ -186,14 +189,17 @@ export default {
       }
     },
     changeBack (back) {
-      this.$emit('OnBackChanged', this.BACKEND_URL + back.url)
+      const value = this.BACKEND_URL + back.url
+      lsm.state.lastSelectedBack = { type: 'image', value }
+      lsm.save()
+      this.$emit('OnBackChanged', value)
     },
     async loadBacks () {
       if (!this.backs.length) {
         await this.$store.dispatch('constructorStorage/loadBackgrounds')
-        if (!this.value) {
-          this.changeBack(this.backs[0])
-        }
+        // if (!this.value) {
+        //   this.changeBack(this.backs[0])
+        // }
       }
     },
     loadBackCats () {

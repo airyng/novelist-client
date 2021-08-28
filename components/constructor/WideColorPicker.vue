@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <!-- <v-col cols="6">
+    <v-col cols="6">
       <v-color-picker
         v-model="localVal"
         dot-size="20"
@@ -9,8 +9,8 @@
         :hide-inputs="true"
         dark
       />
-    </v-col> -->
-    <v-col cols="12">
+    </v-col>
+    <v-col cols="6">
       <v-color-picker
         v-model="localVal"
         dot-size="20"
