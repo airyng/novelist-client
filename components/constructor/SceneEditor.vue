@@ -108,6 +108,7 @@
         </template>
 
         <ConstructorBackgroundPicker
+          v-if="scene.background"
           :value="scene.background.value"
           :active-type="scene.background.type"
           @OnBackChanged="setBackground"
@@ -235,6 +236,13 @@ export default {
     this.getSceneFromStorage()
     this.setCharacterSettings()
     window.addEventListener('resize', () => this.setCharacterSettings())
+
+    if (!this.scene.background) {
+      this.scene.background = {
+        value: 'background-color: #333',
+        type: 'color'
+      }
+    }
   },
   methods: {
     // Изменяем поле по ключу key значением value внутри объекта scene

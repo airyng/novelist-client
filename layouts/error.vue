@@ -5,9 +5,14 @@
         <ErrorsNotFound v-if="error.statusCode === 404" />
         <ErrorsNotAuthenticated v-else-if="error.statusCode === 401" />
         <ErrorsAccessDenied v-else-if="error.statusCode === 403" />
-        <h1 v-else>
-          {{ error.statusCode || 'X Error' }} - {{ otherError }}
-        </h1>
+        <template v-else>
+          <h1>
+            {{ error.statusCode || 'X Error' }} - {{ otherError }}
+          </h1>
+          <v-btn dark @click="reloadPage">
+            Перезагрузить страницу
+          </v-btn>
+        </template>
       </v-col>
     </v-row>
   </v-container>
@@ -32,6 +37,11 @@ export default {
       this.error.statusCode === 404 ? this.pageNotFound : this.otherError
     return {
       title
+    }
+  },
+  methods: {
+    reloadPage () {
+      window.reload(true)
     }
   }
 }
