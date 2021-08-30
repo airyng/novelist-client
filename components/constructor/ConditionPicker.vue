@@ -2,7 +2,7 @@
   <div>
     <v-item-group mandatory>
       <v-row>
-        <template v-if="scenes.length > 1">
+        <div v-if="scenes.length > 1" class="conditionPicker_content">
           <v-timeline>
             <v-timeline-item color="deep-purple" right>
               <span slot="opposite">Выберите условие</span>
@@ -70,9 +70,9 @@
               Подтвердить
             </v-btn>
           </v-col>
-        </template>
+        </div>
 
-        <template v-else>
+        <div v-else>
           <v-col cols="12" class="pt-5">
             <p>Сцены еще не были добавлены.</p>
           </v-col>
@@ -81,7 +81,7 @@
               Добавить сцену
             </v-btn>
           </v-col>
-        </template>
+        </div>
       </v-row>
     </v-item-group>
   </div>
@@ -174,4 +174,7 @@ export default {
 <style lang="sass" scoped>
 .v-list-item--active.active
   background: linear-gradient(90deg, #673ab72b, #fff)
+.conditionPicker_content
+  width: 110%
+  transform: translateX(-15%)
 </style>
