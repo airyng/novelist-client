@@ -10,7 +10,6 @@
             <nuxt-link :to="'/games/'+ item.id + '/play'">
               <v-btn
                 class="play-btn"
-                v-bind="attrs"
                 fab
                 dark
                 depressed
@@ -86,10 +85,16 @@ export default {
       return this.authorName || this.item.authorName || false
     },
     gameLength () {
-      if (this.scenes.length >= 500) { return 'Эпический' }
-      if (this.scenes.length >= 250) { return 'Большой' }
-      if (this.scenes.length >= 100) { return 'Средний' }
-      if (this.scenes.length >= 50) { return 'Небольшой' }
+      const length = this.scenes.scenes.length
+      if (length >= 500) {
+        return 'Эпический'
+      } else if (length >= 250) {
+        return 'Большой'
+      } else if (length >= 100) {
+        return 'Средний'
+      } else if (length >= 50) {
+        return 'Небольшой'
+      }
       return 'Скромный'
     },
     itemBanner () {
