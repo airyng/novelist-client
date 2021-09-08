@@ -40,7 +40,7 @@
             class="mainTextBlock"
             :class="{
               'curs-pointer': activeScene.goNextWithoutChoice || !textSkiped,
-              'pt-5': character
+              'pt-5 pl-1': character
             }"
             @click="onClickToMainText"
           >
