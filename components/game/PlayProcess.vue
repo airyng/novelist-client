@@ -287,6 +287,7 @@ export default {
     height: 100%
     overflow: hidden auto
     white-space: pre-line
+  & *
     -webkit-touch-callout: none
     -webkit-user-select: none
     -khtml-user-select: none

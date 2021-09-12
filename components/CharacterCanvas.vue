@@ -130,7 +130,7 @@ export default {
     transform: translateX(-150vw)
     transition: 0.5s all ease
   &.loaded
-    transform: translateX(0)
+    transform: translateX(4vw)
     opacity: 1
   &.fromRight
     transform: translateX(150vw)
