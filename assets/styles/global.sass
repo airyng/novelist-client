@@ -2,6 +2,7 @@
 *, html 
   scrollbar-width: thin
   scrollbar-color: $purpleColor rgba(255, 255, 255, 0)
+  font-size: 16px
 
 *::-webkit-scrollbar,
 html *::-webkit-scrollbar 
@@ -22,7 +23,6 @@ body
   background-color: $mainBackColor
 
 .v-main
-  background: $mainBackColor
   color: $mainTextColor
   
 .v-application a
@@ -45,6 +45,10 @@ body
 .fullsize
   width: 100%
   height: 100%
+
+.fill-in-height
+  min-height: calc(100vh - 77px - 76px) // minus header and minus footer
+  height: auto
 
 button:focus
   outline: none
@@ -195,6 +199,13 @@ header a
   background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)
   background-size: 400% 400%
   animation: move-bg-pos 100s ease infinite
+
+.c-pointer
+  cursor: pointer
+
+.c-events-none
+  pointer-events: none
+
 
 @keyframes move-bg-vertically
   0%

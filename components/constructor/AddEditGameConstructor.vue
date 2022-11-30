@@ -1,25 +1,26 @@
 <template>
   <div class="fullsize position-relative">
-    <ConstructorPopup
+    <constructor-popup
       v-model="isScenePopupShow"
       @onClose="closeSceneEditor"
     >
-      <ConstructorSceneEditor
+      <constructor-scene-editor
         ref="sceneEditor"
         :key="selectedSceneID"
         :sceneid="selectedSceneID"
         @moveToScene="onSceneSelected"
       />
-    </ConstructorPopup>
-    <ConstructorPopup
+    </constructor-popup>
+
+    <constructor-popup
       v-model="isCharacterPopupShow"
       class="char-generator__popup"
       @onClose="closeCharacterEditor"
     >
-      <CommonCharacterGenerator :char="selectedCharacter" @onCharSaved="closeCharacterEditor" />
-    </ConstructorPopup>
+      <common-character-generator :char="selectedCharacter" @onCharSaved="closeCharacterEditor" />
+    </constructor-popup>
 
-    <ConstructorContextCircle :position="contextCirclePos">
+    <constructor-context-circle :position="contextCirclePos">
       <template #zero>
         <v-tooltip top>
           <template #activator="{ on, attrs }">
@@ -125,7 +126,7 @@
           <span>Основная информация</span>
         </v-tooltip>
       </template> -->
-    </ConstructorContextCircle>
+    </constructor-context-circle>
 
     <div class="bottom-bar">
       <v-tooltip v-if="showPlayBtn" top>
@@ -168,7 +169,7 @@
         <span>Сохранить проект</span>
       </v-tooltip>
 
-      <CustomDialog
+      <custom-dialog
         title="Основная информация"
         @onDialogStateChanged="mainSettingsDialogStateChanged"
       >
@@ -193,28 +194,28 @@
           </v-tooltip>
         </template>
 
-        <ConstructorMainSceneInfo ref="mainSceneInfo" />
-      </CustomDialog>
+        <constructor-main-scene-info ref="mainSceneInfo" />
+      </custom-dialog>
     </div>
 
     <div class="char-bar">
       <div class="left-right-stroke">
-        <ConstructorCharacterList with-add-btn @onCharacterClick="openCharacterEditor" />
+        <constructor-character-list with-add-btn @onCharacterClick="openCharacterEditor" />
       </div>
     </div>
 
-    <ConstructorSceneNetwork
+    <constructor-scene-network
       @clicked="onSceneNetworkClicked"
       @zoom="hideContextCircle"
       @dragStart="hideContextCircle"
     />
-    <CommonNightSkyCanvas />
+    <common-night-sky-canvas />
 
-    <ConstructorProjectSaver
+    <constructor-project-saver
       ref="projectSaver"
       @saved="onSaved"
     />
-    <ConstructorProjectLoader
+    <constructor-project-loader
       @onRestoreState="onRestoreState"
     />
   </div>
@@ -246,10 +247,10 @@ export default {
     ]
   },
   computed: {
-    isScenePopupShow () { return !!this.selectedSceneID },
     scenes () {
       return this.$store.state.constructorStorage.scenes
     },
+    isScenePopupShow () { return !!this.selectedSceneID },
     isCharacterPopupShow () { return !!this.selectedCharacter }
   },
   mounted () {
@@ -359,17 +360,17 @@ export default {
       this.$store.dispatch('constructorStorage/copyScene', { sceneToCopy: sceneCopy, setTransition })
     },
     saveProject () {
-      this.$refs.projectSaver.beginSaving()
+      this.$refs.projectSaver.save()
     },
     // Метод сохранения данных при условии
     // что новелла в статусе "черновик"
     autoSave () {
       if (this.$refs?.projectSaver?.mainInfo && !this.$refs.projectSaver.mainInfo.onTestDrive) {
-        this.$refs.projectSaver.beginSaving(false)
+        this.$refs.projectSaver.save(false)
       }
     },
     onRestoreState (gameData) {
-      this.$store.dispatch('constructorStorage/updateProjectID', gameData.id)
+      this.$store.dispatch('constructorStorage/updateProjectID', gameData._id)
       this.$store.dispatch('constructorStorage/updateMainSettings', {
         title: gameData.title,
         description: gameData.description,
@@ -377,6 +378,7 @@ export default {
       })
 
       let game = JSON.parse(gameData.json)
+
       if (!gameChecker.isLatestVersion(game)) {
         game = gameChecker.updateGameToLatestVersion(game)
       }

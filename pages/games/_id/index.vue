@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="fill-in-height">
     <v-row>
       <v-col>
         <template v-if="item">
@@ -7,7 +7,7 @@
             <h1 class="mt-2">
               {{ excerpt(item.title, 100) }}
             </h1>
-            <nuxt-link :to="'/games/'+ item.id + '/play'">
+            <nuxt-link :to="'/games/'+ item._id + '/play'">
               <v-btn
                 class="play-btn"
                 fab
@@ -29,14 +29,14 @@
             <nuxt-link v-if="computedAuthorName" :to="'/author/'+item.user_id">
               <span class="ml-4">{{ computedAuthorName }}</span>
             </nuxt-link>
-            <span class="ml-4 grey--text">Опубликовано: {{ item.published_at }}</span>
+            <span class="grey--text">Опубликовано: {{ item.published_at }}</span>
             <span class="ml-4 grey--text">Объем: {{ gameLength }}</span>
-            <CommonAutoSaveDetectionIcon :novella-id="item.id" class="ml-4" />
+            <common-auto-save-detection-icon :novella-id="item._id" class="ml-4" />
           </div>
 
           <div>{{ item.description }}</div>
 
-          <nuxt-link :to="'/games/'+ item.id + '/play'">
+          <nuxt-link :to="'/games/'+ item._id + '/play'">
             <v-btn
               text
               depressed
@@ -61,7 +61,7 @@ export default {
   async asyncData ({ $api, params, error, store }) {
     let item = false
     if (store.state.latestGames.length) {
-      item = store.state.latestGames.find(item => item.id === Number(params.id))
+      item = store.state.latestGames.find(item => item._id === Number(params.id))
     }
     if (!item) {
       item = await $api.getGameByID(params.id)
@@ -76,7 +76,7 @@ export default {
   },
   computed: {
     scenes () {
-      return JSON.parse(this.item.json)
+      return typeof this.item.json === 'string' ? JSON.parse(this.item.json) : this.item.json
     },
     authorAvatar () {
       return process.env.BACKEND_URL + '/storage/' + this.item.authorAvatar
@@ -85,7 +85,7 @@ export default {
       return this.authorName || this.item.authorName || false
     },
     gameLength () {
-      const length = this.scenes.scenes.length
+      const length = this.scenes.length
       if (length >= 500) {
         return 'Эпический'
       } else if (length >= 250) {

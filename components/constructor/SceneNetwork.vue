@@ -147,7 +147,6 @@ export default {
     },
     init () {
       // wait and reinit if vis not loaded
-      console.log('init')
       if (!window.vis) {
         setTimeout(() => this.reinit(), 100)
         // eslint-disable-next-line no-console
@@ -167,16 +166,13 @@ export default {
       // }, 10)
 
       this.initEvents()
-      console.log('network', this.network)
     },
 
     initEvents () {
       if (!this.network) { return }
 
       this.network.on('afterDrawing', () => {
-        console.log('afterDrawing 0', { ...this.lastViewPos })
         if (this.lastViewScale !== null && this.lastViewPos?.x && this.lastViewPos?.y) {
-          console.log('afterDrawing', { ...this.lastViewPos })
           // this.network.canvas.body.view.scale = this.lastViewScale
           // this.network.canvas.body.view.translation = this.lastViewPos
           this.network.moveTo({ scale: this.lastViewScale, position: { ...this.lastViewPos } })
@@ -219,7 +215,6 @@ export default {
     },
     reinit () {
       this.lastViewPos = { ...this.network.getViewPosition() }
-      console.log('reinit', this.lastViewPos)
       this.lastViewScale = this.network.getScale()
       this.network = null
       this.init()

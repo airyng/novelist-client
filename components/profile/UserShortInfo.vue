@@ -16,10 +16,7 @@
         <v-list-item-subtitle><a :href="'mailto:'+user.email">{{ user.email }}</a></v-list-item-subtitle>
       </v-list-item-content>
 
-      <v-list-item-avatar v-if="user.avatar" size="62">
-        <img :src="avatar">
-      </v-list-item-avatar>
-      <v-list-item-avatar v-else size="62" color="grey" />
+      <profile-user-avatar :user-id="user._id" allow-upload />
     </v-list-item>
 
     <!-- <v-card-actions>
@@ -28,18 +25,22 @@
         </v-card-actions> -->
   </v-card>
 </template>
+
 <script>
+// TODO: логично чтобы этот компонент отображал данные пользователя по переданному
+// через пропс id или полному набору данных. Тогда можно будет применять этот компонент более широко
+// Сейчас же в этом компоненте происходит обработка только информации из store
+
 export default {
+  data () {
+    return {
+      avatarUrl: null
+    }
+  },
   computed: {
     user () {
       return this.$store.state.userData
-    },
-    avatar () {
-      return process.env.BACKEND_URL + '/storage/' + this.user.avatar
     }
-  },
-  mounted () {
-    //
   }
 }
 </script>
@@ -50,5 +51,4 @@ export default {
   background-color: $subBackColor!important
   & a
     color: $mainTextColor
-
 </style>

@@ -1,12 +1,13 @@
+// Версия 0 представляет собой массив сцен в качестве корневого объекта
+// Версия 1 представляет собой объект вида { scenes, characters, version }
 const version = 1
 
 export default {
   isLatestVersion (game) {
-    // eslint-disable-next-line eqeqeq
-    return game.version && game.version == version
+    return game?.version === version
   },
   // Думаю, нужно автоматически обновлять на сервере исправленный json,
-  // чтобы больше не исправить его лишний раз
+  // чтобы больше не править его лишний раз
   updateGameToLatestVersion (game) {
     // Проверка на корректность структуры
     // Ошибка после нулевой версии
@@ -17,7 +18,7 @@ export default {
       }
     }
     // Ошибка после нулевой версии
-    game.scenes.forEach((element) => {
+    game.scenes.map((element) => {
       if (element.background && !element.background.type) {
         if (element.background.url) {
           element.background = {
@@ -26,6 +27,7 @@ export default {
           }
         }
       }
+      return element
     })
 
     game.version = version

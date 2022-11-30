@@ -3,27 +3,26 @@
 export default function ({ $axios, $cookiz }, inject) {
   const atm = {}
 
-  atm.getToken = function () {
-    if (process.server) {
-      return $cookiz.get('access_token')
-    } else {
-      return $cookiz.get('access_token') || window.localStorage.getItem('access_token')
+  atm.getToken = function (tokenType = 'access') { // tokenTypes: access, refresh
+    return $cookiz.get(tokenType + '_token')
+  }
+
+  atm.hasToken = function (tokenType = 'access') { // tokenTypes: access, refresh
+    return !!this.getToken(tokenType)
+  }
+
+  atm._setTokenToHeader = function (token) {
+    if (!token && this.authInterceptor) {
+      $axios.interceptors.request.eject(this.authInterceptor)
     }
-  }
-
-  atm.hasToken = function () {
-    return !!this.getToken()
-  }
-
-  atm._setTokenToHeader = function () {
-    const that = this
-    $axios.interceptors.request.use(function (config) {
-      const token = that.getToken()
-      config.headers.Authorization = 'Bearer ' + token
-      return config
-    }, function (err) {
-      return Promise.reject(err)
-    })
+    if (token) {
+      this.authInterceptor = $axios.interceptors.request.use((config) => {
+        config.headers.Authorization = 'Bearer ' + token
+        return config
+      }, function (err) {
+        return Promise.reject(err)
+      })
+    }
   }
 
   atm.setToken = function (tokenData) {
@@ -31,53 +30,28 @@ export default function ({ $axios, $cookiz }, inject) {
       console.error('Given argument is not an object.')
       return false
     }
-    // console.log('Trying to save token', tokenData)
-
-    if (tokenData.access_token && tokenData.expires_in) {
-      // console.log('Saving token', tokenData)
-      try {
-        $cookiz.set(
-          'access_token',
-          tokenData.access_token,
-          {
-            maxAge: tokenData.expires_in,
-            path: '/'
-          }
-        )
-        if (!process.server) {
-          window.localStorage.setItem('access_token', tokenData.access_token)
-        }
-        // console.log('Looks like success', $cookiz.get('access_token'))
-      } catch (err) {
-        throw new Error(err)
-      }
-
-      this._setTokenToHeader(tokenData.access_token)
-      return true
-    } else {
+    if (!tokenData.accessToken || !tokenData.refreshToken) {
       console.error('Given argument is not in token object type.')
       return false
     }
+
+    $cookiz.set('access_token', tokenData.accessToken, { path: '/' })
+    $cookiz.set('refresh_token', tokenData.refreshToken, { path: '/' })
+
+    this._setTokenToHeader(tokenData.accessToken)
+    return true
   }
 
   atm.purge = function () {
     $cookiz.remove('access_token')
-    this._setTokenToHeader('')
-    if (!process.server) {
-      window.localStorage.removeItem('access_token')
-      console.log('purge')
-    }
-    console.log('after purge atm debug', this.getToken())
+    $cookiz.remove('refresh_token')
+    this._setTokenToHeader(null)
   }
 
   atm.init = function () {
-    if (this.hasToken()) {
-      this._setTokenToHeader(this.getToken())
-      // console.log('atm debug', this.getToken())
-      return true
-    } else {
-      return false
-    }
+    if (!this.hasToken()) { return false }
+    this._setTokenToHeader(this.getToken())
+    return true
   }
 
   atm.init()

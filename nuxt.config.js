@@ -50,7 +50,8 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    '@nuxtjs/i18n'
   ],
 
   env: {
@@ -77,21 +78,36 @@ export default {
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
-    customVariables: ['~/assets/styles/variables.scss']
-    // theme: {
-    //   dark: true,
-    //   themes: {
-    //     dark: {
-    //       primary: colors.blue.darken2,
-    //       accent: colors.grey.darken3,
-    //       secondary: colors.amber.darken3,
-    //       info: colors.teal.lighten1,
-    //       warning: colors.amber.base,
-    //       error: colors.deepOrange.accent4,
-    //       success: colors.green.accent3
-    //     }
-    //   }
-    // }
+    customVariables: ['~/assets/styles/variables.scss'],
+    theme: {
+      dark: true,
+      themes: {
+        dark: {
+          background: '#1e1e1e',
+          primary: '#e4e4e4',
+          secondary: '#424242',
+          special: '#673ab7' // purple
+        }
+      }
+    }
+  },
+
+  i18n: {
+    locales: ['ru', 'en'],
+    defaultLocale: 'ru',
+    vueI18n: {
+      fallbackLocale: 'ru',
+      messages: {
+        en: {
+          sex_type__male: 'male',
+          sex_type__female: 'female'
+        },
+        ru: {
+          sex_type__male: 'мужской',
+          sex_type__female: 'женский'
+        }
+      }
+    }
   },
 
   router: {

@@ -7,14 +7,26 @@ export default function ({ $axios }, inject) {
   // May be will be better to move this setting to nuxt.config.js
   // $axios.defaults.withCredentials = true
 
-  const getApiURL = () => process.env.API_CLIENT_URL // process.server ? process.env.VUE_APP_API_URL : process.env.VUE_APP_API_CLIENT_URL
-
-  const getLatestGames = () => {
-    return $axios.get(getApiURL() + 'game/published')
+  const getBackendURL = () => process.env.API_BACKEND_URL
+  const getObjectStorageURL = () => process.env.API_OBJECT_STORAGE_URL
+  // TODO: Многие вещи в каждом методе повторяются. Нужно оптимизировать.
+  // Так же желательно выделить запросы по отдельным файлам, группируя по смыслу.
+  const getSexes = () => {
+    return $axios.get(getBackendURL() + 'sex')
       .then((response) => {
-        if (!process.server) {
-          console.log('getLatestGames success', response.data)
-        }
+        return response.data
+      }).catch((e) => {
+        console.error(e)
+        ErrorMessage({
+          title: 'Ошибка загрузки данных',
+          text: 'Пожалуйста, обновите страницу'
+        })
+      })
+  }
+
+  const getGames = () => {
+    return $axios.get(getBackendURL() + 'games')
+      .then((response) => {
         return response.data
       })
       .catch((e) => {
@@ -27,7 +39,7 @@ export default function ({ $axios }, inject) {
   }
 
   const getGameByID = (id) => {
-    return $axios.get(getApiURL() + `game/${id}`)
+    return $axios.get(getBackendURL() + `games/${id}`)
       .then((response) => {
         if (!process.server) {
           console.log('getGameByID success', response.data)
@@ -45,7 +57,7 @@ export default function ({ $axios }, inject) {
   }
 
   const register = (formData) => {
-    return $axios.post(getApiURL() + 'register', formData)
+    return $axios.post(getBackendURL() + 'register', formData)
       .then((response) => {
         if (!process.server) {
           console.log('register success', response.data)
@@ -59,7 +71,7 @@ export default function ({ $axios }, inject) {
   }
 
   const login = ({ email, password }) => {
-    return $axios.post(getApiURL() + 'auth/login', { email, password })
+    return $axios.post(getBackendURL() + 'login', { email, password })
       .then((response) => {
         if (!process.server) {
           console.log('login success', response.data)
@@ -72,8 +84,8 @@ export default function ({ $axios }, inject) {
       })
   }
 
-  const refresh = (token) => {
-    return $axios.post(getApiURL() + 'auth/refresh', { token })
+  const refresh = (refreshToken) => {
+    return $axios.post(getBackendURL() + 'token', { refresh_token: refreshToken })
       .then((response) => {
         if (!process.server) {
           console.log('login refresh success', response.data)
@@ -86,8 +98,8 @@ export default function ({ $axios }, inject) {
       })
   }
 
-  const logout = () => {
-    return $axios.post(getApiURL() + 'auth/logout')
+  const logout = (refreshToken) => {
+    return $axios.delete(getBackendURL() + `logout/${refreshToken}`)
       .then((response) => {
         if (!process.server) {
           console.log('logout success')
@@ -95,25 +107,19 @@ export default function ({ $axios }, inject) {
       })
   }
 
-  const getMe = () => {
-    return $axios.get(getApiURL() + 'auth/me')
-      .then((response) => {
-        if (!process.server) {
-          console.log('getMe success', response.data)
-        }
-        // SuccessMessage({
-        //   title: 'Вход выполнен!'
-        // })
-        return response.data
-      })
-      .catch((e) => {
-        console.error(e)
-        return e.response
-      })
+  const getProfile = async () => {
+    try {
+      const response = await $axios.get(getBackendURL() + 'profile')
+      console.log('getProfile success', response.data)
+      return response.data
+    } catch (err) {
+      console.error(err)
+      return false
+    }
   }
 
   const getMyGamesList = () => {
-    return $axios.get(getApiURL() + 'game/my')
+    return $axios.get(getBackendURL() + 'games/my')
       .then((response) => {
         if (!process.server) {
           console.log('getMyGamesList success', response.data)
@@ -126,7 +132,7 @@ export default function ({ $axios }, inject) {
   }
 
   const publishGame = (id) => {
-    return $axios.post(getApiURL() + 'game/publish', { id })
+    return $axios.post(getBackendURL() + 'games/publish', { id })
       .then((response) => {
         if (!process.server) {
           console.log('publishGame success', response.data)
@@ -140,7 +146,7 @@ export default function ({ $axios }, inject) {
   }
 
   const unpublishGame = (id) => {
-    return $axios.post(getApiURL() + 'game/unpublish', { id })
+    return $axios.post(getBackendURL() + 'games/unpublish', { id })
       .then((response) => {
         if (!process.server) {
           console.log('unpublishGame success', response.data)
@@ -154,7 +160,23 @@ export default function ({ $axios }, inject) {
   }
 
   const saveGame = (game) => {
-    return $axios.post(getApiURL() + 'game/save', game)
+    console.log('game', { ...game })
+    return $axios.post(getBackendURL() + 'games', game)
+      .then((response) => {
+        if (!process.server) {
+          console.log('saveGame success', response.data)
+        }
+        return response.status
+      })
+      .catch((e) => {
+        console.error(e)
+        return e.response.status
+      })
+  }
+
+  const updateGame = (game) => {
+    console.log('game', { ...game })
+    return $axios.patch(getBackendURL() + `games/${game._id}`, game)
       .then((response) => {
         if (!process.server) {
           console.log('saveGame success', response.data)
@@ -168,7 +190,7 @@ export default function ({ $axios }, inject) {
   }
 
   const getBackgrounds = () => {
-    return $axios.get(getApiURL() + 'background/list')
+    return $axios.get(getBackendURL() + 'background/list')
       .then((response) => {
         if (!process.server) {
           console.log('getBackgrounds success', response.data)
@@ -181,7 +203,7 @@ export default function ({ $axios }, inject) {
   }
 
   const getBackgroundCategories = () => {
-    return $axios.get(getApiURL() + 'background/categories')
+    return $axios.get(getBackendURL() + 'background/categories')
       .then((response) => {
         if (!process.server) {
           console.log('getBackgroundCategories success', response.data)
@@ -194,12 +216,12 @@ export default function ({ $axios }, inject) {
   }
 
   const getUser = (id) => {
-    return $axios.get(getApiURL() + `user/${id}`)
+    return $axios.get(getBackendURL() + `users/${id}`)
       .then((response) => {
         if (!process.server) {
           console.log('getUser success', response.data)
         }
-        return response.data
+        return response
       })
       .catch((e) => {
         console.error(e)
@@ -208,10 +230,66 @@ export default function ({ $axios }, inject) {
   }
 
   const sendReport = (formData) => {
-    return $axios.post(getApiURL() + 'report/send', formData)
+    return $axios.post(getBackendURL() + 'report/send', formData)
       .then((response) => {
         if (!process.server) {
-          console.log('getUser sendReport', response)
+          console.log('sendReport success', response)
+        }
+        return response
+      })
+      .catch((e) => {
+        console.error(e)
+        return e.response
+      })
+  }
+
+  const getImageLink = (imageId) => {
+    return $axios.get(getObjectStorageURL() + 'link/' + imageId)
+      .then((response) => {
+        if (!process.server) {
+          console.log('getImageLink success', response)
+        }
+        return response
+      })
+      .catch((e) => {
+        console.error(e)
+        return e.response
+      })
+  }
+
+  const uploadImage = (data) => {
+    return $axios.post(getObjectStorageURL() + 'f', data)
+      .then((response) => {
+        if (!process.server) {
+          console.log('uploadImage success', response)
+        }
+        return response
+      })
+      .catch((e) => {
+        console.error(e)
+        return e.response
+      })
+  }
+
+  const deleteImage = (fileId) => {
+    return $axios.delete(getObjectStorageURL() + `f/${fileId}`)
+      .then((response) => {
+        if (!process.server) {
+          console.log('deleteImage success', response)
+        }
+        return response
+      })
+      .catch((e) => {
+        console.error(e)
+        return e.response
+      })
+  }
+
+  const updateUser = (data) => {
+    return $axios.patch(getBackendURL() + `users/${data.id}`, data)
+      .then((response) => {
+        if (!process.server) {
+          console.log('updateUser success', response)
         }
         return response
       })
@@ -227,18 +305,24 @@ export default function ({ $axios }, inject) {
     login,
     refresh,
     logout,
-    getMe,
-    getApiURL,
+    getProfile,
+    getBackendURL,
     getGameByID,
-    getLatestGames,
+    getGames,
     getMyGamesList,
     publishGame,
     unpublishGame,
     saveGame,
+    updateGame,
     getBackgrounds,
     getBackgroundCategories,
     getUser,
-    sendReport
+    sendReport,
+    getSexes,
+    uploadImage,
+    deleteImage,
+    updateUser,
+    getImageLink
   }
 
   inject('api', api)

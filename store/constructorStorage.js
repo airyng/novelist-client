@@ -118,6 +118,7 @@ export const getters = {
   }
 }
 
+// TODO: мутации можно вынести в отдельный миксин, так как они везде повторяются
 export const mutations = {
   setProperty (state, payload) {
     state[payload[0]] = payload[1]
@@ -139,15 +140,14 @@ export const actions = {
     commit('setProperty', ['projectID', null])
     commit('setProperty', ['mainInfo', mainInfo])
   },
-
   addScene ({ commit, state }, scene) {
     const scenes = [...state.scenes]
     scenes.push(scene)
     commit('setProperty', ['scenes', scenes])
-    console.log('addScene')
+    // TODO: желательно отказаться от таких вызовов событий
     EventBus.$emit('callToReinitSceneNetwork')
   },
-
+  // TODO: уместно будет, чтобы этот метод назывался не update, а set
   updateProjectID ({ commit, state }, ID) {
     if (!state.projectID) {
       commit('setProperty', ['projectID', ID])
@@ -155,32 +155,28 @@ export const actions = {
       console.error('Unable to set projectID')
     }
   },
-
   updateScene ({ commit, state }, scene) {
     const scenes = state.scenes.map((item) => {
       if (item.id === scene.id) { item = scene }
       return item
     })
     commit('setProperty', ['scenes', scenes])
-    console.log('updateScene')
     EventBus.$emit('callToReinitSceneNetwork')
   },
-
-  updateAllScenes ({ commit, state }, scenes) {
+  // TODO: уместно будет, чтобы этот метод назывался не update, а set
+  updateAllScenes ({ commit }, scenes) {
     commit('setProperty', ['scenes', scenes])
-    console.log('updateAllScenes')
     EventBus.$emit('callToReinitSceneNetwork')
   },
-
   deleteScene ({ commit, state }, sceneID) {
     const scenes = state.scenes.filter(scene => scene.id !== sceneID)
     commit('setProperty', ['scenes', scenes])
-    console.log('deleteScene')
     EventBus.$emit('callToReinitSceneNetwork')
   },
-
   copyScene ({ dispatch, getters }, { sceneToCopy, setTransition = false }) {
     if (!sceneToCopy) { return }
+    // TODO: Это не копирование, а булщит полный.
+    // Нужно сделать глубокое копирование всего объекта в одну строку
     const newScene = getters.getEmptyScene()
     newScene.background = sceneToCopy.background
     newScene.character = sceneToCopy.character
@@ -192,7 +188,7 @@ export const actions = {
       dispatch('addAction', { scene: sceneToCopy, actionParams: { text: 'Далее...', to: newScene.id } })
     }
   },
-
+  // TODO: надо переименовать этот метод на deleteActionFromScene
   deleteActionToScene ({ dispatch, state }, sceneID) {
     for (let index = 0; index < state.scenes.length; index++) {
       const scene = state.scenes[index]
@@ -205,7 +201,6 @@ export const actions = {
       }
     }
   },
-
   addAction ({ dispatch, state, getters }, { scene, actionParams }) {
     if (state.settings.maxActionsLength > scene.actions.length) {
       const _scene = JSON.parse(JSON.stringify(scene))
@@ -239,21 +234,17 @@ export const actions = {
     }
     commit('setProperty', ['characters', characters])
   },
-
   updateAllCharacters ({ state, commit }, characters) {
     commit('setProperty', ['characters', characters])
   },
-
   removeCharacterFromList ({ state, commit }, character) {
     const characters = state.characters.filter(char => char.uid !== character.uid)
     commit('setProperty', ['characters', characters])
   },
-
   async loadBackgrounds ({ commit }) {
     const result = await this.$api.getBackgrounds()
     commit('setProperty', ['backgrounds', result])
   },
-
   async loadBackgroundCategories ({ commit }) {
     const result = await this.$api.getBackgroundCategories()
     commit('setProperty', ['backgroundCategories', result])

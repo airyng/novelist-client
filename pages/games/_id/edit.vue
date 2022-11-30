@@ -1,5 +1,5 @@
 <template>
-  <ConstructorAddEditGameConstructor />
+  <constructor-add-edit-game-constructor />
 </template>
 
 <script>

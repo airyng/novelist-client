@@ -1,35 +1,35 @@
 <template>
-  <v-row v-if="latestGames && latestGames.length">
-    <v-col
-      v-for="(item, index) in latestGames"
-      :key="index"
-      cols="12"
-    >
-      <NovellaItem :item="item" :author-name="authorName" :author-avatar="authorAvatar" />
-    </v-col>
+  <v-row>
+    <template v-if="items && items.length">
+      <v-col
+        v-for="(item, index) in items"
+        :key="index"
+        cols="12"
+        md="6"
+      >
+        <novella-item :item="item" />
+      </v-col>
+    </template>
+
+    <!-- Sceleton loader start -->
+    <template v-else>
+      <v-col
+        v-for="n in 4"
+        :key="n"
+        cols="12"
+        md="6"
+      >
+        <v-skeleton-loader type="card-avatar" />
+      </v-col>
+    </template>
+    <!-- Sceleton loader end -->
   </v-row>
-  <p v-else class="grey--text">
-    {{ alterText }}
-  </p>
 </template>
 
 <script>
 export default {
   props: {
-    items: { type: Array, default: null },
-    authorName: { type: String, default: null },
-    authorAvatar: { type: String, default: null }
-  },
-  computed: {
-    latestGames () {
-      return this.items || this.$store.state.latestGames
-    },
-    propsUsed () {
-      return this.items
-    },
-    alterText () {
-      return this.propsUsed ? 'Здесь пусто...' : 'Загрузка...'
-    }
+    items: { type: Array, default: null }
   }
 }
 </script>

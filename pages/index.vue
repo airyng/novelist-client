@@ -1,45 +1,31 @@
 <template>
-  <div>
-    <v-container>
-      <v-row>
-        <v-col cols="12">
-          <CommonBestGames />
-        </v-col>
-      </v-row>
+  <v-container class="fill-in-height">
+    <v-row>
+      <v-col cols="12">
+        <common-best-games />
+      </v-col>
+    </v-row>
 
-      <v-row justify="center">
-        <v-col class="col-12 pb-0">
-          <h2 class="pl-3">
-            Последние новеллы
-          </h2>
-        </v-col>
-      </v-row>
-      <v-row class="mt-0">
-        <v-col cols="12" md="8">
-          <ItemsGrid />
-        </v-col>
-
-        <v-col cols="4" md="4" class="d-none d-md-block">
-          <v-card class="mx-auto mt-3" :elevation="0">
-            <v-list-item-content class="pa-2 d-flex align-center justify-center" style="min-height: 200px">
-              <div class="text-center">
-                <p class="ma-0">
-                  Здесь могла быть <br>ваша реклама :)
-                </p>
-              </div>
-            </v-list-item-content>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </div>
+    <v-row justify="center">
+      <v-col class="col-12 pb-0">
+        <h2>
+          Новые новеллы
+        </h2>
+      </v-col>
+    </v-row>
+    <v-row class="mt-0">
+      <v-col cols="12">
+        <items-grid :items="latestGames" />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 
 export default {
   async asyncData ({ store }) {
-    await store.dispatch('getLatestGames')
+    await store.dispatch('dictionaries/gamesFetch')
   },
   data () {
     return {}
@@ -47,6 +33,11 @@ export default {
   head () {
     return {
       title: 'Главная'
+    }
+  },
+  computed: {
+    latestGames () {
+      return this.$store.state.dictionaries.latestGames
     }
   },
   mounted () {},

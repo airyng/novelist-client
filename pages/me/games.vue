@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="fill-in-height">
     <v-container>
       <v-row justify="center">
         <v-col class="col-12">
@@ -88,7 +88,7 @@
                   <v-list-item-icon
                     class="curs-pointer mr-2 mt-0"
                     v-bind="attrs"
-                    @click="goToPage('/games/'+ item.id +'/edit')"
+                    @click="goToPage(`/games/${item._id}/edit`)"
                     v-on="on"
                   >
                     <v-icon class="mainTextColor">
@@ -181,14 +181,14 @@ export default {
   },
   methods: {
     async unpublish (item) {
-      const responseStatus = await this.$api.unpublishGame(item.id)
+      const responseStatus = await this.$api.unpublishGame(item._id)
       if (responseStatus === 200) {
         SuccessMessage({
           text: 'Новелла "' + item.title + '" деактивирована!'
         })
 
         this.$store.dispatch('profile/updateMyGames', this.items.map((gameItem) => {
-          if (gameItem.id === item.id) {
+          if (gameItem._id === item._id) {
             gameItem.status = 'test_drive'
           }
           return gameItem
@@ -204,14 +204,14 @@ export default {
         ErrorMessage({ text: 'Публикация доступна только для новелл со статусом "Тест-Драйв"' })
         return
       }
-      const responseStatus = await this.$api.publishGame(item.id)
+      const responseStatus = await this.$api.publishGame(item._id)
       if (responseStatus === 200) {
         SuccessMessage({
           text: 'Новелла "' + item.title + '" успешно опубликована!'
         })
 
         this.$store.dispatch('profile/updateMyGames', this.items.map((gameItem) => {
-          if (gameItem.id === item.id) {
+          if (gameItem._id === item._id) {
             gameItem.status = 'published'
           }
           return gameItem
@@ -239,7 +239,7 @@ export default {
       if (item.status === 'draft') {
         ErrorMessage({ text: 'Новелла в статусе "Черновик"' })
       } else {
-        this.goToPage('/games/' + item.id + '/play')
+        this.goToPage('/games/' + item._id + '/play')
       }
     },
     niceDate (date) {

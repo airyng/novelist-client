@@ -13,7 +13,7 @@
       :error-count="formErrors.email.length"
       :error-messages="formErrors.email"
       @keyup.enter="submitForm"
-      @click="removeErrors()"
+      @click="removeErrors"
     />
 
     <v-text-field
@@ -28,7 +28,7 @@
       :error-messages="formErrors.password"
       counter
       required
-      @click="removeErrors()"
+      @click="removeErrors"
       @keyup.enter="submitForm"
       @click:append="showPass = !showPass"
     />
@@ -104,11 +104,14 @@ export default {
           SuccessMessage({
             title: 'Вход выполнен!'
           })
-        } else if (response.status === 422 || response.status === 401) {
+        } else if (response.status === 404) {
           ErrorMessage({
-            text: 'Email или пароль не верны'
+            text: 'Не правильный email или пароль.'
           })
         } else {
+          ErrorMessage({
+            text: 'Неизвестная ошибка. Попробуйте перезагрузить страницу.'
+          })
           // eslint-disable-next-line no-console
           console.log(response)
         }

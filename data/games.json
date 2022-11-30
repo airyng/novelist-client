@@ -1,0 +1,2260 @@
+{
+    "data": [
+        {
+            "id": 15,
+            "title": "Быт кота",
+            "description": "gfdg fdgfgsfdsgfdgdf gfds gfsgfgfdg fdgfgsfdsgfdgdf gfds gfsgfgfdg fdgfgsfdsgfdgdf gfds gfsgfgfdg fdgfgsfdsgfdgdf gfds gfsgfgfdg fdgfgsfdsgfdgdf gfds gfsgf",
+            "status": "published",
+            "published_at": "2020-09-26 18:41:46",
+            "json": [
+                {
+                    "id": 1,
+                    "title": "Сцена 1",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 2,
+                            "actionText": "Запрыгнуть на подоконник"
+                        },
+                        {
+                            "id": 2,
+                            "to": 3,
+                            "actionText": "Размышлять о великом глядя на стену"
+                        }
+                    ],
+                    "mainText": "gdfgdfsgfg",
+                    "background": null
+                },
+                {
+                    "id": 2,
+                    "title": "Сцена 2",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": false,
+                            "actionText": ""
+                        }
+                    ],
+                    "mainText": "",
+                    "background": null
+                },
+                {
+                    "id": 3,
+                    "title": "Сцена 3",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": false,
+                            "actionText": ""
+                        }
+                    ],
+                    "mainText": "",
+                    "background": null
+                }
+            ]
+        },
+        {
+            "id": 21,
+            "title": "Ночное выживание",
+            "description": "Игра в жанре: квест, хоррор, сурвайвл, вампиры. Испытайте свою интуицию. В игре 4 победных концовки, попробуйте найти их все!",
+            "status": "published",
+            "published_at": "2020-10-04 07:20:35",
+            "json": [
+                {
+                    "id": 1,
+                    "title": "Сцена 1",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 3,
+                            "actionText": "Укрыться в ближайшем трактире"
+                        },
+                        {
+                            "id": 2,
+                            "to": 2,
+                            "actionText": "К черту вампиров! Чтобы я упускал возможность надышаться свежим, ветерком?"
+                        }
+                    ],
+                    "mainText": "Ваше путешествие затянулось и вы прибыли в город, когда окончательно стемнело. На улице стало сыро и холодно. Всем известно, что в это время на охоту за свежей кровью незадачливых обывателей выходят вампиры. Может стоит спрятаться и переждать ночь в ближайшем трактире?",
+                    "background": {
+                        "id": 223,
+                        "url": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq.jpg",
+                        "name": "Улица 38",
+                        "path": "backgrounds/October2020/qxCn2WfPQMp62vQLVPNq.jpg",
+                        "url_small": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq-small.jpg",
+                        "categories": [
+                            {
+                                "id": 14,
+                                "name": "Ночь",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 14
+                                },
+                                "created_at": "2020-09-29T20:17:19.000000Z",
+                                "updated_at": "2020-09-29T20:17:19.000000Z"
+                            },
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 16,
+                                "name": "Улица",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 16
+                                },
+                                "created_at": "2020-09-29T20:25:05.000000Z",
+                                "updated_at": "2020-09-29T20:25:05.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T20:31:22.000000Z",
+                        "updated_at": "2020-10-03T20:31:22.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq-medium.jpg"
+                    }
+                },
+                {
+                    "id": 2,
+                    "title": "Сцена 2",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": "quit",
+                            "actionText": "Это бесславный конец..."
+                        }
+                    ],
+                    "mainText": "Вы никогда не отличались беспечностью. Всего через пяти минут после решения прогуляться еще чуть-чуть по влажным улицам, вас окликнул молодой мужcкой голос. Едва вы обернулись, тут же ощутили леденящие зубы на своей шее... Поражение!",
+                    "background": {
+                        "hex": "#400000",
+                        "hue": 0,
+                        "hexa": "#400000FF",
+                        "hsla": {
+                            "a": 1,
+                            "h": 0,
+                            "l": 0.125,
+                            "s": 1
+                        },
+                        "hsva": {
+                            "a": 1,
+                            "h": 0,
+                            "s": 1,
+                            "v": 0.25
+                        },
+                        "rgba": {
+                            "a": 1,
+                            "b": 0,
+                            "g": 0,
+                            "r": 64
+                        },
+                        "alpha": 1
+                    }
+                },
+                {
+                    "id": 3,
+                    "title": "Сцена 3",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 5,
+                            "actionText": "Странный тип. Черта с два я к нему подойду! Надо скорее что-то заказать."
+                        },
+                        {
+                            "id": 2,
+                            "to": 4,
+                            "actionText": "Не знакомые люди вот так друг друга не зовут. Видать, дело важное. Поздороваюсь."
+                        }
+                    ],
+                    "mainText": "Вы укрылись в трактире. Где-то за окном послышался женский стон. Или показалось? Вполне может быть, что сегодня вы спасли свою тушку. Краем глаза вы уловили, что один из посетителей машет вам и зовет подойти. С другой стороны, вам так сильно захотелось выпить, что ждать выпивку за столом не было сил. Подойти сразу к трактирщику и заказать выпить?",
+                    "background": {
+                        "id": 274,
+                        "url": "/storage/backgrounds/October2020/O3504omp1AztBnItaws9.png",
+                        "name": "Кафе 3",
+                        "path": "backgrounds/October2020/O3504omp1AztBnItaws9.png",
+                        "url_small": "/storage/backgrounds/October2020/O3504omp1AztBnItaws9-small.png",
+                        "categories": [
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 274,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 21,
+                                "name": "Деревня",
+                                "pivot": {
+                                    "background_id": 274,
+                                    "background_category_id": 21
+                                },
+                                "created_at": "2020-10-03T18:34:58.000000Z",
+                                "updated_at": "2020-10-03T18:34:58.000000Z"
+                            },
+                            {
+                                "id": 23,
+                                "name": "Кафе",
+                                "pivot": {
+                                    "background_id": 274,
+                                    "background_category_id": 23
+                                },
+                                "created_at": "2020-10-03T21:01:51.000000Z",
+                                "updated_at": "2020-10-03T21:01:51.000000Z"
+                            },
+                            {
+                                "id": 25,
+                                "name": "Бар",
+                                "pivot": {
+                                    "background_id": 274,
+                                    "background_category_id": 25
+                                },
+                                "created_at": "2020-10-03T21:05:15.000000Z",
+                                "updated_at": "2020-10-03T21:05:15.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T21:05:00.000000Z",
+                        "updated_at": "2020-10-03T21:06:16.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/O3504omp1AztBnItaws9-medium.png"
+                    }
+                },
+                {
+                    "id": 4,
+                    "title": "Сцена 4",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": "quit",
+                            "actionText": "Это бесславный конец..."
+                        }
+                    ],
+                    "mainText": "Хоть вы и не узнали в лицо парня за столом, но сочли не вежливым его игнорировать. Со спокойной душой вы подошли близко к зазывале и даже не заметили, как тот впился вам в шею. Здесь никому нельзя доверять... Поражение!",
+                    "background": {
+                        "hex": "#400000",
+                        "hue": 0,
+                        "hexa": "#400000FF",
+                        "hsla": {
+                            "a": 1,
+                            "h": 0,
+                            "l": 0.125,
+                            "s": 1
+                        },
+                        "hsva": {
+                            "a": 1,
+                            "h": 0,
+                            "s": 1,
+                            "v": 0.25
+                        },
+                        "rgba": {
+                            "a": 1,
+                            "b": 0,
+                            "g": 0,
+                            "r": 64
+                        },
+                        "alpha": 1
+                    }
+                },
+                {
+                    "id": 5,
+                    "title": "Сцена 5",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 6,
+                            "actionText": "Пинта эля лишней не бывает, куда спешить? Пережду ночь здесь."
+                        },
+                        {
+                            "id": 2,
+                            "to": 7,
+                            "actionText": "Глупо испытывать судьбу. Надо уносить ноги!"
+                        }
+                    ],
+                    "mainText": "Усевшись за стойкой вы заказали пинту эля и тут же ее осушили. К вашему уху внезапно нагнулся трактирщик и сказал, мол вам здорово повезло, что вы не подошли к тому парню, который звал вас. Трактирщик тонко намекнул о принадлежности зазывалы к любителям кровушки. Похоже даже здесь не безопасно. Нужно поскорее выбираться отсюда. С другой стороны, вряд ли этот парень устроит кровавую баню у всех на глазах, тут же полно людей! Пожалуй, в трактире вы пока в безопасности. Заказать еще эля?",
+                    "background": {
+                        "id": 274,
+                        "url": "/storage/backgrounds/October2020/O3504omp1AztBnItaws9.png",
+                        "name": "Кафе 3",
+                        "path": "backgrounds/October2020/O3504omp1AztBnItaws9.png",
+                        "url_small": "/storage/backgrounds/October2020/O3504omp1AztBnItaws9-small.png",
+                        "categories": [
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 274,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 21,
+                                "name": "Деревня",
+                                "pivot": {
+                                    "background_id": 274,
+                                    "background_category_id": 21
+                                },
+                                "created_at": "2020-10-03T18:34:58.000000Z",
+                                "updated_at": "2020-10-03T18:34:58.000000Z"
+                            },
+                            {
+                                "id": 23,
+                                "name": "Кафе",
+                                "pivot": {
+                                    "background_id": 274,
+                                    "background_category_id": 23
+                                },
+                                "created_at": "2020-10-03T21:01:51.000000Z",
+                                "updated_at": "2020-10-03T21:01:51.000000Z"
+                            },
+                            {
+                                "id": 25,
+                                "name": "Бар",
+                                "pivot": {
+                                    "background_id": 274,
+                                    "background_category_id": 25
+                                },
+                                "created_at": "2020-10-03T21:05:15.000000Z",
+                                "updated_at": "2020-10-03T21:05:15.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T21:05:00.000000Z",
+                        "updated_at": "2020-10-03T21:06:16.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/O3504omp1AztBnItaws9-medium.png"
+                    }
+                },
+                {
+                    "id": 6,
+                    "title": "Сцена 6",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": "quit",
+                            "actionText": "Это бесславный конец..."
+                        }
+                    ],
+                    "mainText": "Вы позволили себе немного расслабиться и заказали еще кружечку холодного эля. Внезапно трактирщик приблизил свое лицо к вашему и сказал: \"Впрочем, я рад, что ты подошел сразу ко мне. Не хотелось бы делиться добычей, даже с другом!\" Трактирщик злобно оскалился и блеснул длинными клыками. Похоже это была ваша последняя кружка эля... Поражение!",
+                    "background": {
+                        "hex": "#470101",
+                        "hue": 0,
+                        "hexa": "#470101FF",
+                        "hsla": {
+                            "a": 1,
+                            "h": 0,
+                            "l": 0.1394861111111111,
+                            "s": 0.9834710743801652
+                        },
+                        "hsva": {
+                            "a": 1,
+                            "h": 0,
+                            "s": 0.9916666666666668,
+                            "v": 0.2766666666666666
+                        },
+                        "rgba": {
+                            "a": 1,
+                            "b": 1,
+                            "g": 1,
+                            "r": 71
+                        },
+                        "alpha": 1
+                    }
+                },
+                {
+                    "id": 7,
+                    "title": "Сцена 7",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 8,
+                            "actionText": "Новый район города не далеко отсюда. Там гораздо безопасней. Нужно спешить туда!"
+                        },
+                        {
+                            "id": 2,
+                            "to": 9,
+                            "actionText": "Обратиться к стражнику за помощью."
+                        }
+                    ],
+                    "mainText": "Вы подорвались из-за стойки и выбежали из трактира. Стоило вам отбежать на десяток метров и оглянуться, как вы заметили дюжину закованных в латы стражников, врывающихся в трактир. Учитывая то, что нигде сейчас не безопасно, вы решили не отдаляться от стражей. Всего через три минуты разгоряченной битвы в трактире, стражники неспешно стали выносить трупы из помещения. На удивление среди них оказались все посетители трактира, включая хозяина. Похоже ваши действия чудом спасли вам жизнь.",
+                    "background": {
+                        "id": 223,
+                        "url": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq.jpg",
+                        "name": "Улица 38",
+                        "path": "backgrounds/October2020/qxCn2WfPQMp62vQLVPNq.jpg",
+                        "url_small": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq-small.jpg",
+                        "categories": [
+                            {
+                                "id": 14,
+                                "name": "Ночь",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 14
+                                },
+                                "created_at": "2020-09-29T20:17:19.000000Z",
+                                "updated_at": "2020-09-29T20:17:19.000000Z"
+                            },
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 16,
+                                "name": "Улица",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 16
+                                },
+                                "created_at": "2020-09-29T20:25:05.000000Z",
+                                "updated_at": "2020-09-29T20:25:05.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T20:31:22.000000Z",
+                        "updated_at": "2020-10-03T20:31:22.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq-medium.jpg"
+                    }
+                },
+                {
+                    "id": 8,
+                    "title": "Сцена 8",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": "quit",
+                            "actionText": "Это бесславный конец..."
+                        }
+                    ],
+                    "mainText": "Все-таки город просто кишит этими тварями ночью! Стоило вам свернуть за угол, как вы тут же оказались в цепких лапах двух молодых вампиров. И они медлить не стали...",
+                    "background": {
+                        "hex": "#470101",
+                        "hue": 0,
+                        "hexa": "#470101FF",
+                        "hsla": {
+                            "a": 1,
+                            "h": 0,
+                            "l": 0.1394861111111111,
+                            "s": 0.9834710743801652
+                        },
+                        "hsva": {
+                            "a": 1,
+                            "h": 0,
+                            "s": 0.9916666666666668,
+                            "v": 0.2766666666666666
+                        },
+                        "rgba": {
+                            "a": 1,
+                            "b": 1,
+                            "g": 1,
+                            "r": 71
+                        },
+                        "alpha": 1
+                    }
+                },
+                {
+                    "id": 9,
+                    "title": "Сцена 9",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 10,
+                            "actionText": "Взять остатки своей решимости в руки и последовать по карте."
+                        },
+                        {
+                            "id": 2,
+                            "to": 23,
+                            "actionText": "Отдаляться от стражей не самое лучшее решение. Поэтому, нужно идти за ними."
+                        }
+                    ],
+                    "mainText": "Благодаря Бога за свою удачу, вы осторожно подошли к ближайшему из латников и попросили об убежище: \"Извини\", - ответил тот, - \"у нас еще два рейда, некогда нам с тобой нянчиться. Есть одно безопасное местечко под протекцией инквизиции. Уверен, там в крыше над головой не откажут\". С этими словами страж протянул вам простенькую схемку, начертанную на маленьком клочке ткани, с местом расположения убежища и удалился к сослуживцам. Что бы он ни говорил, а добраться туда - еще та проблема.",
+                    "background": {
+                        "id": 223,
+                        "url": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq.jpg",
+                        "name": "Улица 38",
+                        "path": "backgrounds/October2020/qxCn2WfPQMp62vQLVPNq.jpg",
+                        "url_small": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq-small.jpg",
+                        "categories": [
+                            {
+                                "id": 14,
+                                "name": "Ночь",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 14
+                                },
+                                "created_at": "2020-09-29T20:17:19.000000Z",
+                                "updated_at": "2020-09-29T20:17:19.000000Z"
+                            },
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 16,
+                                "name": "Улица",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 16
+                                },
+                                "created_at": "2020-09-29T20:25:05.000000Z",
+                                "updated_at": "2020-09-29T20:25:05.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T20:31:22.000000Z",
+                        "updated_at": "2020-10-03T20:31:22.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq-medium.jpg"
+                    }
+                },
+                {
+                    "id": 10,
+                    "title": "Сцена 10",
+                    "actions": [
+                        {
+                            "id": 2,
+                            "to": 11,
+                            "actionText": "Простым людям с вампирами не справиться. Лучше не рисковать. Отправиться дальше."
+                        },
+                        {
+                            "id": 2,
+                            "to": 16,
+                            "actionText": "Помочь бедняге."
+                        }
+                    ],
+                    "mainText": "Вы помчались по улицам города. Начал срываться дождь. Через пару минут блужданий отчетливо послышались звуки борьбы. Совсем близко. Скользнув к углу дома и с опаской щенка выглянув, вашему взору открылся бой мужчины в грязном длинном плаще и мерзкого вампира. Человек неуклюже размахивал своей рапирой, едва успевая парировать молниеносные выпады кровопийцы. Похоже одному ему не справиться. Возможно с вашей помощью удастся одолеть зубастого?",
+                    "background": {
+                        "id": 200,
+                        "url": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "name": "Улица 25",
+                        "path": "backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "url_small": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-small.jpg",
+                        "categories": [
+                            {
+                                "id": 14,
+                                "name": "Ночь",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 14
+                                },
+                                "created_at": "2020-09-29T20:17:19.000000Z",
+                                "updated_at": "2020-09-29T20:17:19.000000Z"
+                            },
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 16,
+                                "name": "Улица",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 16
+                                },
+                                "created_at": "2020-09-29T20:25:05.000000Z",
+                                "updated_at": "2020-09-29T20:25:05.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T20:15:17.000000Z",
+                        "updated_at": "2020-10-03T20:15:17.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-medium.jpg"
+                    }
+                },
+                {
+                    "id": 11,
+                    "title": "Сцена 11",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 12,
+                            "actionText": "Ужасная ночь, но медлить нельзя!"
+                        }
+                    ],
+                    "mainText": "Стоило отдалиться метров на пятьдесят, как послышался истошный человеческий вопль. Вы спустились на бег.",
+                    "background": {
+                        "id": 200,
+                        "url": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "name": "Улица 25",
+                        "path": "backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "url_small": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-small.jpg",
+                        "categories": [
+                            {
+                                "id": 14,
+                                "name": "Ночь",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 14
+                                },
+                                "created_at": "2020-09-29T20:17:19.000000Z",
+                                "updated_at": "2020-09-29T20:17:19.000000Z"
+                            },
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 16,
+                                "name": "Улица",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 16
+                                },
+                                "created_at": "2020-09-29T20:25:05.000000Z",
+                                "updated_at": "2020-09-29T20:25:05.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T20:15:17.000000Z",
+                        "updated_at": "2020-10-03T20:15:17.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-medium.jpg"
+                    }
+                },
+                {
+                    "id": 12,
+                    "title": "Сцена 12",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 13,
+                            "actionText": "Отправиться к незнакомцу."
+                        },
+                        {
+                            "id": 2,
+                            "to": 14,
+                            "actionText": "Береженого Бог бережет! Сейчас никому нельзя доверять. Отправиться дальше."
+                        }
+                    ],
+                    "mainText": "Вы бежали, чудом успевая смотреть по сторонам. Редкие капли, падавшие с затянутого тучами неба, превратились в знойный ливень. Вся одежда промокла, ботинки предательски скользили. В один момент вы были готовы поклясться, что вас кто-то преследует. Чей-то пристальный леденящий взгляд впился в ваш затылок. Пробегая мимо очередного перекрестка, на грани видимости вы заметили чей-то силуэт. До убежища осталось минут десять ходу. Если вдалеке не враг, то было бы не лишним заручиться поддержкой.",
+                    "background": {
+                        "id": 200,
+                        "url": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "name": "Улица 25",
+                        "path": "backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "url_small": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-small.jpg",
+                        "categories": [
+                            {
+                                "id": 14,
+                                "name": "Ночь",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 14
+                                },
+                                "created_at": "2020-09-29T20:17:19.000000Z",
+                                "updated_at": "2020-09-29T20:17:19.000000Z"
+                            },
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 16,
+                                "name": "Улица",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 16
+                                },
+                                "created_at": "2020-09-29T20:25:05.000000Z",
+                                "updated_at": "2020-09-29T20:25:05.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T20:15:17.000000Z",
+                        "updated_at": "2020-10-03T20:15:17.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-medium.jpg"
+                    }
+                },
+                {
+                    "id": 13,
+                    "title": "Сцена 13",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": "quit",
+                            "actionText": "Победа! (Попробуйте найти другие победные концовки)"
+                        }
+                    ],
+                    "mainText": "Пол минуты бега и вы окрикнули прохожего. К счастью, обернулся человек. Да и похоже священник. Вы поздоровались с ним и сказали, что ищите убежище. Он ответил, что как раз тоже туда направляется. Вы продолжили путь вдвоем и уже через пять минут зашли в теплое и уютное помещение. На этот раз вам здорово повезло. Победа!",
+                    "background": {
+                        "id": 60,
+                        "url": "/storage/backgrounds/September2020/oLo9qAsgyZ7DB6Bv1Un3.jpeg",
+                        "name": "Замок 11",
+                        "path": "backgrounds\\September2020\\oLo9qAsgyZ7DB6Bv1Un3.jpeg",
+                        "url_small": "/storage/backgrounds/September2020/oLo9qAsgyZ7DB6Bv1Un3-small.jpeg",
+                        "categories": [
+                            {
+                                "id": 8,
+                                "name": "Фентези",
+                                "pivot": {
+                                    "background_id": 60,
+                                    "background_category_id": 8
+                                },
+                                "created_at": "2020-09-29T19:59:16.000000Z",
+                                "updated_at": "2020-09-29T19:59:16.000000Z"
+                            },
+                            {
+                                "id": 10,
+                                "name": "Замок",
+                                "pivot": {
+                                    "background_id": 60,
+                                    "background_category_id": 10
+                                },
+                                "created_at": "2020-09-29T20:04:34.000000Z",
+                                "updated_at": "2020-09-29T20:04:34.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-09-30T20:41:53.000000Z",
+                        "updated_at": "2020-09-30T20:41:53.000000Z",
+                        "url_medium": "/storage/backgrounds/September2020/oLo9qAsgyZ7DB6Bv1Un3-medium.jpeg"
+                    }
+                },
+                {
+                    "id": 14,
+                    "title": "Сцена 14",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 15,
+                            "actionText": "Забыть о боли и бежать, не оглядываясь!"
+                        }
+                    ],
+                    "mainText": "Бег порядком вымотал вас. Боль в груди и боку вынудила сбросить скорость. Судя по карте, остались считанные минуты до убежища. Мерзкий, ледяной дождь уже не оставил ни единой сухой нитки на вашем теле. \"Эй, ты! Остановись!\", послышался чей-то женский уверенный крик. Останавливаться вы и не подумали, но оглянулись рефлекторно. За вами, через чур бодро, бежала какая-то женщина в балахоне. Так люди не бегают. Это вампир!",
+                    "background": {
+                        "id": 200,
+                        "url": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "name": "Улица 25",
+                        "path": "backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "url_small": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-small.jpg",
+                        "categories": [
+                            {
+                                "id": 14,
+                                "name": "Ночь",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 14
+                                },
+                                "created_at": "2020-09-29T20:17:19.000000Z",
+                                "updated_at": "2020-09-29T20:17:19.000000Z"
+                            },
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 16,
+                                "name": "Улица",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 16
+                                },
+                                "created_at": "2020-09-29T20:25:05.000000Z",
+                                "updated_at": "2020-09-29T20:25:05.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T20:15:17.000000Z",
+                        "updated_at": "2020-10-03T20:15:17.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-medium.jpg"
+                    }
+                },
+                {
+                    "id": 15,
+                    "title": "Сцена 15",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": "quit",
+                            "actionText": "Это бесславный конец..."
+                        }
+                    ],
+                    "mainText": "Вы словно сам ветер рассекали своим телом капли дождя, но мокрые ботинки дали о себе знать и на первой же травянистой поверхности ваша нога уехала резко вперед. С силой вы ударились затылком о землю и перед глазами все расплылось. Вампирше ничего не стоило догнать контуженную жертву. Секунда и ледяная боль пронзила ваше тело начиная от левой ключицы. Совсем чуть-чуть вам не хватило до спасения. Поражение!",
+                    "background": {
+                        "hex": "#470101",
+                        "hue": 0,
+                        "hexa": "#470101FF",
+                        "hsla": {
+                            "a": 1,
+                            "h": 0,
+                            "l": 0.1394861111111111,
+                            "s": 0.9834710743801652
+                        },
+                        "hsva": {
+                            "a": 1,
+                            "h": 0,
+                            "s": 0.9916666666666668,
+                            "v": 0.2766666666666666
+                        },
+                        "rgba": {
+                            "a": 1,
+                            "b": 1,
+                            "g": 1,
+                            "r": 71
+                        },
+                        "alpha": 1
+                    }
+                },
+                {
+                    "id": 16,
+                    "title": "Сцена 16",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 17,
+                            "actionText": "Ужасная ночь, но медлить нельзя!"
+                        }
+                    ],
+                    "mainText": "Всего мгновение вы собирались с духом, но спасти бедолагу не вышло. Вампир нанес ему острыми когтями глубокую рану на шее. Но все же вы рванули на помощь и с разбегу запрыгнули на спину врага. Тот потерял равновесие и накренился. Этого было достаточно, чтобы незнакомец из последних сил всадил клинок точно в сердце обидчику. Из раны вампира повалил пар. Лезвие посеребренное, не иначе. Исход печален - два мертвых тела у вас под ногами. Ничего не остается, как забрать рапиру и отправиться дальше.",
+                    "background": {
+                        "id": 200,
+                        "url": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "name": "Улица 25",
+                        "path": "backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "url_small": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-small.jpg",
+                        "categories": [
+                            {
+                                "id": 14,
+                                "name": "Ночь",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 14
+                                },
+                                "created_at": "2020-09-29T20:17:19.000000Z",
+                                "updated_at": "2020-09-29T20:17:19.000000Z"
+                            },
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 16,
+                                "name": "Улица",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 16
+                                },
+                                "created_at": "2020-09-29T20:25:05.000000Z",
+                                "updated_at": "2020-09-29T20:25:05.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T20:15:17.000000Z",
+                        "updated_at": "2020-10-03T20:15:17.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-medium.jpg"
+                    }
+                },
+                {
+                    "id": 17,
+                    "title": "Сцена 17",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 18,
+                            "actionText": "Отправиться к незнакомцу."
+                        },
+                        {
+                            "id": 2,
+                            "to": 19,
+                            "actionText": "Береженого Бог бережет! Сейчас никому нельзя доверять. Отправиться дальше."
+                        }
+                    ],
+                    "mainText": "Вы бежали, чудом успевая смотреть по сторонам. Редкие капли, падавшие с затянутого тучами неба, превратились в знойный ливень. Вся одежда промокла, ботинки предательски скользили. В один момент вы были готовы поклясться, что вас кто-то преследует. Чей-то пристальный леденящий взгляд впился в ваш затылок. Пробегая мимо очередного перекрестка, на грани видимости вы заметили чей-то силуэт. До убежища осталось минут десять ходу. Если вдалеке не враг, то было бы не лишним заручиться поддержкой.",
+                    "background": {
+                        "id": 200,
+                        "url": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "name": "Улица 25",
+                        "path": "backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "url_small": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-small.jpg",
+                        "categories": [
+                            {
+                                "id": 14,
+                                "name": "Ночь",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 14
+                                },
+                                "created_at": "2020-09-29T20:17:19.000000Z",
+                                "updated_at": "2020-09-29T20:17:19.000000Z"
+                            },
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 16,
+                                "name": "Улица",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 16
+                                },
+                                "created_at": "2020-09-29T20:25:05.000000Z",
+                                "updated_at": "2020-09-29T20:25:05.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T20:15:17.000000Z",
+                        "updated_at": "2020-10-03T20:15:17.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-medium.jpg"
+                    }
+                },
+                {
+                    "id": 18,
+                    "title": "Сцена 18",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": "quit",
+                            "actionText": "Победа! (Попробуйте найти другие победные концовки)"
+                        }
+                    ],
+                    "mainText": "Пол минуты бега и вы окрикнули прохожего. К счастью, обернулся человек. Да и похоже священник. Вы поздоровались с ним и сказали, что ищите убежище. Он ответил, что как раз тоже туда направляется. Вы продолжили путь вдвоем и уже через пять минут зашли в теплое и уютное помещение. На этот раз вам здорово повезло. Победа!",
+                    "background": {
+                        "id": 60,
+                        "url": "/storage/backgrounds/September2020/oLo9qAsgyZ7DB6Bv1Un3.jpeg",
+                        "name": "Замок 11",
+                        "path": "backgrounds\\September2020\\oLo9qAsgyZ7DB6Bv1Un3.jpeg",
+                        "url_small": "/storage/backgrounds/September2020/oLo9qAsgyZ7DB6Bv1Un3-small.jpeg",
+                        "categories": [
+                            {
+                                "id": 8,
+                                "name": "Фентези",
+                                "pivot": {
+                                    "background_id": 60,
+                                    "background_category_id": 8
+                                },
+                                "created_at": "2020-09-29T19:59:16.000000Z",
+                                "updated_at": "2020-09-29T19:59:16.000000Z"
+                            },
+                            {
+                                "id": 10,
+                                "name": "Замок",
+                                "pivot": {
+                                    "background_id": 60,
+                                    "background_category_id": 10
+                                },
+                                "created_at": "2020-09-29T20:04:34.000000Z",
+                                "updated_at": "2020-09-29T20:04:34.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-09-30T20:41:53.000000Z",
+                        "updated_at": "2020-09-30T20:41:53.000000Z",
+                        "url_medium": "/storage/backgrounds/September2020/oLo9qAsgyZ7DB6Bv1Un3-medium.jpeg"
+                    }
+                },
+                {
+                    "id": 19,
+                    "title": "Сцена 19",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 20,
+                            "actionText": "От этих демонов бег бесполезен. Выхватить рапиру и помолиться всем святым!"
+                        },
+                        {
+                            "id": 2,
+                            "to": 15,
+                            "actionText": "Забыть о боли и бежать, не оглядываясь!"
+                        }
+                    ],
+                    "mainText": "Бег порядком вымотал вас. Боль в груди и боку вынудила сбросить скорость. Судя по карте, остались считанные минуты до убежища. Мерзкий, ледяной дождь уже не оставил ни единой сухой нитки на вашем теле. \"Эй, ты! Остановись!\", послышался чей-то женский уверенный крик. Останавливаться вы и не подумали, но оглянулись рефлекторно. За вами, через чур бодро, бежала какая-то женщина в балахоне. Так люди не бегают. Это вампир!",
+                    "background": {
+                        "id": 200,
+                        "url": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "name": "Улица 25",
+                        "path": "backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "url_small": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-small.jpg",
+                        "categories": [
+                            {
+                                "id": 14,
+                                "name": "Ночь",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 14
+                                },
+                                "created_at": "2020-09-29T20:17:19.000000Z",
+                                "updated_at": "2020-09-29T20:17:19.000000Z"
+                            },
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 16,
+                                "name": "Улица",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 16
+                                },
+                                "created_at": "2020-09-29T20:25:05.000000Z",
+                                "updated_at": "2020-09-29T20:25:05.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T20:15:17.000000Z",
+                        "updated_at": "2020-10-03T20:15:17.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-medium.jpg"
+                    }
+                },
+                {
+                    "id": 20,
+                    "title": "Сцена 20",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 21,
+                            "actionText": "Сконцентрироваться на сражении..."
+                        }
+                    ],
+                    "mainText": "Секунда и когти врага напоролись на ваш клинок. Хорошим фехтовальщиком вы никогда не были, но когда-то основы изучали. Возможно именно это позвонило вам поспевать за атаками кровопийцы и отбивать ее бритвенно-острые конечности. Посеребренное лезвие оставляло глубокие шипящие раны на руках вампира.",
+                    "background": {
+                        "id": 200,
+                        "url": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "name": "Улица 25",
+                        "path": "backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "url_small": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-small.jpg",
+                        "categories": [
+                            {
+                                "id": 14,
+                                "name": "Ночь",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 14
+                                },
+                                "created_at": "2020-09-29T20:17:19.000000Z",
+                                "updated_at": "2020-09-29T20:17:19.000000Z"
+                            },
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 16,
+                                "name": "Улица",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 16
+                                },
+                                "created_at": "2020-09-29T20:25:05.000000Z",
+                                "updated_at": "2020-09-29T20:25:05.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T20:15:17.000000Z",
+                        "updated_at": "2020-10-03T20:15:17.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-medium.jpg"
+                    }
+                },
+                {
+                    "id": 21,
+                    "title": "Сцена 21",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 22,
+                            "actionText": "Бежать не оглядываясь!"
+                        }
+                    ],
+                    "mainText": "Хотя пару ее атак вы все-таки пропустили, но раны противника, похоже, оказались болезненнее, и она на мгновение отшатнулась, одернув руки после очередной парированной атаки. Вы поняли, что это, возможно, единственный шанс и сделали резкий выпад. Оружие вонзилось точно в сердце. Вы услышали непродолжительное шипение и хлюпанье плоти ночной охотницы, и та упала, закатив багряно-красные глаза. Удача на вашей стороне. Не теряя ни секунды, вы бросились дальше по тротуару.",
+                    "background": {
+                        "id": 200,
+                        "url": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "name": "Улица 25",
+                        "path": "backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg.jpg",
+                        "url_small": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-small.jpg",
+                        "categories": [
+                            {
+                                "id": 14,
+                                "name": "Ночь",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 14
+                                },
+                                "created_at": "2020-09-29T20:17:19.000000Z",
+                                "updated_at": "2020-09-29T20:17:19.000000Z"
+                            },
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 16,
+                                "name": "Улица",
+                                "pivot": {
+                                    "background_id": 200,
+                                    "background_category_id": 16
+                                },
+                                "created_at": "2020-09-29T20:25:05.000000Z",
+                                "updated_at": "2020-09-29T20:25:05.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T20:15:17.000000Z",
+                        "updated_at": "2020-10-03T20:15:17.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/tghyCMdGkvLzvAwt5Yxg-medium.jpg"
+                    }
+                },
+                {
+                    "id": 22,
+                    "title": "Сцена 22",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": "quit",
+                            "actionText": "Победа! (Попробуйте найти другие победные концовки)"
+                        }
+                    ],
+                    "mainText": "Через две минуты вы уже стояли на пороге трехэтажной часовни. Нет сомнений - это то самое убежище. Вы постучались и взглянув на вас через щель в двери, пожилой человек впустил вас во внутрь. Вы спасены. Это Победа!",
+                    "background": {
+                        "id": 60,
+                        "url": "/storage/backgrounds/September2020/oLo9qAsgyZ7DB6Bv1Un3.jpeg",
+                        "name": "Замок 11",
+                        "path": "backgrounds\\September2020\\oLo9qAsgyZ7DB6Bv1Un3.jpeg",
+                        "url_small": "/storage/backgrounds/September2020/oLo9qAsgyZ7DB6Bv1Un3-small.jpeg",
+                        "categories": [
+                            {
+                                "id": 8,
+                                "name": "Фентези",
+                                "pivot": {
+                                    "background_id": 60,
+                                    "background_category_id": 8
+                                },
+                                "created_at": "2020-09-29T19:59:16.000000Z",
+                                "updated_at": "2020-09-29T19:59:16.000000Z"
+                            },
+                            {
+                                "id": 10,
+                                "name": "Замок",
+                                "pivot": {
+                                    "background_id": 60,
+                                    "background_category_id": 10
+                                },
+                                "created_at": "2020-09-29T20:04:34.000000Z",
+                                "updated_at": "2020-09-29T20:04:34.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-09-30T20:41:53.000000Z",
+                        "updated_at": "2020-09-30T20:41:53.000000Z",
+                        "url_medium": "/storage/backgrounds/September2020/oLo9qAsgyZ7DB6Bv1Un3-medium.jpeg"
+                    }
+                },
+                {
+                    "id": 23,
+                    "title": "Сцена 23",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 24,
+                            "actionText": "Стоять и мерзнуть в одиночестве, не лучшая идея. Последовать за стражами."
+                        },
+                        {
+                            "id": 2,
+                            "to": 33,
+                            "actionText": "Остаться ждать снаружи и не мешать профессионалам выполнять свою работу."
+                        }
+                    ],
+                    "mainText": "Вы идете за отрядом карателей на некотором отдалении. С неба начал неспешно покапывать дождь. Через четверть часа ребята перед вами притормозили и завели бурную беседу. До ваших ушей донесся лишь смысл - сейчас они будут вламываться в частный дом. Участок, у которого вы остановились не выделялся среди прочих, однако, тревога в вас неизменно нарастала. Мгновение спустя и отряд сломал ворота, та же участь постигла и дверь дома.",
+                    "background": {
+                        "id": 223,
+                        "url": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq.jpg",
+                        "name": "Улица 38",
+                        "path": "backgrounds/October2020/qxCn2WfPQMp62vQLVPNq.jpg",
+                        "url_small": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq-small.jpg",
+                        "categories": [
+                            {
+                                "id": 14,
+                                "name": "Ночь",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 14
+                                },
+                                "created_at": "2020-09-29T20:17:19.000000Z",
+                                "updated_at": "2020-09-29T20:17:19.000000Z"
+                            },
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 16,
+                                "name": "Улица",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 16
+                                },
+                                "created_at": "2020-09-29T20:25:05.000000Z",
+                                "updated_at": "2020-09-29T20:25:05.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T20:31:22.000000Z",
+                        "updated_at": "2020-10-03T20:31:22.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq-medium.jpg"
+                    }
+                },
+                {
+                    "id": 24,
+                    "title": "Сцена 24",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 25,
+                            "actionText": "Попытаться прийти в себя."
+                        }
+                    ],
+                    "mainText": "Едва ваши спутники скрылись из виду вы подбежали ко входу в жилище, укрылись от разыгравшегося дождя под коротким козырьком и напрягли слух. Из дома доносились крики и нечеловеческие визги вперемешку со звуками схватки. ХРУТТ! Хрустнул козырек и свалился на вас вместе с бледнокожим вампиром. Картинка в ваших глазах разтроилась, а ладони уперлись в мокрую землю под натиском упавшего на вас хлама.",
+                    "background": {
+                        "id": 223,
+                        "url": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq.jpg",
+                        "name": "Улица 38",
+                        "path": "backgrounds/October2020/qxCn2WfPQMp62vQLVPNq.jpg",
+                        "url_small": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq-small.jpg",
+                        "categories": [
+                            {
+                                "id": 14,
+                                "name": "Ночь",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 14
+                                },
+                                "created_at": "2020-09-29T20:17:19.000000Z",
+                                "updated_at": "2020-09-29T20:17:19.000000Z"
+                            },
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 16,
+                                "name": "Улица",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 16
+                                },
+                                "created_at": "2020-09-29T20:25:05.000000Z",
+                                "updated_at": "2020-09-29T20:25:05.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T20:31:22.000000Z",
+                        "updated_at": "2020-10-03T20:31:22.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq-medium.jpg"
+                    }
+                },
+                {
+                    "id": 25,
+                    "title": "Сцена 25",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 26,
+                            "actionText": "Продолжать следовать за стражниками."
+                        }
+                    ],
+                    "mainText": "Сложить изображение воедино и мыслить здраво удалось только после того, как из прохода вывалился один из латников. Он схватил вас за плечо и одним уверенным движением поставил на ноги. Голова будто раскалывается на двое, но вы чудом живы. Вампир выпавший из окна, в момент падения был уже мертв. Через пять минут весь отряд был в сборе. Похоже они обсуждают вашу персону, но это мелочи - главное, что вы живы!",
+                    "background": {
+                        "id": 223,
+                        "url": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq.jpg",
+                        "name": "Улица 38",
+                        "path": "backgrounds/October2020/qxCn2WfPQMp62vQLVPNq.jpg",
+                        "url_small": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq-small.jpg",
+                        "categories": [
+                            {
+                                "id": 14,
+                                "name": "Ночь",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 14
+                                },
+                                "created_at": "2020-09-29T20:17:19.000000Z",
+                                "updated_at": "2020-09-29T20:17:19.000000Z"
+                            },
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 16,
+                                "name": "Улица",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 16
+                                },
+                                "created_at": "2020-09-29T20:25:05.000000Z",
+                                "updated_at": "2020-09-29T20:25:05.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T20:31:22.000000Z",
+                        "updated_at": "2020-10-03T20:31:22.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq-medium.jpg"
+                    }
+                },
+                {
+                    "id": 26,
+                    "title": "Сцена 26",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 27,
+                            "actionText": "Внутри особняка кажется надежнее, пойду туда."
+                        },
+                        {
+                            "id": 2,
+                            "to": 34,
+                            "actionText": "Нужно переждать снаружи. В случае опасности, всегда можно забежать."
+                        }
+                    ],
+                    "mainText": "Шествие за железными спинами вас немного успокоило, но расслабляться было рано. Следующая остановка случилась через треть часа в новой части города. Оказывается, не только в старых районах, но и здесь есть притоны этих демонов. Нужно быть на чеку. На этот раз был трехэтажный особняк. После недолгого брифинга, стражи ворвались во внутрь. Хоть местность кажется и более безопасной, чем прежняя, но это лишь видимость, сейчас нигде не безопасно. Стоит ли на этот раз пойти с отрядом?",
+                    "background": {
+                        "hex": "#6D4C41",
+                        "hue": 15.000000000000004,
+                        "hexa": "#6D4C41FF",
+                        "hsla": {
+                            "a": 1,
+                            "h": 15.000000000000004,
+                            "l": 0.3411764705882353,
+                            "s": 0.2528735632183907
+                        },
+                        "hsva": {
+                            "a": 1,
+                            "h": 15.000000000000004,
+                            "s": 0.4036697247706422,
+                            "v": 0.4274509803921568
+                        },
+                        "rgba": {
+                            "a": 1,
+                            "b": 65,
+                            "g": 76,
+                            "r": 109
+                        },
+                        "alpha": 1
+                    }
+                },
+                {
+                    "id": 27,
+                    "title": "Сцена 27",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 28,
+                            "actionText": "Прислушаться к окружающим звукам..."
+                        }
+                    ],
+                    "mainText": "Оглядываясь по сторонам, вы зашли в помещение, где вас сразу встретили слабый свет и звуки борьбы. Хорошо бы найти кого-то из стражей. Несколько шагов по коридору и ваша нога наткнулась на что-то большое. Хотя вы шли медленно, но все равно умудрились упасть. Наверно стресс сказывается. Пошарив руками по сторонам, вы отчетливо нащупали мертвое тело под собой. Судя по обилию металла на теле, это был один из ваших \"защитников\". А вы-то надеялись, такие ребята без потерь обходятся.",
+                    "background": {
+                        "id": 54,
+                        "url": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC.jpg",
+                        "name": "Замок 5",
+                        "path": "backgrounds\\September2020\\jt2elVI7bmBoKFWutrGC.jpg",
+                        "url_small": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC-small.jpg",
+                        "categories": [
+                            {
+                                "id": 9,
+                                "name": "Заброшенное",
+                                "pivot": {
+                                    "background_id": 54,
+                                    "background_category_id": 9
+                                },
+                                "created_at": "2020-09-29T20:01:00.000000Z",
+                                "updated_at": "2020-09-29T20:01:37.000000Z"
+                            },
+                            {
+                                "id": 10,
+                                "name": "Замок",
+                                "pivot": {
+                                    "background_id": 54,
+                                    "background_category_id": 10
+                                },
+                                "created_at": "2020-09-29T20:04:34.000000Z",
+                                "updated_at": "2020-09-29T20:04:34.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-09-30T20:37:53.000000Z",
+                        "updated_at": "2020-09-30T20:37:53.000000Z",
+                        "url_medium": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC-medium.jpg"
+                    }
+                },
+                {
+                    "id": 28,
+                    "title": "Сцена 28",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 29,
+                            "actionText": "Нечего корчить из себя героя. Надо бежать пока есть возможность."
+                        },
+                        {
+                            "id": 2,
+                            "to": 41,
+                            "actionText": "Ухватить меч по крепче и старательно делать вид, что не замечаете врага."
+                        }
+                    ],
+                    "mainText": "Внезапно вы услышали рядом чьи-то тихие шаги. Приглядевшись в темноту, вы смогли разглядеть сутулого вампира, крадущегося к вам. Похоже, он думает, что вы его еще не заметили. Тот факт, что ваша левая рука опиралась на меч латника, натолкнул вас на мысль о внезапной атаке.",
+                    "background": {
+                        "id": 54,
+                        "url": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC.jpg",
+                        "name": "Замок 5",
+                        "path": "backgrounds\\September2020\\jt2elVI7bmBoKFWutrGC.jpg",
+                        "url_small": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC-small.jpg",
+                        "categories": [
+                            {
+                                "id": 9,
+                                "name": "Заброшенное",
+                                "pivot": {
+                                    "background_id": 54,
+                                    "background_category_id": 9
+                                },
+                                "created_at": "2020-09-29T20:01:00.000000Z",
+                                "updated_at": "2020-09-29T20:01:37.000000Z"
+                            },
+                            {
+                                "id": 10,
+                                "name": "Замок",
+                                "pivot": {
+                                    "background_id": 54,
+                                    "background_category_id": 10
+                                },
+                                "created_at": "2020-09-29T20:04:34.000000Z",
+                                "updated_at": "2020-09-29T20:04:34.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-09-30T20:37:53.000000Z",
+                        "updated_at": "2020-09-30T20:37:53.000000Z",
+                        "url_medium": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC-medium.jpg"
+                    }
+                },
+                {
+                    "id": 29,
+                    "title": "Сцена 29",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 30,
+                            "actionText": "Сконцентрироваться на защите."
+                        }
+                    ],
+                    "mainText": "Едва успев ухватить меч, вы рванули в сторону лестницы ведущей на второй этаж. Похоже звуки доносятся оттуда. Короткий скрип сзади дал понять, что вампир с силой оттолкнулся от пола. Убежать уже не выйдет! Вы обернулись со взмахом меча и попали в цель. Клинок полоснул кровопийцу по животу и откинул на полтора метра назад. Такой толчок и вам с рук не сошел. Вы снова больно свалились на пол.",
+                    "background": {
+                        "id": 54,
+                        "url": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC.jpg",
+                        "name": "Замок 5",
+                        "path": "backgrounds\\September2020\\jt2elVI7bmBoKFWutrGC.jpg",
+                        "url_small": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC-small.jpg",
+                        "categories": [
+                            {
+                                "id": 9,
+                                "name": "Заброшенное",
+                                "pivot": {
+                                    "background_id": 54,
+                                    "background_category_id": 9
+                                },
+                                "created_at": "2020-09-29T20:01:00.000000Z",
+                                "updated_at": "2020-09-29T20:01:37.000000Z"
+                            },
+                            {
+                                "id": 10,
+                                "name": "Замок",
+                                "pivot": {
+                                    "background_id": 54,
+                                    "background_category_id": 10
+                                },
+                                "created_at": "2020-09-29T20:04:34.000000Z",
+                                "updated_at": "2020-09-29T20:04:34.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-09-30T20:37:53.000000Z",
+                        "updated_at": "2020-09-30T20:37:53.000000Z",
+                        "url_medium": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC-medium.jpg"
+                    }
+                },
+                {
+                    "id": 30,
+                    "title": "Сцена 30",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 31,
+                            "actionText": "НА ПОМОЩЬ! СТРАЖА!"
+                        }
+                    ],
+                    "mainText": "Успев только по крепче ухватить меч и выставить его на изготовку, вы защитились от следующей атаки врага. Спустя несколько взмахов и парирований, оказалось, что дальше так продолжаться не может. На вас множество рваных ран, а порезы, оставленные вашим мечем на теле вампира, хоть и не затягивались сами собой, но особых проблем ему явно не доставляли. Нужно звать на помощь!",
+                    "background": {
+                        "id": 54,
+                        "url": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC.jpg",
+                        "name": "Замок 5",
+                        "path": "backgrounds\\September2020\\jt2elVI7bmBoKFWutrGC.jpg",
+                        "url_small": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC-small.jpg",
+                        "categories": [
+                            {
+                                "id": 9,
+                                "name": "Заброшенное",
+                                "pivot": {
+                                    "background_id": 54,
+                                    "background_category_id": 9
+                                },
+                                "created_at": "2020-09-29T20:01:00.000000Z",
+                                "updated_at": "2020-09-29T20:01:37.000000Z"
+                            },
+                            {
+                                "id": 10,
+                                "name": "Замок",
+                                "pivot": {
+                                    "background_id": 54,
+                                    "background_category_id": 10
+                                },
+                                "created_at": "2020-09-29T20:04:34.000000Z",
+                                "updated_at": "2020-09-29T20:04:34.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-09-30T20:37:53.000000Z",
+                        "updated_at": "2020-09-30T20:37:53.000000Z",
+                        "url_medium": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC-medium.jpg"
+                    }
+                },
+                {
+                    "id": 31,
+                    "title": "Сцена 31",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 32,
+                            "actionText": "С силой укусить себя за язык, чтобы побороть наваждение."
+                        }
+                    ],
+                    "mainText": "Слава Богу бойцы среди латников отменные. Потребовалось каких-то пять секунд, чтобы дождаться помощи. Стражник выскочил из лестничного проема и с разбегу разрубил кровопийцу пополам. Он подал вам руку… Ваши раны оказались серьезными. Не дотянувшись до руки вашего спасителя, вы падаете обморок.",
+                    "background": {
+                        "id": 54,
+                        "url": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC.jpg",
+                        "name": "Замок 5",
+                        "path": "backgrounds\\September2020\\jt2elVI7bmBoKFWutrGC.jpg",
+                        "url_small": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC-small.jpg",
+                        "categories": [
+                            {
+                                "id": 9,
+                                "name": "Заброшенное",
+                                "pivot": {
+                                    "background_id": 54,
+                                    "background_category_id": 9
+                                },
+                                "created_at": "2020-09-29T20:01:00.000000Z",
+                                "updated_at": "2020-09-29T20:01:37.000000Z"
+                            },
+                            {
+                                "id": 10,
+                                "name": "Замок",
+                                "pivot": {
+                                    "background_id": 54,
+                                    "background_category_id": 10
+                                },
+                                "created_at": "2020-09-29T20:04:34.000000Z",
+                                "updated_at": "2020-09-29T20:04:34.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-09-30T20:37:53.000000Z",
+                        "updated_at": "2020-09-30T20:37:53.000000Z",
+                        "url_medium": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC-medium.jpg"
+                    }
+                },
+                {
+                    "id": 32,
+                    "title": "Сцена 32",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": "quit",
+                            "actionText": "Победа! (Попробуйте найти другие победные концовки)"
+                        }
+                    ],
+                    "mainText": "Благодаря вашей выдержке и силе воли вы остались в сознании и смогли принять помощь латника. Через десять минут поместье было очищено. Звуки борьбы затихли. \"Вот и все! На сегодня наша работа закончена\", обратился к вам стражник. \"Если хочешь, я могу проводить тебя к убежищу.\", предложил он. Конечно, вы не могли отказаться от такого предложения после всего, что пережили. Спустя пол часа вы оказались в месте назначения. Победа!",
+                    "background": {
+                        "id": 60,
+                        "url": "/storage/backgrounds/September2020/oLo9qAsgyZ7DB6Bv1Un3.jpeg",
+                        "name": "Замок 11",
+                        "path": "backgrounds\\September2020\\oLo9qAsgyZ7DB6Bv1Un3.jpeg",
+                        "url_small": "/storage/backgrounds/September2020/oLo9qAsgyZ7DB6Bv1Un3-small.jpeg",
+                        "categories": [
+                            {
+                                "id": 8,
+                                "name": "Фентези",
+                                "pivot": {
+                                    "background_id": 60,
+                                    "background_category_id": 8
+                                },
+                                "created_at": "2020-09-29T19:59:16.000000Z",
+                                "updated_at": "2020-09-29T19:59:16.000000Z"
+                            },
+                            {
+                                "id": 10,
+                                "name": "Замок",
+                                "pivot": {
+                                    "background_id": 60,
+                                    "background_category_id": 10
+                                },
+                                "created_at": "2020-09-29T20:04:34.000000Z",
+                                "updated_at": "2020-09-29T20:04:34.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-09-30T20:41:53.000000Z",
+                        "updated_at": "2020-09-30T20:41:53.000000Z",
+                        "url_medium": "/storage/backgrounds/September2020/oLo9qAsgyZ7DB6Bv1Un3-medium.jpeg"
+                    }
+                },
+                {
+                    "id": 33,
+                    "title": "Сцена 33",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 26,
+                            "actionText": "Продолжать следовать за стражниками."
+                        }
+                    ],
+                    "mainText": "Вы остались стоять в одиночестве у низеньких деревянных ворот. Оглядываясь во все стороны, вы начинаете нервно подрагивать. ХРУТТ! Глухой, но громкий хруст раздался за спиной. Вы обернулись и увидели мертвого вампира у входа в дом, лежащего в обломках короткого козырька. Похоже его выкинули в окно уже мертвым. Кто знает, что бы было, будь вы там. Спустя пять минут отряд дружно собрался в десяти метрах от вас и двинулся дальше.",
+                    "background": {
+                        "id": 223,
+                        "url": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq.jpg",
+                        "name": "Улица 38",
+                        "path": "backgrounds/October2020/qxCn2WfPQMp62vQLVPNq.jpg",
+                        "url_small": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq-small.jpg",
+                        "categories": [
+                            {
+                                "id": 14,
+                                "name": "Ночь",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 14
+                                },
+                                "created_at": "2020-09-29T20:17:19.000000Z",
+                                "updated_at": "2020-09-29T20:17:19.000000Z"
+                            },
+                            {
+                                "id": 15,
+                                "name": "Город",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 15
+                                },
+                                "created_at": "2020-09-29T20:24:27.000000Z",
+                                "updated_at": "2020-09-29T20:24:27.000000Z"
+                            },
+                            {
+                                "id": 16,
+                                "name": "Улица",
+                                "pivot": {
+                                    "background_id": 223,
+                                    "background_category_id": 16
+                                },
+                                "created_at": "2020-09-29T20:25:05.000000Z",
+                                "updated_at": "2020-09-29T20:25:05.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T20:31:22.000000Z",
+                        "updated_at": "2020-10-03T20:31:22.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/qxCn2WfPQMp62vQLVPNq-medium.jpg"
+                    }
+                },
+                {
+                    "id": 34,
+                    "title": "Сцена 34",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 35,
+                            "actionText": "Опередить вампира будет не просто. Попытаться справиться своими силами."
+                        },
+                        {
+                            "id": 2,
+                            "to": 38,
+                            "actionText": "Сорваться со всех ног в открытый проем дома."
+                        }
+                    ],
+                    "mainText": "Вы остались на улице. Дождь уже окончательно пропитал каждую нитку на вашем теле. Мерзкие ощущения усилило внезапно возникшее чувство пристального взгляда в области шеи. Едва вы повернулись, как тут же поняли на сколько дела плохи. На расстоянии ста метров, по тротуару, низко пригнувшись, на вас мчался никто иной, как острозубый охотник. Еще можно добежать до дома, там полно стражей!",
+                    "background": {
+                        "hex": "#6D4C41",
+                        "hue": 15.000000000000004,
+                        "hexa": "#6D4C41FF",
+                        "hsla": {
+                            "a": 1,
+                            "h": 15.000000000000004,
+                            "l": 0.3411764705882353,
+                            "s": 0.2528735632183907
+                        },
+                        "hsva": {
+                            "a": 1,
+                            "h": 15.000000000000004,
+                            "s": 0.4036697247706422,
+                            "v": 0.4274509803921568
+                        },
+                        "rgba": {
+                            "a": 1,
+                            "b": 65,
+                            "g": 76,
+                            "r": 109
+                        },
+                        "alpha": 1
+                    }
+                },
+                {
+                    "id": 35,
+                    "title": "Сцена 35",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 36,
+                            "actionText": "ПОМОГИТЕ! ВАМПИР!"
+                        }
+                    ],
+                    "mainText": "Одним резким движением вы сняли свой мокрый плащ и выбросили перед собой. Вы подгадали момент правильно - вампир на бегу ворвался в летящую материю, как в сеть, и на мгновение потерял вас из виду. Как раз, то что надо! Тут же вы дважды выстрелили кулаками куда-то по верхней части туловища. Противник дезориентирован, но с голыми руками шансов нет! Надо бежать!",
+                    "background": {
+                        "hex": "#6D4C41",
+                        "hue": 15.000000000000004,
+                        "hexa": "#6D4C41FF",
+                        "hsla": {
+                            "a": 1,
+                            "h": 15.000000000000004,
+                            "l": 0.3411764705882353,
+                            "s": 0.2528735632183907
+                        },
+                        "hsva": {
+                            "a": 1,
+                            "h": 15.000000000000004,
+                            "s": 0.4036697247706422,
+                            "v": 0.4274509803921568
+                        },
+                        "rgba": {
+                            "a": 1,
+                            "b": 65,
+                            "g": 76,
+                            "r": 109
+                        },
+                        "alpha": 1
+                    }
+                },
+                {
+                    "id": 36,
+                    "title": "Сцена 36",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 37,
+                            "actionText": "Попытаться прогнать сладкую дрему."
+                        }
+                    ],
+                    "mainText": "К счастью, всего через мгновение из дома выскочил один из стражей и парой метких взмахов крест-накрест прикончил кровопийцу! Не без жалости, он взглянул на вас и сказал: \"Потерпи, скоро все закончиться\". Вы потеряли сознание…",
+                    "background": {
+                        "hex": "#6D4C41",
+                        "hue": 15.000000000000004,
+                        "hexa": "#6D4C41FF",
+                        "hsla": {
+                            "a": 1,
+                            "h": 15.000000000000004,
+                            "l": 0.3411764705882353,
+                            "s": 0.2528735632183907
+                        },
+                        "hsva": {
+                            "a": 1,
+                            "h": 15.000000000000004,
+                            "s": 0.4036697247706422,
+                            "v": 0.4274509803921568
+                        },
+                        "rgba": {
+                            "a": 1,
+                            "b": 65,
+                            "g": 76,
+                            "r": 109
+                        },
+                        "alpha": 1
+                    }
+                },
+                {
+                    "id": 37,
+                    "title": "Сцена 37",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": "quit",
+                            "actionText": "Победа! (Попробуйте найти другие победные концовки)"
+                        }
+                    ],
+                    "mainText": "Вы очнулись в каком-то помещении, напоминающем лазарет. Вероятно, стражники вас доставили в убежище. Фрукты на прикроватном столике у кровати вас окончательно успокоили, и вы со спокойной душой погрузились в сладкие сновидения.",
+                    "background": {
+                        "id": 283,
+                        "url": "/storage/backgrounds/October2020/Fxia7MnhgW0ZeK9M1QvB.png",
+                        "name": "Больница 2",
+                        "path": "backgrounds/October2020/Fxia7MnhgW0ZeK9M1QvB.png",
+                        "url_small": "/storage/backgrounds/October2020/Fxia7MnhgW0ZeK9M1QvB-small.png",
+                        "categories": [
+                            {
+                                "id": 29,
+                                "name": "Больница",
+                                "pivot": {
+                                    "background_id": 283,
+                                    "background_category_id": 29
+                                },
+                                "created_at": "2020-10-03T21:12:10.000000Z",
+                                "updated_at": "2020-10-03T21:12:10.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-03T21:15:12.000000Z",
+                        "updated_at": "2020-10-03T21:15:12.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/Fxia7MnhgW0ZeK9M1QvB-medium.png"
+                    }
+                },
+                {
+                    "id": 38,
+                    "title": "Сцена 38",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 39,
+                            "actionText": "ПОМОГИТЕ! ВАМПИР!"
+                        }
+                    ],
+                    "mainText": "Вы рванули что есть мочи к распахнутой двери. До нее оставалось совсем ничего. Однако, насквозь мокрые ботинки, только ступив на траву усадьбы, сразу же уехали назад. В итоге ваш подбородок с размаху въехал в земную твердь. Цветное месиво перед глазами исчезло, не успев толком вам наскучить, - острые, как нож, зубы вампира вцепились вам в ногу! Неужели это конец? Зовите на помощь!",
+                    "background": {
+                        "hex": "#6D4C41",
+                        "hue": 15.000000000000004,
+                        "hexa": "#6D4C41FF",
+                        "hsla": {
+                            "a": 1,
+                            "h": 15.000000000000004,
+                            "l": 0.3411764705882353,
+                            "s": 0.2528735632183907
+                        },
+                        "hsva": {
+                            "a": 1,
+                            "h": 15.000000000000004,
+                            "s": 0.4036697247706422,
+                            "v": 0.4274509803921568
+                        },
+                        "rgba": {
+                            "a": 1,
+                            "b": 65,
+                            "g": 76,
+                            "r": 109
+                        },
+                        "alpha": 1
+                    }
+                },
+                {
+                    "id": 39,
+                    "title": "Сцена 39",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 40,
+                            "actionText": "Попытаться вырваться из цепких лап тьмы."
+                        }
+                    ],
+                    "mainText": "К счастью, всего через мгновение из дома выскочил один из стражей и парой метких взмахов крест-накрест прикончил кровопийцу! Не без жалости, он взглянул на вас и сказал: \"Потерпи, скоро все закончиться\". Вы потеряли сознание…",
+                    "background": {
+                        "hex": "#6D4C41",
+                        "hue": 15.000000000000004,
+                        "hexa": "#6D4C41FF",
+                        "hsla": {
+                            "a": 1,
+                            "h": 15.000000000000004,
+                            "l": 0.3411764705882353,
+                            "s": 0.2528735632183907
+                        },
+                        "hsva": {
+                            "a": 1,
+                            "h": 15.000000000000004,
+                            "s": 0.4036697247706422,
+                            "v": 0.4274509803921568
+                        },
+                        "rgba": {
+                            "a": 1,
+                            "b": 65,
+                            "g": 76,
+                            "r": 109
+                        },
+                        "alpha": 1
+                    }
+                },
+                {
+                    "id": 40,
+                    "title": "Сцена 40",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": "quit",
+                            "actionText": "Это бесславный конец..."
+                        }
+                    ],
+                    "mainText": "Сквозь жуткие усилия вы едва раскрыли глаза. Над вами стоял тот самый латник, что дал вам карту. Вытягивая посеребренный меч из-за пояса, он сказал стоящему рядом соратнику: \"Жаль дурака. Теперь человеком ему не быть, лучше сразу облегчить его участь.\" Взмах...",
+                    "background": {
+                        "hex": "#410101",
+                        "hue": 0,
+                        "hexa": "#410101FF",
+                        "hsla": {
+                            "a": 1,
+                            "h": 0,
+                            "l": 0.12940277777777778,
+                            "s": 0.9834710743801656
+                        },
+                        "hsva": {
+                            "a": 1,
+                            "h": 0,
+                            "s": 0.9916666666666668,
+                            "v": 0.2566666666666667
+                        },
+                        "rgba": {
+                            "a": 1,
+                            "b": 1,
+                            "g": 1,
+                            "r": 65
+                        },
+                        "alpha": 1
+                    }
+                },
+                {
+                    "id": 41,
+                    "title": "Сцена 41",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 42,
+                            "actionText": "НА ПОМОЩЬ! СТРАЖА!"
+                        }
+                    ],
+                    "mainText": "Подтянув меч поближе, вы стали, как бы невзначай, оглядываться по сторонам. Сердце заколотилось, а руки предательски подрагивали, но обратного пути уже не было. Еще мгновение и кровосос одним прыжком налетел на вас, вцепившись зубами в шею! Выставить перед собой меч вы успели, но дрожание рук сыграло свою роль. ПШШШ! Клинок вспорол бок противника и из раны пошел пар. Но подобная рана не страшна для этих любителей крови. Сейчас уже \"вы\" в печальном положении. Нужно звать на помощь!",
+                    "background": {
+                        "id": 54,
+                        "url": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC.jpg",
+                        "name": "Замок 5",
+                        "path": "backgrounds\\September2020\\jt2elVI7bmBoKFWutrGC.jpg",
+                        "url_small": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC-small.jpg",
+                        "categories": [
+                            {
+                                "id": 9,
+                                "name": "Заброшенное",
+                                "pivot": {
+                                    "background_id": 54,
+                                    "background_category_id": 9
+                                },
+                                "created_at": "2020-09-29T20:01:00.000000Z",
+                                "updated_at": "2020-09-29T20:01:37.000000Z"
+                            },
+                            {
+                                "id": 10,
+                                "name": "Замок",
+                                "pivot": {
+                                    "background_id": 54,
+                                    "background_category_id": 10
+                                },
+                                "created_at": "2020-09-29T20:04:34.000000Z",
+                                "updated_at": "2020-09-29T20:04:34.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-09-30T20:37:53.000000Z",
+                        "updated_at": "2020-09-30T20:37:53.000000Z",
+                        "url_medium": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC-medium.jpg"
+                    }
+                },
+                {
+                    "id": 42,
+                    "title": "Сцена 42",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 43,
+                            "actionText": "Из последних сил бороться с наваждением."
+                        }
+                    ],
+                    "mainText": "Слава Богу бойцы среди латников отменные. Потребовалось каких-то пять секунд, чтобы дождаться помощи. Стражник выскочил из лестничного проема и с разбегу разрубил кровопийцу пополам. Он подал вам руку… Ваши раны оказались серьезными. Не дотянувшись до руки вашего спасителя, вы падаете обморок.",
+                    "background": {
+                        "id": 54,
+                        "url": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC.jpg",
+                        "name": "Замок 5",
+                        "path": "backgrounds\\September2020\\jt2elVI7bmBoKFWutrGC.jpg",
+                        "url_small": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC-small.jpg",
+                        "categories": [
+                            {
+                                "id": 9,
+                                "name": "Заброшенное",
+                                "pivot": {
+                                    "background_id": 54,
+                                    "background_category_id": 9
+                                },
+                                "created_at": "2020-09-29T20:01:00.000000Z",
+                                "updated_at": "2020-09-29T20:01:37.000000Z"
+                            },
+                            {
+                                "id": 10,
+                                "name": "Замок",
+                                "pivot": {
+                                    "background_id": 54,
+                                    "background_category_id": 10
+                                },
+                                "created_at": "2020-09-29T20:04:34.000000Z",
+                                "updated_at": "2020-09-29T20:04:34.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-09-30T20:37:53.000000Z",
+                        "updated_at": "2020-09-30T20:37:53.000000Z",
+                        "url_medium": "/storage/backgrounds/September2020/jt2elVI7bmBoKFWutrGC-medium.jpg"
+                    }
+                },
+                {
+                    "id": 43,
+                    "title": "Сцена 43",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": "quit",
+                            "actionText": "Это бесславный конец..."
+                        }
+                    ],
+                    "mainText": "Несколько раз еще вы открывали и закрывали глаза. Все, что представало вашему взору, это лужа крови, в которой вы лежали. Похоже, стражи покинули вас, не видя ваших шансов на выживание. Поражение.",
+                    "background": {
+                        "hex": "#3F0001",
+                        "hue": 359.2406814945256,
+                        "hexa": "#3F0001FF",
+                        "hsla": {
+                            "a": 1,
+                            "h": 359.2406814945256,
+                            "l": 0.12400472005208336,
+                            "s": 1
+                        },
+                        "hsva": {
+                            "a": 1,
+                            "h": 359.2406814945256,
+                            "s": 1,
+                            "v": 0.2480094401041667
+                        },
+                        "rgba": {
+                            "a": 1,
+                            "b": 1,
+                            "g": 0,
+                            "r": 63
+                        },
+                        "alpha": 1
+                    }
+                }
+            ]
+        },
+        {
+            "id": 23,
+            "title": "Стань миллионером!",
+            "description": "Описание отсутствует",
+            "status": "published",
+            "published_at": "2020-11-29 21:27:04",
+            "json": [
+                {
+                    "id": 1,
+                    "title": "Сцена 1",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": 2,
+                            "actionText": "9900"
+                        },
+                        {
+                            "id": 2,
+                            "to": 3,
+                            "actionText": "2920"
+                        },
+                        {
+                            "id": 3,
+                            "to": 2,
+                            "actionText": "2900"
+                        }
+                    ],
+                    "mainText": "Two nine, two zero",
+                    "background": {
+                        "id": 7,
+                        "url": "/storage/backgrounds/September2020/QLOIKk28zMTBY5OriY7r.jpg",
+                        "name": "Актовый зал",
+                        "path": "backgrounds\\September2020\\QLOIKk28zMTBY5OriY7r.jpg",
+                        "url_small": "/storage/backgrounds/September2020/QLOIKk28zMTBY5OriY7r-small.jpg",
+                        "categories": [
+                            {
+                                "id": 3,
+                                "name": "Актовый зал",
+                                "pivot": {
+                                    "background_id": 7,
+                                    "background_category_id": 3
+                                },
+                                "created_at": "2020-09-29T19:54:54.000000Z",
+                                "updated_at": "2020-09-29T19:54:54.000000Z"
+                            },
+                            {
+                                "id": 4,
+                                "name": "Школа",
+                                "pivot": {
+                                    "background_id": 7,
+                                    "background_category_id": 4
+                                },
+                                "created_at": "2020-09-29T19:55:03.000000Z",
+                                "updated_at": "2020-09-29T19:55:03.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-09-29T19:55:20.000000Z",
+                        "updated_at": "2020-09-29T19:55:20.000000Z",
+                        "url_medium": "/storage/backgrounds/September2020/QLOIKk28zMTBY5OriY7r-medium.jpg"
+                    }
+                },
+                {
+                    "id": 2,
+                    "title": "Сцена 2",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": "quit",
+                            "actionText": "Nooooooooo!!!!!!!! (((((("
+                        }
+                    ],
+                    "mainText": "You fail!",
+                    "background": {
+                        "id": 9,
+                        "url": "/storage/backgrounds/September2020/iu75rgeKJE8WLTpUTuzO.jpg",
+                        "name": "Бассейн",
+                        "path": "backgrounds\\September2020\\iu75rgeKJE8WLTpUTuzO.jpg",
+                        "url_small": "/storage/backgrounds/September2020/iu75rgeKJE8WLTpUTuzO-small.jpg",
+                        "categories": [
+                            {
+                                "id": 6,
+                                "name": "Бассейн",
+                                "pivot": {
+                                    "background_id": 9,
+                                    "background_category_id": 6
+                                },
+                                "created_at": "2020-09-29T19:58:08.000000Z",
+                                "updated_at": "2020-09-29T19:58:08.000000Z"
+                            },
+                            {
+                                "id": 4,
+                                "name": "Школа",
+                                "pivot": {
+                                    "background_id": 9,
+                                    "background_category_id": 4
+                                },
+                                "created_at": "2020-09-29T19:55:03.000000Z",
+                                "updated_at": "2020-09-29T19:55:03.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-09-29T19:58:00.000000Z",
+                        "updated_at": "2020-09-29T19:58:41.000000Z",
+                        "url_medium": "/storage/backgrounds/September2020/iu75rgeKJE8WLTpUTuzO-medium.jpg"
+                    }
+                },
+                {
+                    "id": 3,
+                    "title": "Сцена 3",
+                    "actions": [
+                        {
+                            "id": 1,
+                            "to": "quit",
+                            "actionText": "Yep! Bye!"
+                        }
+                    ],
+                    "mainText": "Good job, human! You win million virtual dollars!",
+                    "background": {
+                        "id": 388,
+                        "url": "/storage/backgrounds/October2020/BQ649RKpDD2crGvucHiz.jpg",
+                        "name": "Дорога",
+                        "path": "backgrounds/October2020/BQ649RKpDD2crGvucHiz.jpg",
+                        "url_small": "/storage/backgrounds/October2020/BQ649RKpDD2crGvucHiz-small.jpg",
+                        "categories": [
+                            {
+                                "id": 1,
+                                "name": "Природа",
+                                "pivot": {
+                                    "background_id": 388,
+                                    "background_category_id": 1
+                                },
+                                "created_at": "2020-08-11T18:25:19.000000Z",
+                                "updated_at": "2020-08-11T18:25:19.000000Z"
+                            },
+                            {
+                                "id": 49,
+                                "name": "Транспорт",
+                                "pivot": {
+                                    "background_id": 388,
+                                    "background_category_id": 49
+                                },
+                                "created_at": "2020-10-23T19:20:33.000000Z",
+                                "updated_at": "2020-10-23T19:20:33.000000Z"
+                            }
+                        ],
+                        "created_at": "2020-10-23T19:48:22.000000Z",
+                        "updated_at": "2020-10-23T19:48:22.000000Z",
+                        "url_medium": "/storage/backgrounds/October2020/BQ649RKpDD2crGvucHiz-medium.jpg"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,16 +1,12 @@
 <template>
-  <div>
-    <footer v-if="!hideFooter">
-      <v-banner>
-        <div class="footer-content">
-          <span class="grey--text ma-0">
-            По всем вопросам: <a href="mailto:hello-novelist@anime-look.ru">hello-novelist@anime-look.ru</a>
-          </span>
-          <span class="grey--text ma-0">
-            Новеллист. v{{ appVersion }}
-          </span>
-        </div>
-      </v-banner>
+  <v-container>
+    <footer v-if="!hideFooter" class="footer-content">
+      <span class="grey--text ma-0">
+        По всем вопросам: <a href="mailto:hello-novelist@anime-look.ru">hello-novelist@anime-look.ru</a>
+      </span>
+      <span class="grey--text ma-0">
+        Новеллист v{{ appVersion }}
+      </span>
     </footer>
 
     <CustomDialog
@@ -39,7 +35,7 @@
 
       <FormReport @onFormSent="closeReportDialog" />
     </CustomDialog>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -69,13 +65,12 @@ export default {
 <style lang="sass" scoped>
 footer
   color: $mainTextColor
-  background-color: $subBackColor
+  background-color: $mainBackColor
 
 .footer-content
   display: flex
   justify-content: space-between
   width: 100%
-  padding-right: 8px
   @media (max-width: 992px)
     padding: 10px
     flex-direction: column

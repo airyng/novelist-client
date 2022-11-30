@@ -1,9 +1,10 @@
 <template>
-  <GameLoadingScreen v-if="isLoading" />
+  <game-loading-screen v-if="isLoading" />
 </template>
+
 <script>
 import { SuccessMessage, ErrorMessage } from '@/plugins/toast'
-import { sleep } from '@/plugins/utils'
+
 export default {
   data () {
     return {
@@ -20,7 +21,7 @@ export default {
     this.boot()
   },
   methods: {
-    async loadDataFromServer () {
+    async fetchDataFromServer () {
       const gameID = this.$route.params.id
       if (!gameID) {
         ErrorMessage({
@@ -38,7 +39,7 @@ export default {
       } finally {
         this.isLoading = false
       }
-      this.onRestoreState(gameData)
+      return gameData
     },
     checkForLastUnpublishedProject () {
     //   axios.post('/api/game/check-for-last-unpublished-project')
@@ -75,38 +76,35 @@ export default {
       })
       this.boot()
     },
-    async onRestoreState (gameData) {
-      if (await this.validateGameState(gameData)) {
+    restoreState (gameData) {
+      if (this.validateGameState(gameData)) {
         this.$emit('onRestoreState', gameData)
       } else {
         this.$router.push({ name: '404' })
       }
     },
-    async validateGameState (gameData) {
-      while (!this.user.id) {
-        // Ждем получения данных пользователя
-        await sleep(100)
-      }
+    validateGameState (gameData) {
       // Если не автор пытается загрузить редактор
-      if (gameData.user_id !== this.user.id && this.$route.name === 'games-id-edit') { return false }
+      if (gameData.author._id !== this.user._id && this.$route.name.startsWith('games-id-edit')) { return false }
       // Если пытаются поиграть в черновик
-      if (gameData.status === 'draft' && this.$route.name === 'games-id-play') { return false }
+      if (gameData.status === 'draft' && this.$route.name.startsWith('games-id-play')) { return false }
       // Если в тестдрайв пытается зайти не автор
-      if (gameData.status === 'test_drive' && gameData.user_id !== this.user.id) { return false }
+      if (gameData.status === 'test_drive' && gameData.author._id !== this.user._id) { return false }
       return true
     },
     // Определяем текущий роут и решаем как загружать данные, если нужно вообще
-    boot () {
+    async boot () {
       const routeName = this.$route.name
       // if (this.$route.fullPath.indexOf('/edit')) {
       //   routeName = 'games-edit'
       // }
-      if (routeName === 'games-add') {
+      if (routeName.startsWith('games-add')) {
         // this.checkForLastUnpublishedProject()
-      } else if (routeName === 'games-id-edit' && this.gameData) {
-        this.onRestoreState(this.gameData)
-      } else if (routeName === 'games-id-play' || (routeName === 'games-id-edit' && !this.gameData)) {
-        this.loadDataFromServer()
+      } else if (routeName.startsWith('games-id-play') || routeName.startsWith('games-id-edit')) {
+        if (!this.gameData) {
+          this.gameData = await this.fetchDataFromServer()
+        }
+        this.restoreState(this.gameData)
       }
     }
   }

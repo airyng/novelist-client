@@ -61,14 +61,14 @@ export default {
   },
   mounted () {
     this.gameAutoSaveManager = new GameAutoSaveManager()
-    this.saveObj = this.gameAutoSaveManager.getSave(this.game.id)
+    this.saveObj = this.gameAutoSaveManager.getSave(this.game._id)
   },
   methods: {
     startNew () {
       this.$emit('callToStart')
     },
     goBackToIntro () {
-      this.$router.push('/games/' + this.game.id)
+      this.$router.push('/games/' + this.game._id)
     },
     continueLastGame () {
       if (!this.saveObj) { return }

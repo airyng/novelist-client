@@ -1,46 +1,56 @@
 <template>
   <v-card class="novella-item mx-auto" :elevation="0">
     <v-list-item>
-      <nuxt-link :to="'/author/'+item.user_id">
-        <v-list-item-avatar>
-          <img :src="computedAuthorAvatar">
-        </v-list-item-avatar>
+      <nuxt-link
+        v-if="author && author.avatar_id && getAuthorId(author)"
+        :to="'/author/'+getAuthorId(author)"
+      >
+        <profile-user-avatar :avatar-id="author.avatar_id" />
       </nuxt-link>
 
       <v-list-item-content>
-        <nuxt-link :to="'/games/'+ item.id">
+        <nuxt-link :to="'/games/'+ item._id">
           <v-list-item-title class="headline">
             {{ item.title }}
           </v-list-item-title>
         </nuxt-link>
 
-        <v-list-item-subtitle>
-          <nuxt-link v-if="computedAuthorName" :to="'/author/'+item.user_id">
-            {{ computedAuthorName }}
+        <v-list-item-subtitle v-if="getAuthorId(author)">
+          <nuxt-link :to="'/author/'+getAuthorId(author)">
+            <span v-if="author.name">{{ author.name }}</span>
+            <i v-else>Аноним</i>
           </nuxt-link>
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
 
-    <nuxt-link :to="'/games/'+ item.id">
+    <nuxt-link :to="'/games/'+ item._id">
       <v-img
+        v-if="itemBanner.indexOf('http') === 0"
         :src="itemBanner"
         height="200"
+      />
+      <div
+        v-else
+        :style="{
+          height: '200px',
+          background: itemBanner
+        }"
       />
       <v-card-text>
         <div>{{ itemExcerpt }}</div>
       </v-card-text>
     </nuxt-link>
 
-    <CommonAutoSaveDetectionIcon :novella-id="item.id" class="ml-3" />
+    <common-auto-save-detection-icon :novella-id="item._id" class="ml-3" />
 
     <v-card-actions>
-      <nuxt-link :to="'/games/'+ item.id + '/play'">
+      <nuxt-link :to="'/games/'+ item._id + '/play'">
         <v-btn depressed text>
           Играть
         </v-btn>
       </nuxt-link>
-      <nuxt-link class="more-button" :to="'/games/'+ item.id">
+      <nuxt-link class="more-button" :to="'/games/'+ item._id">
         <v-btn depressed text>
           Подробнее
         </v-btn>
@@ -59,39 +69,35 @@
 <script>
 import { excerpt, getGameBannerFromScenes } from '@/plugins/utils'
 import { screen } from '@/mixins/screen'
+import gameChecker from '@/plugins/gameChecker'
+
 export default {
   mixins: [screen],
   props: {
-    item: { type: Object, required: true },
-    authorName: { type: String, default: null },
-    authorAvatar: { type: String, default: null }
+    item: { type: Object, required: true }
   },
   computed: {
-    scenes () {
-      return JSON.parse(this.item.json)
+    jsonData () {
+      return gameChecker.updateGameToLatestVersion(JSON.parse(this.item.json))
     },
-    computedAuthorAvatar () {
-      if (this.authorAvatar) {
-        return process.env.BACKEND_URL + '/storage/' + this.authorAvatar
-      } else if (this.item.authorAvatar) {
-        return process.env.BACKEND_URL + '/storage/' + this.item.authorAvatar
-      } else {
-        return process.env.BACKEND_URL + '/storage/users/default.png'
-      }
-    },
-    computedAuthorName () {
-      return this.authorName || this.item.authorName || false
+    author () {
+      return this.item.author
     },
     itemExcerpt () {
       return excerpt(this.item.description, 120)
     },
     itemBanner () {
-      return getGameBannerFromScenes(this.scenes)
+      return getGameBannerFromScenes(this.jsonData.scenes)
     }
   },
   methods: {
     excerpt (text, maxLength) {
       return excerpt(text, maxLength)
+    },
+    getAuthorId (author) {
+      if (typeof author === 'string') { return author }
+      if (typeof author === 'object' && author !== null) { return author?._id }
+      return false
     }
   }
 }

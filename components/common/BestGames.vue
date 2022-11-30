@@ -37,7 +37,7 @@
 import { excerpt } from '@/plugins/utils'
 
 // Список id новелл, которые будем показывать в слайдере
-const favoriteGamesID = [3, 21]
+const favoriteGamesID = [] // [3, 21]
 const secForSwap = 15 // Секунд для каждого перелистывания
 
 export default {
@@ -78,6 +78,7 @@ export default {
   },
   methods: {
     async setNewItem () {
+      if (!favoriteGamesID.length) { return false }
       // Инкрементируем индекс или возвращаем в начало массива
       this.currentItemIndex++
       if (this.currentItemIndex >= favoriteGamesID.length) {

@@ -1,6 +1,10 @@
 <template>
+  <v-skeleton-loader
+    v-if="!ready"
+    type="image"
+  />
   <v-form
-    v-if="formData"
+    v-else
     ref="form"
     v-model="valid"
     lazy-validation
@@ -10,8 +14,13 @@
       <template #label>
         <div>Ваш пол</div>
       </template>
-      <v-radio label="Женский" value="2" />
-      <v-radio label="Мужской" value="1" />
+      <v-radio
+        v-for="sexType in sexTypes"
+        :key="sexType._id"
+        :label="$t('sex_type__' + sexType.title)"
+        :value="sexType._id"
+        class="text-capitalize"
+      />
     </v-radio-group>
 
     <v-text-field
@@ -75,7 +84,7 @@
       :disabled="isButtonDisabled"
       depressed
       dark
-      class="mr-4 mainTextColor"
+      class="mr-4 mt-3 mainTextColor"
       @click="submitForm"
     >
       Зарегистрироваться
@@ -83,9 +92,10 @@
   </v-form>
 </template>
 <script>
-import { SuccessMessage, ErrorMessages } from '@/plugins/toast'
+import { SuccessMessage, ErrorMessage } from '@/plugins/toast'
 export default {
   data: () => ({
+    ready: false,
     formData: false,
     valid: false,
     showPass: false,
@@ -113,15 +123,18 @@ export default {
     ajaxSending: false
   }),
   computed: {
+    sexTypes () {
+      return this.$store.state.dictionaries.sexTypes
+    },
     isButtonDisabled () {
-      let hasAnyContent = false
+      let hasAnyContent = true
 
       for (const key in this.formData) {
         if (Object.prototype.hasOwnProperty.call(this.formData, key)) {
           const element = this.formData[key]
 
-          if (element.length) {
-            hasAnyContent = true
+          if (!element?.length) {
+            hasAnyContent = false
             break
           }
         }
@@ -130,8 +143,14 @@ export default {
       return !this.valid || this.ajaxSending || !hasAnyContent
     }
   },
+  async created () {
+    if (!this.$store.state.dictionaries.sexTypes?.length) {
+      await this.$store.dispatch('dictionaries/sexFetch')
+    }
+  },
   mounted () {
     this.formData = this.getDefaultForm()
+    this.ready = true
   },
   methods: {
     getDefaultForm () {
@@ -139,58 +158,64 @@ export default {
         password: '',
         password_confirmation: '',
         email: '',
-        gender_id: '2',
+        gender_id: null,
         name: ''
       }
     },
     removeErrors (type) {
+      // TODO: можно попробовать зарефакторить этот кусок Object.keys
       this.formErrors.email = []
       this.formErrors.password = []
       this.formErrors.password_confirmation = []
       this.formErrors.name = []
     },
     validate () {
+      // TODO: перепроверить необходимость этой функции
       this.$refs.form.validate()
     },
     async submitForm () {
+      if (this.ajaxSending) { return }
+
       this.ajaxSending = true
       try {
         const result = await this.$api.register(this.formData)
         if (result.status === 200) {
           SuccessMessage({ title: 'Регистрация успешна!' })
           this.formData = this.getDefaultForm()
-          // console.log('debug success', result)
+
           this.removeErrors()
           this.$store.dispatch('authorize', result.data)
         } else {
+          // Учитываем поле модели passwordHash в инпуте password
+          if (result.data.errors.passwordHash) {
+            result.data.errors.password = result.data.errors.passwordHash
+          }
           for (const key in result.data.errors) {
-            if (Object.hasOwnProperty.call(result.data.errors, key)) {
-              let element = result.data.errors[key]
-              element = element.map((item) => {
-                if (item === 'The email has already been taken.') {
-                  item = 'Указанный email уже используется'
-                }
-                if (item === 'The password confirmation does not match.') {
-                  item = 'Пароли не совпадают'
-                }
-                return item
-              })
-              ErrorMessages(element)
+            if (
+              Object.hasOwnProperty.call(result.data.errors, key) &&
+              Object.hasOwnProperty.call(this.formErrors, key)
+            ) {
+              const element = result.data.errors[key]
+
+              if (element.kind === 'required') {
+                this.formErrors[key] = 'Поле обязательно для заполнения'
+              }
+              if (key === 'email' && element.kind === 'unique') {
+                this.formErrors[key] = 'Пользователь с таким Email уже зарегистрирован'
+              }
+              if (key === 'password' && element.kind === 'mismatch') {
+                this.formErrors[key] = 'Введенные пароли не совпадают'
+              }
             }
           }
         }
-        // this.$router.push('/me')
       } catch (err) {
-        ErrorMessages('Что-то пошло не так! Обратитесь к администрации сайта.')
+        ErrorMessage({ text: 'Что-то пошло не так! Обратитесь к администрации сайта.' })
         // eslint-disable-next-line no-console
         console.error(err)
       } finally {
         this.ajaxSending = false
       }
-      // this.formErrors.email = e.response.data.error.email || []
-      // this.formErrors.password = e.response.data.error.password || []
-      // this.formErrors.password_confirmation = e.response.data.error.password_confirmation || []
-      // this.formErrors.name = e.response.data.error.name || []
     }
   }
 }

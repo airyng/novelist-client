@@ -36,20 +36,17 @@ export default {
     }
   },
   methods: {
-    async beginSaving (withResultMessage = true) {
+    async save (withResultMessage = true) {
       // Если режим установлен на тест-драйв, то валидируем
       // иначе просто сохраняем
-      if (this.mainInfo.onTestDrive) {
-        this.validateAndSave()
-      } else {
-        this.isLoading = true
-
-        await this.save() ? this.showSuccess(withResultMessage) : this.showErrors()
-
-        this.isLoading = false
+      if (this.mainInfo.onTestDrive && !this.validate()) {
+        return false
       }
+      this.isLoading = true
+      await this._save() ? this.showSuccess(withResultMessage) : this.showErrors()
+      this.isLoading = false
     },
-    async save () {
+    async _save () {
       this.clearErrors()
 
       const json = {
@@ -61,12 +58,12 @@ export default {
         json: JSON.stringify(json),
         title: this.mainInfo.title,
         description: this.mainInfo.description,
-        onTestDrive: this.mainInfo.onTestDrive,
-        id: this.id
+        status: this.mainInfo.status
       }
+      if (this.id) { data._id = this.id }
       // localStorage.setItem('game', JSON.stringify(data))
       // console.log('saved')
-      const responseStatus = await this.$api.saveGame(data)
+      const responseStatus = data._id ? await this.$api.updateGame(data) : await this.$api.saveGame(data)
 
       if (responseStatus !== 200) {
         this.addError('Неизвестная ошибка. Проверьте все сцены на наличие ошибок.')
@@ -75,7 +72,7 @@ export default {
       }
       return true
     },
-    async validateAndSave () {
+    validate () {
       this.isLoading = true
 
       this.clearErrors()
@@ -97,14 +94,7 @@ export default {
         this.isLoading = false
         return false
       }
-
-      if (await this.save()) {
-        this.showSuccess()
-      } else {
-        this.showErrors()
-      }
-
-      this.isLoading = false
+      return true
     },
     showSuccess (withResultMessage = true) {
       this.$emit('saved', { onTestDrive: this.mainInfo.onTestDrive })
@@ -171,9 +161,16 @@ export default {
       if (!gameHasExit) { this.addError('В новелле нет ни одной кнопки выхода') }
     },
     checkMainSettings () {
-      if (this.mainInfo.title.length < this.settings.mainInfo.title.minLength) { this.addError('Минимальная длина названия новеллы составляет ' + this.settings.mainInfo.title.minLength + ' символов') } else if (this.mainInfo.title.length > this.settings.mainInfo.title.maxLength) { this.addError('Максимальная длина названия новеллы составляет ' + this.settings.mainInfo.title.maxLength + ' символов') }
-
-      if (this.mainInfo.description.length < this.settings.mainInfo.description.minLength) { this.addError('Минимальная длина описания новеллы составляет ' + this.settings.mainInfo.description.minLength + ' символов') } else if (this.mainInfo.description.length > this.settings.mainInfo.description.maxLength) { this.addError('Максимальная длина описания новеллы составляет ' + this.settings.mainInfo.description.maxLength + ' символов') }
+      if (this.mainInfo.title.length < this.settings.mainInfo.title.minLength) {
+        this.addError('Минимальная длина названия новеллы составляет ' + this.settings.mainInfo.title.minLength + ' символов')
+      } else if (this.mainInfo.title.length > this.settings.mainInfo.title.maxLength) {
+        this.addError('Максимальная длина названия новеллы составляет ' + this.settings.mainInfo.title.maxLength + ' символов')
+      }
+      if (this.mainInfo.description.length < this.settings.mainInfo.description.minLength) {
+        this.addError('Минимальная длина описания новеллы составляет ' + this.settings.mainInfo.description.minLength + ' символов')
+      } else if (this.mainInfo.description.length > this.settings.mainInfo.description.maxLength) {
+        this.addError('Максимальная длина описания новеллы составляет ' + this.settings.mainInfo.description.maxLength + ' символов')
+      }
     },
     checkDeadlockScenes () { // проверяем все сцены на наличие тупиковых
       for (let index = 0; index < this.scenes.length; index++) {

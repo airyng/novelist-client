@@ -1,37 +1,47 @@
 <template>
-  <v-app :class="$route.name + '-page'">
-    <TopBar />
+  <v-app
+    :class="$route.name + '-page'"
+    :style="{background: $vuetify.theme.themes[theme].background}"
+  >
     <v-main>
+      <app-top-bar />
       <nuxt />
+      <app-footer />
     </v-main>
-    <AppFooter />
   </v-app>
 </template>
 
 <script>
 import { EventBus } from '~/plugins/event'
 export default {
+  computed: {
+    theme () {
+      return (this.$vuetify.theme.dark) ? 'dark' : 'light'
+    }
+  },
   mounted () {
-    let isAutoRefreshStarted = false
-    EventBus.$on('logged-in', (settings) => {
-      // auto refresh auth token
-      if (!isAutoRefreshStarted) {
-        isAutoRefreshStarted = true
-        setInterval(() => this.$store.dispatch('refreshToken'), 1000 * 30 * 5) // refresh each 5 min
+    EventBus.$on('logged-in', this.afterLoginHandler)
+    EventBus.$on('logged-out', this.afterLogoutHandler)
+
+    this.$store.dispatch('tryAutoLogin')
+  },
+  beforeDestroy () {
+    EventBus.$off('logged-in', this.afterLoginHandler)
+    EventBus.$off('logged-out', this.afterLogoutHandler)
+  },
+  methods: {
+    afterLoginHandler (settings) {
+      if (settings?.redirect !== false) {
+        this.$router.push(settings?.redirect || '/')
       }
-      if (settings && settings.redirect) {
-        this.$router.push(settings.redirect)
-      }
-    })
-    EventBus.$on('logged-out', (settings) => {
+    },
+    afterLogoutHandler () {
       if (window) {
         setTimeout(() => {
           window.location.href = '/' // refresh browser page will reset store state
-        }, 1000)
+        }, 500)
       }
-    })
-
-    this.$store.dispatch('tryAutoLogin')
+    }
   }
 }
 </script>
