@@ -48,10 +48,10 @@ export default {
     load () {
       const formData = new FormData()
       formData.append('file', this.file)
-      this.$api.uploadImage(formData)
+      this.$api.call('uploadImage', null, formData)
     },
     deleteFile () {
-      this.$api.deleteImage(this.fileId)
+      this.$api.call('deleteImage', this.fileId)
     }
   }
 }

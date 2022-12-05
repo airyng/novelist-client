@@ -59,10 +59,14 @@ export default {
           ErrorMessage({ text: 'Ошибка загрузки изображения.' })
           return
         }
-        const updateUserResponse = await this.$api.updateUser({
-          id: this.$store.state.userData._id,
-          avatar_id: loadImageResponse.data._id
-        })
+        const updateUserResponse = await this.$api.call(
+          'updateUser',
+          this.$store.state.userData._id,
+          {
+            id: this.$store.state.userData._id,
+            avatar_id: loadImageResponse.data._id
+          }
+        )
 
         if ([200, 201].includes(updateUserResponse.status)) {
           SuccessMessage('Изображение успешно загружено!')
@@ -110,7 +114,7 @@ export default {
     async loadImage (file) {
       const formData = new FormData()
       formData.append('file', file)
-      return await this.$api.uploadImage(formData)
+      return await this.$api.call('uploadImage', null, formData)
     }
   }
 }

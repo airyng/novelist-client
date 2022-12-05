@@ -21,6 +21,8 @@ export default {
     this.boot()
   },
   methods: {
+    // TODO: вероятно этот метод нужно как-то оптимизировать.
+    // Вынести в storage или отрефакторить...
     async fetchDataFromServer () {
       const gameID = this.$route.params.id
       if (!gameID) {
@@ -33,7 +35,7 @@ export default {
       this.isLoading = true
       let gameData = null
       try {
-        gameData = await this.$api.getGameByID(gameID)
+        gameData = await this.$api.call('getGameByID', gameID)
       } catch (err) {
         throw new Error('Данные не доступны')
       } finally {
@@ -85,7 +87,7 @@ export default {
     },
     validateGameState (gameData) {
       // Если не автор пытается загрузить редактор
-      if (gameData.author._id !== this.user._id && this.$route.name.startsWith('games-id-edit')) { return false }
+      if (gameData?.author?._id !== this.user?._id && this.$route.name.startsWith('games-id-edit')) { return false }
       // Если пытаются поиграть в черновик
       if (gameData.status === 'draft' && this.$route.name.startsWith('games-id-play')) { return false }
       // Если в тестдрайв пытается зайти не автор
@@ -103,6 +105,9 @@ export default {
       } else if (routeName.startsWith('games-id-play') || routeName.startsWith('games-id-edit')) {
         if (!this.gameData) {
           this.gameData = await this.fetchDataFromServer()
+        }
+        if (!this.user) {
+          await this.$api.waitUntilRequestResolves('getProfile')
         }
         this.restoreState(this.gameData)
       }

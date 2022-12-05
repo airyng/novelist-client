@@ -23,7 +23,7 @@ export const actions = {
   async userFetch ({ commit, state }, userId) {
     if (state.list[userId]) { return state.list[userId] }
 
-    const getUserResponse = await this.$api.getUser(userId)
+    const getUserResponse = await this.$api.call('getUser', userId)
 
     if (getUserResponse.status === 200) {
       commit('addToList', [userId, getUserResponse.data])

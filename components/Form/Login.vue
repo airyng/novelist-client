@@ -98,7 +98,7 @@ export default {
     async submitForm () {
       this.ajaxSending = true
       try {
-        const response = await this.$api.login(this.formData)
+        const response = await this.$api.call('login', null, this.formData)
         if (response.status === 200) {
           await this.$store.dispatch('authorize', response.data)
           SuccessMessage({
@@ -112,8 +112,6 @@ export default {
           ErrorMessage({
             text: 'Неизвестная ошибка. Попробуйте перезагрузить страницу.'
           })
-          // eslint-disable-next-line no-console
-          console.log(response)
         }
       } catch (e) {
         // this.formErrors.email = e.response.data.error.email || []

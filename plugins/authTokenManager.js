@@ -12,11 +12,12 @@ export default function ({ $axios, $cookiz }, inject) {
   }
 
   atm._setTokenToHeader = function (token) {
-    if (!token && this.authInterceptor) {
-      $axios.interceptors.request.eject(this.authInterceptor)
+    // Remove previous interceptors
+    if ($axios.interceptors.request.handlers.length) {
+      $axios.interceptors.request.handlers = []
     }
     if (token) {
-      this.authInterceptor = $axios.interceptors.request.use((config) => {
+      $axios.interceptors.request.use((config) => {
         config.headers.Authorization = 'Bearer ' + token
         return config
       }, function (err) {

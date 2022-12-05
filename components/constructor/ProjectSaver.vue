@@ -63,7 +63,7 @@ export default {
       if (this.id) { data._id = this.id }
       // localStorage.setItem('game', JSON.stringify(data))
       // console.log('saved')
-      const responseStatus = data._id ? await this.$api.updateGame(data) : await this.$api.saveGame(data)
+      const responseStatus = data._id ? await this.$api.call('updateGame', data._id, data) : await this.$api.call('saveGame', null, data)
 
       if (responseStatus !== 200) {
         this.addError('Неизвестная ошибка. Проверьте все сцены на наличие ошибок.')

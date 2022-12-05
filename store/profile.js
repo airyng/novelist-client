@@ -26,7 +26,7 @@ export const actions = {
    */
   async getMyGames ({ commit }) {
     try {
-      const myGames = await this.$api.getMyGamesList()
+      const myGames = await this.$api.call('getMyGamesList')
       // adaptaion on air
       myGames?.forEach((item) => {
         let game = JSON.parse(item.json)

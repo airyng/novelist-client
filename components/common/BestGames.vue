@@ -93,7 +93,7 @@ export default {
       }
       // Или, если данные не были получены ранее, то загружаем их отдельно
       if (!this.item) {
-        this.item = await this.$api.getGameByID(gameID)
+        this.item = await this.$api.call('getGameByID', gameID)
       }
       // Обнуляем прогресс-бар
       this.progress = 0

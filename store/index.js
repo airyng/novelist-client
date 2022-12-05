@@ -35,7 +35,7 @@ export const actions = {
    * и обновление этих данных в state
    */
   async fetchUserData ({ commit }) {
-    const userData = await this.$api.getProfile()
+    const userData = await this.$api.call('getProfile')
     commit('setProperty', ['userData', userData])
   },
   /**
@@ -72,7 +72,7 @@ export const actions = {
 
       commit('setProperty', ['isProcessingTryAutoLogin', true])
 
-      userData = await this.$api.getProfile() // if cookie present from previous login this will succeed
+      userData = await this.$api.call('getProfile') // if cookie present from previous login this will succeed
       console.log('userData', userData)
       // Relogining again
       if (!userData) {
@@ -84,7 +84,7 @@ export const actions = {
           await dispatch('logout')
           throw new Error('Can\'t retrieve new token by existent resfreshToken.')
         }
-        userData = await this.$api.getProfile() // if cookie present from previous login this will succeed
+        userData = await this.$api.call('getProfile') // if cookie present from previous login this will succeed
       }
 
       if (!userData) { throw new Error('Unauthorized') }
@@ -105,7 +105,7 @@ export const actions = {
    * В случае провала происходит логаут.
    */
   async refreshToken () {
-    const newTokenData = await this.$api.refresh(this.$atm.getToken('refresh'))
+    const newTokenData = await this.$api.call('refresh', null, { refresh_token: this.$atm.getToken('refresh') })
     const refreshToken = this.$atm.getToken('refresh')
     this.$atm.purge()
     if (newTokenData) { this.$atm.setToken({ accessToken: newTokenData.accessToken, refreshToken }) }
@@ -117,7 +117,7 @@ export const actions = {
    */
   async logout ({ commit }) {
     try {
-      await this.$api.logout(this.$atm.getToken('refresh'))
+      await this.$api.call('logout', this.$atm.getToken('refresh'))
       this.$atm.purge() // clear header and cookies
       commit('setProperty', ['userData', null])
     } finally {

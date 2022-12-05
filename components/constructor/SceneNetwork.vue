@@ -214,6 +214,7 @@ export default {
       // })
     },
     reinit () {
+      if (!this.network) { return false }
       this.lastViewPos = { ...this.network.getViewPosition() }
       this.lastViewScale = this.network.getScale()
       this.network = null

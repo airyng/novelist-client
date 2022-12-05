@@ -32,7 +32,7 @@ import { getGenderTranslation } from '@/plugins/utils'
 
 export default {
   async asyncData ({ $api, params, error }) {
-    const item = await $api.getUser(params.id)
+    const item = await $api.call('getUser', params.id)
     if (!item) { return error({ statusCode: 404 }) }
     return { item }
   },

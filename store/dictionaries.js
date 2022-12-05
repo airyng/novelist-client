@@ -21,7 +21,7 @@ export const mutations = {
 
 export const actions = {
   async sexFetch ({ commit }) {
-    const result = await this.$api.getSexes()
+    const result = await this.$api.call('getSexes')
     commit('setProperty', ['sexTypes', result])
   },
   /**
@@ -29,7 +29,7 @@ export const actions = {
    * и сохраняет его в хранилище
    */
   async gamesFetch ({ commit }) {
-    const result = await this.$api.getGames()
+    const result = await this.$api.call('getGames')
     commit('setProperty', ['latestGames', result])
   }
 }

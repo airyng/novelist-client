@@ -161,13 +161,13 @@ import { SuccessMessage, ErrorMessage } from '@/plugins/toast'
 
 export default {
   middleware: ['authenticated'],
-  async asyncData ({ store }) {
-    await store.dispatch('profile/getMyGames')
-  },
   data () {
     return {
       loading: false
     }
+  },
+  async fetch ({ store }) {
+    await store.dispatch('profile/getMyGames')
   },
   computed: {
     items () {
@@ -181,7 +181,7 @@ export default {
   },
   methods: {
     async unpublish (item) {
-      const responseStatus = await this.$api.unpublishGame(item._id)
+      const responseStatus = await this.$api.call('unpublishGame', null, { id: item._id })
       if (responseStatus === 200) {
         SuccessMessage({
           text: 'Новелла "' + item.title + '" деактивирована!'
@@ -204,7 +204,7 @@ export default {
         ErrorMessage({ text: 'Публикация доступна только для новелл со статусом "Тест-Драйв"' })
         return
       }
-      const responseStatus = await this.$api.publishGame(item._id)
+      const responseStatus = await this.$api.call('publishGame', null, { id: item._id })
       if (responseStatus === 200) {
         SuccessMessage({
           text: 'Новелла "' + item.title + '" успешно опубликована!'

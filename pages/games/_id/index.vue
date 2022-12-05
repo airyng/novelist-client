@@ -64,7 +64,7 @@ export default {
       item = store.state.latestGames.find(item => item._id === Number(params.id))
     }
     if (!item) {
-      item = await $api.getGameByID(params.id)
+      item = await $api.call('getGameByID', params.id)
     }
     if (!item) { return error({ statusCode: 404 }) }
     return { item }

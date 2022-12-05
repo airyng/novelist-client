@@ -78,7 +78,7 @@ export default {
     async submitForm () {
       this.ajaxSending = true
 
-      const response = await this.$api.sendReport(this.formData)
+      const response = await this.$api.call('sendReport', null, this.formData)
 
       if (response.status === 200) {
         this.formData.text = ''

@@ -43,7 +43,7 @@ export default {
     }
 
     if (!loadedItem) {
-      loadedItem = await $api.getGameByID(params.id)
+      loadedItem = await $api.call('getGameByID', params.id)
     }
     if (!loadedItem) { return error({ statusCode: 404 }) }
 

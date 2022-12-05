@@ -242,11 +242,11 @@ export const actions = {
     commit('setProperty', ['characters', characters])
   },
   async loadBackgrounds ({ commit }) {
-    const result = await this.$api.getBackgrounds()
+    const result = await this.$api.call('getBackgrounds')
     commit('setProperty', ['backgrounds', result])
   },
   async loadBackgroundCategories ({ commit }) {
-    const result = await this.$api.getBackgroundCategories()
+    const result = await this.$api.call('getBackgroundCategories')
     commit('setProperty', ['backgroundCategories', result])
   }
 }

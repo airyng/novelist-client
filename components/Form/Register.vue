@@ -178,7 +178,7 @@ export default {
 
       this.ajaxSending = true
       try {
-        const result = await this.$api.register(this.formData)
+        const result = await this.$api.call('register', null, this.formData)
         if (result.status === 200) {
           SuccessMessage({ title: 'Регистрация успешна!' })
           this.formData = this.getDefaultForm()
