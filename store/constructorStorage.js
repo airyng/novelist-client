@@ -241,8 +241,12 @@ export const actions = {
     const characters = state.characters.filter(char => char.uid !== character.uid)
     commit('setProperty', ['characters', characters])
   },
-  async loadBackgrounds ({ commit }) {
+  async loadBackgrounds ({ commit, dispatch }) {
     const result = await this.$api.call('getBackgrounds')
+    for (let index = 0; index < result.length; index++) {
+      const item = result[index]
+      item.url = await dispatch('imagesRepository/linkFetch', item.image_id, { root: true })
+    }
     commit('setProperty', ['backgrounds', result])
   },
   async loadBackgroundCategories ({ commit }) {

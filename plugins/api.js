@@ -67,14 +67,10 @@ export default function ({ $axios, store }, inject) {
         getPath: id => `${backendURL}games/${id}`,
         returnType: 'status'
       },
-      getBackgrounds: {
-        method: 'get',
-        getPath: () => `${backendURL}background/list`
-      },
-      getBackgroundCategories: {
-        method: 'get',
-        getPath: () => `${backendURL}background/categories`
-      },
+      // getBackgroundCategories: {
+      //   method: 'get',
+      //   getPath: () => `${backendURL}background/categories`
+      // },
       getUser: {
         method: 'get',
         getPath: id => `${backendURL}users/${id}`
@@ -103,6 +99,10 @@ export default function ({ $axios, store }, inject) {
         method: 'patch',
         getPath: id => `${backendURL}users/${id}`,
         returnType: 'all'
+      },
+      getBackgrounds: {
+        method: 'get',
+        getPath: () => `${backendURL}backgrounds`
       }
     },
     async call (name, params, payload = null) {

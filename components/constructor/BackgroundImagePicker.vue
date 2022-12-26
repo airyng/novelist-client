@@ -38,18 +38,15 @@
                 class="d-flex align-end back-item"
                 dark
                 height="200"
-                :style="'background-image: url('+BACKEND_URL + back.url_medium+');'"
+                :style="'background-image: url(' + back.url + ');'"
                 @click="changeBack(back)"
               >
-                <div
-                  class="flex-grow-1 text-center"
-                >
-                  <span v-if="back != activeBack">
-                    {{ back.name }}
-                  </span>
-
-                  <span v-else>
-                    {{ back.name }} - <strong>Активно</strong>
+                <div class="flex-grow-1 text-center">
+                  <span>
+                    {{ back.title }}
+                    <template v-if="back === activeBack">
+                      - <strong>Активно</strong>
+                    </template>
                   </span>
                 </div>
               </v-card>
@@ -101,9 +98,6 @@ export default {
     pages () {
       return this.filteredBacksChunks.length
     },
-    BACKEND_URL () {
-      return process.env.BACKEND_URL
-    },
     // Результаты поиска разбитые на массивы страниц
     filteredBacksChunks () {
       const itemsPerPage = 6
@@ -130,8 +124,8 @@ export default {
 
       if (this.nameSearchKey) {
         backs = this.backs.filter((item) => {
-          if (item.name && this.nameSearchKey) {
-            return item.name.toLowerCase().includes(this.nameSearchKey.toLowerCase())
+          if (item.title && this.nameSearchKey) {
+            return item.title.toLowerCase().includes(this.nameSearchKey.toLowerCase())
           } else {
             return false
           }
@@ -177,10 +171,10 @@ export default {
   async mounted () {
     lsm.init()
     await Promise.all([
-      this.loadBacks(),
-      this.loadBackCats()
+      this.loadBacks()
+      // this.loadBackCats()
     ])
-    this.setActiveBackground()
+    // this.setActiveBackground()
   },
   methods: {
     setActiveBackground () {
@@ -189,7 +183,7 @@ export default {
       }
     },
     changeBack (back) {
-      const value = this.BACKEND_URL + back.url
+      const value = back.url
       lsm.state.lastSelectedBack = { type: 'image', value }
       lsm.save()
       this.$emit('OnBackChanged', value)
