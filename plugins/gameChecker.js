@@ -9,28 +9,34 @@ export default {
   // Думаю, нужно автоматически обновлять на сервере исправленный json,
   // чтобы больше не править его лишний раз
   updateGameToLatestVersion (game) {
-    // Проверка на корректность структуры
-    // Ошибка после нулевой версии
-    if (!game.scenes) {
-      game = {
-        scenes: game,
-        characters: []
-      }
-    }
-    // Ошибка после нулевой версии
-    game.scenes.map((element) => {
-      if (element.background && !element.background.type) {
-        if (element.background.url) {
-          element.background = {
-            value: element.background.url,
-            type: 'image'
-          }
+    try {
+      // Проверка на корректность структуры
+      // Ошибка после нулевой версии
+      if (!game?.scenes) {
+        game = {
+          scenes: game,
+          characters: []
         }
       }
-      return element
-    })
+      // Ошибка после нулевой версии
+      game?.scenes.map((element) => {
+        if (element.background && !element.background.type) {
+          if (element.background.url) {
+            element.background = {
+              value: element.background.url,
+              type: 'image'
+            }
+          }
+        }
+        return element
+      })
 
-    game.version = version
-    return game
+      game.version = version
+      return game
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e)
+      return false
+    }
   }
 }
