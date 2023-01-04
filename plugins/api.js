@@ -60,12 +60,12 @@ export default function ({ $axios, store }, inject) {
       saveGame: {
         method: 'post',
         getPath: () => `${backendURL}games`,
-        returnType: 'status'
+        returnType: 'all'
       },
       updateGame: {
         method: 'patch',
         getPath: id => `${backendURL}games/${id}`,
-        returnType: 'status'
+        returnType: 'all'
       },
       getBackgroundCategories: {
         method: 'get',

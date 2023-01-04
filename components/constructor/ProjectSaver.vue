@@ -36,14 +36,15 @@ export default {
     }
   },
   methods: {
-    async save (withResultMessage = true) {
+    async save () {
       // Если режим установлен на тест-драйв, то валидируем
       // иначе просто сохраняем
       if (this.mainInfo.onTestDrive && !this.validate()) {
         return false
       }
       this.isLoading = true
-      await this._save() ? this.showSuccess(withResultMessage) : this.showErrors()
+      const result = await this._save()
+      if (result) { this.showSuccess(result) } else { this.showErrors() }
       this.isLoading = false
     },
     async _save () {
@@ -58,19 +59,19 @@ export default {
         json: JSON.stringify(json),
         title: this.mainInfo.title,
         description: this.mainInfo.description,
-        status: this.mainInfo.status
+        status: this.mainInfo.status || 'draft'
       }
       if (this.id) { data._id = this.id }
       // localStorage.setItem('game', JSON.stringify(data))
       // console.log('saved')
-      const responseStatus = data._id ? await this.$api.call('updateGame', data._id, data) : await this.$api.call('saveGame', null, data)
+      const response = data._id ? await this.$api.call('updateGame', data._id, data) : await this.$api.call('saveGame', null, data)
 
-      if (responseStatus !== 200) {
+      if (![200, 201].includes(response.status)) {
         this.addError('Неизвестная ошибка. Проверьте все сцены на наличие ошибок.')
         this.showErrors()
         return false
       }
-      return true
+      return response.data
     },
     validate () {
       this.isLoading = true
@@ -96,11 +97,9 @@ export default {
       }
       return true
     },
-    showSuccess (withResultMessage = true) {
-      this.$emit('saved', { onTestDrive: this.mainInfo.onTestDrive })
-      if (withResultMessage) {
-        SuccessMessage({ title: 'Сохранено!' })
-      }
+    showSuccess (gameData) {
+      this.$emit('saved', gameData)
+      SuccessMessage({ title: 'Сохранено!' })
     },
     checkForEmptyActions () {
       for (let index = 0; index < this.scenes.length; index++) {

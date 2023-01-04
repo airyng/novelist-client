@@ -131,9 +131,10 @@ export const actions = {
   },
   setStateToDefault ({ commit }) {
     const mainInfo = {
-      title: '',
-      description: '',
-      onTestDrive: false
+      title: 'Без названия',
+      description: 'Описание отсутствует.',
+      status: 'draft',
+      onTestDrive: false // TODO: нужно отказаться от этого поля заменив его проверкой ``` status === 'test-drive' ```
     }
     commit('setProperty', ['scenes', []])
     commit('setProperty', ['characters', []])

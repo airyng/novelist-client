@@ -302,9 +302,6 @@ export default {
     closeCharacterEditor () {
       this.selectedCharacter = false
     },
-    onSaved (payload) {
-      this.showPlayBtn = payload.onTestDrive
-    },
     mainSettingsDialogStateChanged (val) {
       if (!val) {
         this.$refs.mainSceneInfo.save()
@@ -368,6 +365,10 @@ export default {
       if (this.$refs?.projectSaver?.mainInfo && !this.$refs.projectSaver.mainInfo.onTestDrive) {
         this.$refs.projectSaver.save(false)
       }
+    },
+    onSaved (payload) {
+      this.showPlayBtn = payload.status !== 'draft'
+      this.onRestoreState(payload)
     },
     onRestoreState (gameData) {
       this.$store.dispatch('constructorStorage/updateProjectID', gameData._id)
