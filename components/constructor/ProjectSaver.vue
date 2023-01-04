@@ -36,7 +36,7 @@ export default {
     }
   },
   methods: {
-    async save () {
+    async save (showSuccess = true) {
       // Если режим установлен на тест-драйв, то валидируем
       // иначе просто сохраняем
       if (this.mainInfo.onTestDrive && !this.validate()) {
@@ -44,7 +44,7 @@ export default {
       }
       this.isLoading = true
       const result = await this._save()
-      if (result) { this.showSuccess(result) } else { this.showErrors() }
+      if (result) { this.showSuccess(result, showSuccess) } else { this.showErrors() }
       this.isLoading = false
     },
     async _save () {
@@ -97,9 +97,11 @@ export default {
       }
       return true
     },
-    showSuccess (gameData) {
+    showSuccess (gameData, showSuccess = true) {
       this.$emit('saved', gameData)
-      SuccessMessage({ title: 'Сохранено!' })
+      if (showSuccess) {
+        SuccessMessage({ title: 'Сохранено!' })
+      }
     },
     checkForEmptyActions () {
       for (let index = 0; index < this.scenes.length; index++) {
