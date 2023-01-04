@@ -14,13 +14,13 @@
         <!-- Предварительно устанавливать дефолтную категорию и убедиться, что все изображения имеют хотя бы одну категорию -->
         <v-col cols="12" md="6" class="pt-0">
           <v-select
-            v-model="activeCategory"
-            :items="categories"
+            v-model="activeTag"
+            :items="tags"
             class="pt-0"
             label="Поиск по категории"
-            item-text="name"
-            item-value="id"
-            :disabled="!categories.length"
+            item-text="title"
+            item-value="_id"
+            :disabled="!tags.length"
             :clearable="true"
           />
         </v-col>
@@ -59,7 +59,7 @@
         </v-col>
       </v-row>
       <v-row v-if="filteredBacks.length">
-        <v-col cols="12" class="text-center">
+        <v-col cols="12" class="text-center pa-0">
           <v-pagination
             v-model="page"
             :length="pages"
@@ -91,7 +91,7 @@ export default {
       page: 1,
       nameSearchKey: '',
       activeBack: null,
-      activeCategory: false
+      activeTag: false
     }
   },
   computed: {
@@ -118,7 +118,7 @@ export default {
       return result
     },
     filteredBacks () {
-      if (!this.nameSearchKey && !this.activeCategory) { return this.backs }
+      if (!this.nameSearchKey && !this.activeTag) { return this.backs }
 
       let backs = [...this.backs]
 
@@ -132,19 +132,9 @@ export default {
         })
       }
 
-      if (this.activeCategory) {
+      if (this.activeTag) {
         backs = backs.filter((item) => {
-          let result = false
-
-          for (let index = 0; index < item.categories.length; index++) {
-            const category = item.categories[index]
-
-            if (category.id === this.activeCategory) {
-              result = true
-              break
-            }
-          }
-          return result
+          return item.tags.find(tag => tag === this.activeTag)
         })
       }
 
@@ -153,7 +143,7 @@ export default {
     backs () {
       return this.$store.state.constructorStorage.backgrounds
     },
-    categories () {
+    tags () {
       return this.$store.state.constructorStorage.backgroundCategories
     }
   },
@@ -161,7 +151,7 @@ export default {
     nameSearchKey () {
       this.page = 1
     },
-    activeCategory () {
+    activeTag () {
       this.page = 1
     },
     value () {
@@ -171,10 +161,10 @@ export default {
   async mounted () {
     lsm.init()
     await Promise.all([
-      this.loadBacks()
-      // this.loadBackCats()
+      this.loadBacks(),
+      this.loadBackCats()
     ])
-    // this.setActiveBackground()
+    this.setActiveBackground()
   },
   methods: {
     setActiveBackground () {
@@ -197,7 +187,7 @@ export default {
       }
     },
     loadBackCats () {
-      if (!this.categories.length) {
+      if (!this.tags.length) {
         this.$store.dispatch('constructorStorage/loadBackgroundCategories')
       }
     }

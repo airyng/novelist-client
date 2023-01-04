@@ -67,10 +67,10 @@ export default function ({ $axios, store }, inject) {
         getPath: id => `${backendURL}games/${id}`,
         returnType: 'status'
       },
-      // getBackgroundCategories: {
-      //   method: 'get',
-      //   getPath: () => `${backendURL}background/categories`
-      // },
+      getBackgroundCategories: {
+        method: 'get',
+        getPath: () => `${backendURL}tags`
+      },
       getUser: {
         method: 'get',
         getPath: id => `${backendURL}users/${id}`
