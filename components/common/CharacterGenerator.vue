@@ -5,7 +5,7 @@
         <v-col
           cols="12"
           md="1"
-          class="spriteCategoriesButtons"
+          class="spriteCategoriesButtons align-center"
           :class="{ disabled: playmode && !userChoose.includes('view'), 'flex-column': windowWidth > 959 }"
         >
           <v-avatar
@@ -52,7 +52,7 @@
             <v-col
               cols="12"
               class="d-flex"
-              :class="{'justify-center': windowWidth > 959}"
+              :class="{ 'justify-center': windowWidth > 959, 'flex-column': windowWidth <= 959 }"
             >
               <div v-if="!playmode" class="d-flex flex-column" style="z-index: 8">
                 <div class="d-flex">
@@ -61,6 +61,7 @@
                     label="Главный персонаж"
                     color="white"
                     hide-details
+                    :class="{ 'mt-0': windowWidth <= 959 }"
                   />
                 </div>
                 <div class="mt-2 d-flex flex-column">
