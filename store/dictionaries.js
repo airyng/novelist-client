@@ -29,7 +29,7 @@ export const actions = {
    * и сохраняет его в хранилище
    */
   async gamesFetch ({ commit }) {
-    const result = await this.$api.call('getGames')
+    const result = await this.$api.call('getGames', { status: 'published' })
     commit('setProperty', ['latestGames', result])
   }
 }

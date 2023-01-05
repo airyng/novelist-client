@@ -15,7 +15,13 @@ export default function ({ $axios, store }, inject) {
       },
       getGames: {
         method: 'get',
-        getPath: () => `${backendURL}games`
+        getPath: (params) => {
+          let query = ''
+          if (params) {
+            query = '?' + (new URLSearchParams(params)).toString()
+          }
+          return `${backendURL}games${query}`
+        }
       },
       getGameByID: {
         method: 'get',
