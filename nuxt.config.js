@@ -1,5 +1,6 @@
 // import colors from 'vuetify/es5/util/colors'
 const envObject = require('dotenv').config()
+const appVersion = require('./package.json')?.version
 
 export default {
   server: {
@@ -57,7 +58,7 @@ export default {
   env: {
     ...envObject.parsed,
     // ...
-    appVersion: '0.2.1'
+    appVersion
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
