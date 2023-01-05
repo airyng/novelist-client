@@ -83,7 +83,7 @@ export default function ({ $axios, store }, inject) {
       },
       sendReport: {
         method: 'post',
-        getPath: () => `${backendURL}report/send`,
+        getPath: () => `${backendURL}reports`,
         returnType: 'all'
       },
       getImageLink: {

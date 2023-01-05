@@ -34,11 +34,15 @@
 
 <script>
 import { SuccessMessage } from '@/plugins/toast'
+import deviceAnalyzer from '@/plugins/deviceAnalyzer'
 
 export default {
   data: () => ({
     formData: {
-      text: ''
+      text: '',
+      device: '',
+      screen: '',
+      browser: ''
     },
     valid: false,
     textRules: [
@@ -68,6 +72,12 @@ export default {
       return !this.valid || this.ajaxSending || !hasAnyContent
     }
   },
+  mounted () {
+    const dimensions = deviceAnalyzer.dimensions()
+    this.formData.device = deviceAnalyzer.device()
+    this.formData.browser = deviceAnalyzer.browserName()
+    this.formData.screen = `${dimensions.width}x${dimensions.height}`
+  },
   methods: {
     removeErrors (type) {
       this.formErrors.text = []
@@ -80,7 +90,7 @@ export default {
 
       const response = await this.$api.call('sendReport', null, this.formData)
 
-      if (response.status === 200) {
+      if ([200, 201].includes(response.status)) {
         this.formData.text = ''
         this.$emit('onFormSent')
         SuccessMessage({
