@@ -51,7 +51,7 @@
           <v-row>
             <v-col
               cols="12"
-              class="d-flex"
+              class="d-flex character-settings-block"
               :class="{ 'justify-center': windowWidth > 959, 'flex-column': windowWidth <= 959 }"
             >
               <div v-if="!playmode" class="d-flex flex-column" style="z-index: 8">
@@ -97,7 +97,7 @@
                 :counter="maxNameLength"
               />
             </v-col>
-            <v-col cols="12" class="d-flex justify-center">
+            <v-col cols="12" class="d-flex justify-center" style="z-index: -1">
               <CharacterCanvas
                 :updated-at="updatedAt"
                 :char-id="generatedImageID"
@@ -398,6 +398,11 @@ export default {
     bottom: 275px
     right: 50%
     transform: translateX(50%)
+
+.character-settings-block
+    background: rgba(255, 255, 255, 0.15)
+    border-radius: 5px
+    z-index: 0
 
 .disabled .previewsContainer
   opacity: 0

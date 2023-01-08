@@ -357,6 +357,13 @@ export default {
   top: 65px
   right: 10px
   z-index: 8
+  @media screen and (min-width: 959px) and (max-height: 695px)
+    top: 10px
+    right: 60px
+    display: flex
+    flex-direction: row
+    & > *
+        margin-left: 10px
 
 .character
   position: absolute

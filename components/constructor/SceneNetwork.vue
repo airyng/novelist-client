@@ -66,10 +66,10 @@ export default {
     }
   },
   computed: {
-    canvasHeight () {
-      if (process.server) { return 0 }
-      return window.document.querySelector('#' + this.containerID).height
-    },
+    // canvasHeight () {
+    //   if (process.server) { return 0 }
+    //   return window.document.querySelector('#' + this.containerID).height
+    // },
     scenes () {
       return this.$store.state.constructorStorage.scenes
     }

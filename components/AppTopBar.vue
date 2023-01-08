@@ -24,7 +24,7 @@
       </v-list>
     </v-navigation-drawer> -->
 
-    <v-container>
+    <v-container class="py-0">
       <v-row>
         <v-col class="d-flex align-center">
           <div class="d-show">
