@@ -218,6 +218,7 @@
     <constructor-project-loader
       @onRestoreState="onRestoreState"
     />
+    <common-screen-rotation-alert />
   </div>
 </template>
 
@@ -368,7 +369,10 @@ export default {
     },
     onSaved (payload) {
       this.showPlayBtn = payload.status !== 'draft'
-      this.onRestoreState(payload)
+      // Если это первое сохранение проекта, то нужно сделать редирект на страницу редактирования
+      if (this.$route.path === '/games/add') {
+        this.$router.push(`/games/${payload._id}/edit`)
+      }
     },
     onRestoreState (gameData) {
       this.$store.dispatch('constructorStorage/updateProjectID', gameData._id)
@@ -385,6 +389,7 @@ export default {
       }
       this.$store.dispatch('constructorStorage/updateAllScenes', game.scenes)
       this.$store.dispatch('constructorStorage/updateAllCharacters', game.characters)
+      this.$store.dispatch('constructorStorage/setUnsavedChangesProp', false)
     }
   }
 }

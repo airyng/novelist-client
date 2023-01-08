@@ -71,6 +71,8 @@ export default {
         this.showErrors()
         return false
       }
+
+      this.$store.dispatch('constructorStorage/setUnsavedChangesProp', false)
       return response.data
     },
     validate () {
@@ -136,7 +138,6 @@ export default {
           }
         }
       }
-
       return true
     },
     isSceneHasEmptyAction (scene) {
@@ -147,7 +148,6 @@ export default {
           return true
         }
       }
-
       return false
     },
     checkExitExistence () { // проверяем, если ли в новелле хотя бы один выход
@@ -224,7 +224,6 @@ export default {
           break
         }
       }
-
       return sceneHasExit
     },
     isSceneHasTransition (scene) { // проверям, является ли сцена тупиковой (безвыходной)
@@ -238,7 +237,6 @@ export default {
           break
         }
       }
-
       return sceneHasTransition
     },
     getScenesIDsWithTransitions () { // получаем id сцен, на которые ведут все имеющиеся экшены переходов

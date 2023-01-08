@@ -26,7 +26,8 @@ export const state = () => ({
   mainInfo: null,
   characters: [],
   backgrounds: [],
-  backgroundCategories: []
+  backgroundCategories: [],
+  hasUnsavedChanges: false
 })
 
 export const getters = {
@@ -126,8 +127,13 @@ export const mutations = {
 }
 
 export const actions = {
+  setUnsavedChangesProp ({ commit }, bPayload) {
+    console.log('setUnsavedChangesProp', bPayload)
+    commit('setProperty', ['hasUnsavedChanges', bPayload])
+  },
   updateMainSettings ({ commit }, data) {
     commit('setProperty', ['mainInfo', data])
+    commit('setProperty', ['hasUnsavedChanges', true])
   },
   setStateToDefault ({ commit }) {
     const mainInfo = {
@@ -140,11 +146,13 @@ export const actions = {
     commit('setProperty', ['characters', []])
     commit('setProperty', ['projectID', null])
     commit('setProperty', ['mainInfo', mainInfo])
+    commit('setProperty', ['hasUnsavedChanges', false])
   },
   addScene ({ commit, state }, scene) {
     const scenes = [...state.scenes]
     scenes.push(scene)
     commit('setProperty', ['scenes', scenes])
+    commit('setProperty', ['hasUnsavedChanges', true])
     // TODO: желательно отказаться от таких вызовов событий
     EventBus.$emit('callToReinitSceneNetwork')
   },
@@ -162,16 +170,22 @@ export const actions = {
       return item
     })
     commit('setProperty', ['scenes', scenes])
+    commit('setProperty', ['hasUnsavedChanges', true])
+    // TODO: желательно отказаться от таких вызовов событий
     EventBus.$emit('callToReinitSceneNetwork')
   },
   // TODO: уместно будет, чтобы этот метод назывался не update, а set
   updateAllScenes ({ commit }, scenes) {
     commit('setProperty', ['scenes', scenes])
+    commit('setProperty', ['hasUnsavedChanges', true])
+    // TODO: желательно отказаться от таких вызовов событий
     EventBus.$emit('callToReinitSceneNetwork')
   },
   deleteScene ({ commit, state }, sceneID) {
     const scenes = state.scenes.filter(scene => scene.id !== sceneID)
     commit('setProperty', ['scenes', scenes])
+    commit('setProperty', ['hasUnsavedChanges', true])
+    // TODO: желательно отказаться от таких вызовов событий
     EventBus.$emit('callToReinitSceneNetwork')
   },
   copyScene ({ dispatch, getters }, { sceneToCopy, setTransition = false }) {
@@ -208,7 +222,6 @@ export const actions = {
       _scene.actions.push(getters.getNewAction(actionParams || {}))
       dispatch('updateScene', _scene)
     } else {
-      // To do: Show error message (Swal)
       ErrorMessage(
         {
           title: 'Действие не создано',
@@ -234,13 +247,16 @@ export const actions = {
       characters.push(character)
     }
     commit('setProperty', ['characters', characters])
+    commit('setProperty', ['hasUnsavedChanges', true])
   },
   updateAllCharacters ({ state, commit }, characters) {
     commit('setProperty', ['characters', characters])
+    commit('setProperty', ['hasUnsavedChanges', true])
   },
   removeCharacterFromList ({ state, commit }, character) {
     const characters = state.characters.filter(char => char.uid !== character.uid)
     commit('setProperty', ['characters', characters])
+    commit('setProperty', ['hasUnsavedChanges', true])
   },
   async loadBackgrounds ({ commit, dispatch }) {
     const result = await this.$api.call('getBackgrounds')
