@@ -307,6 +307,8 @@ export default {
       if (!val) {
         this.$refs.mainSceneInfo.save()
         // this.saveProject()
+      } else {
+        this.$refs.mainSceneInfo?.setDataFromProps?.()
       }
     },
     onSceneNetworkClicked (payload) {
@@ -363,7 +365,7 @@ export default {
     // Метод сохранения данных при условии
     // что новелла в статусе "черновик"
     autoSave () {
-      if (this.$refs?.projectSaver?.mainInfo && !this.$refs.projectSaver.mainInfo.onTestDrive) {
+      if (this.$refs?.projectSaver?.mainInfo && this.$refs.projectSaver.mainInfo.status === 'draft') {
         this.$refs.projectSaver.save(false)
       }
     },
@@ -379,7 +381,7 @@ export default {
       this.$store.dispatch('constructorStorage/updateMainSettings', {
         title: gameData.title,
         description: gameData.description,
-        onTestDrive: (gameData.status !== 'draft')
+        status: gameData.status
       })
 
       let game = JSON.parse(gameData.json)

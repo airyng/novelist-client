@@ -26,14 +26,22 @@
 
     <v-row justify="center">
       <v-col cols="1">
-        <v-switch v-model="localMainInfo.onTestDrive" class="mt-0" />
+        <v-switch
+          :input-value="isOnTestDrive"
+          class="mt-0"
+          @click="toggleMode(false)"
+        />
       </v-col>
-      <v-col cols="11" class="curs-pointer d-flex align-items-center mt-1" @click="toggleMode">
-        <span v-if="localMainInfo.onTestDrive">Черновик / <b>Тест-Драйв</b></span>
+      <v-col
+        cols="11"
+        class="curs-pointer d-flex align-items-center mt-1"
+        @click="toggleMode"
+      >
+        <span v-if="isOnTestDrive">Черновик / <b>Тест-Драйв</b></span>
         <span v-else><b>Черновик</b> / Тест-Драйв</span>
       </v-col>
       <v-col cols="12" class="d-flex align-items-center mt-0 pt-0">
-        <v-label v-if="!localMainInfo.onTestDrive" x-small>
+        <v-label v-if="!isOnTestDrive" x-small>
           В этом режиме: включено автосохранение.
         </v-label>
         <v-label v-else x-small>
@@ -48,8 +56,8 @@
 export default {
   data () {
     return {
-      gameStatusToggler: false,
-      localMainInfo: null
+      localMainInfo: null,
+      isOnTestDrive: false
     }
   },
   computed: {
@@ -66,10 +74,13 @@ export default {
   methods: {
     setDataFromProps () {
       this.localMainInfo = JSON.parse(JSON.stringify(this.mainInfo))
-      this.gameStatusToggler = this.localMainInfo ? (this.localMainInfo.status !== 'draft') : false
+      this.isOnTestDrive = this.localMainInfo.status !== 'draft'
     },
-    toggleMode () {
-      this.localMainInfo.onTestDrive = !this.localMainInfo.onTestDrive
+    toggleMode (updateFlag = true) {
+      if (updateFlag) {
+        this.isOnTestDrive = !this.isOnTestDrive
+      }
+      this.localMainInfo = { ...this.localMainInfo, status: this.isOnTestDrive ? 'test_drive' : 'draft' }
     },
     callToCloseModals () {
       this.$emit('callToCloseModals')

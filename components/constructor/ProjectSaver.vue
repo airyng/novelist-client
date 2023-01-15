@@ -39,7 +39,7 @@ export default {
     async save (showSuccess = true) {
       // Если режим установлен на тест-драйв, то валидируем
       // иначе просто сохраняем
-      if (this.mainInfo.onTestDrive && !this.validate()) {
+      if (this.mainInfo.status === 'test_drive' && !this.validate()) {
         return false
       }
       this.isLoading = true
