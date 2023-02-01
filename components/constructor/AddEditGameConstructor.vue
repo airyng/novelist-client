@@ -1,5 +1,5 @@
 <template>
-  <div class="fullsize position-relative">
+  <div class="fill-in-height position-relative">
     <constructor-popup
       v-model="isScenePopupShow"
       @onClose="closeSceneEditor"
@@ -20,7 +20,7 @@
       <common-character-generator :char="selectedCharacter" @onCharSaved="closeCharacterEditor" />
     </constructor-popup>
 
-    <constructor-context-circle :position="contextCirclePos">
+    <!-- <constructor-context-circle :position="contextCirclePos">
       <template #zero>
         <v-tooltip top>
           <template #activator="{ on, attrs }">
@@ -104,9 +104,9 @@
           </template>
           <span>Удалить</span>
         </v-tooltip>
-      </template>
+      </template> -->
 
-      <!-- <template #fourth>
+    <!-- <template #fourth>
         <v-tooltip top>
           <template #activator="{ on, attrs }">
             <v-btn
@@ -126,7 +126,7 @@
           <span>Основная информация</span>
         </v-tooltip>
       </template> -->
-    </constructor-context-circle>
+    <!-- </constructor-context-circle> -->
 
     <div class="bottom-bar">
       <v-tooltip v-if="showPlayBtn" top>
@@ -204,11 +204,11 @@
       </div>
     </div>
 
-    <constructor-scene-network
+    <!-- <constructor-scene-network
       @clicked="onSceneNetworkClicked"
       @zoom="hideContextCircle"
       @dragStart="hideContextCircle"
-    />
+    /> -->
     <common-night-sky-canvas />
 
     <constructor-project-saver
