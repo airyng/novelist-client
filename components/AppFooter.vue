@@ -79,7 +79,8 @@ footer
     text-align: center
 
 .report-btn
-    position: fixed
-    bottom: 60px
-    right: 15px
+  position: fixed
+  bottom: 60px
+  right: 15px
+  z-index: 2
 </style>

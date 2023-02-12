@@ -1,35 +1,16 @@
-// Версия 0 представляет собой массив сцен в качестве корневого объекта
-// Версия 1 представляет собой объект вида { scenes, characters, version }
-const version = 1
+// Версия 1 представляет собой массив сцен в качестве корневого объекта
+// Версия 2 изменяет корневой массив в объект вида { scenes, characters, version }
+// Версия 3 вносит изменения в формат id сцен, экшнов и персонажей
+const version = 3
 
 export default {
   isLatestVersion (game) {
     return game?.version === version
   },
-  // Думаю, нужно автоматически обновлять на сервере исправленный json,
-  // чтобы больше не править его лишний раз
   updateGameToLatestVersion (game) {
     try {
-      // Проверка на корректность структуры
-      // Ошибка после нулевой версии
-      if (!game?.scenes) {
-        game = {
-          scenes: game,
-          characters: []
-        }
-      }
-      // Ошибка после нулевой версии
-      game?.scenes.map((element) => {
-        if (element.background && !element.background.type) {
-          if (element.background.url) {
-            element.background = {
-              value: element.background.url,
-              type: 'image'
-            }
-          }
-        }
-        return element
-      })
+      game = this.updateToVersion2(game)
+      game = this.updateToVersion3(game)
 
       game.version = version
       return game
@@ -38,5 +19,50 @@ export default {
       console.error(e)
       return false
     }
+  },
+  updateToVersion3 (game) {
+    game.scenes.forEach((scene) => {
+      // Обновление формата id сцен
+      if (typeof scene.id === 'number') {
+        scene.id = `s${scene.id}`
+      }
+      scene.actions.forEach((action) => {
+        // Обновление формата id экшенов
+        if (typeof action.id === 'number') {
+          action.id = `a${action.id}`
+        }
+        if (typeof action.to === 'number') {
+          action.to = `s${action.to}`
+        }
+      })
+    })
+    game.characters.forEach((char) => {
+      if (typeof char.uid === 'number') {
+        char.uid = `c${char.uid}`
+      }
+    })
+    return game
+  },
+  updateToVersion2 (game) {
+    // Проверка на корректность структуры
+    if (!game?.scenes) {
+      game = {
+        scenes: game,
+        characters: []
+      }
+    }
+    // Исправление структуры данных бекграундов
+    game?.scenes.forEach((element) => {
+      if (element.background && !element.background.type) {
+        if (element.background.url) {
+          element.background = {
+            value: element.background.url,
+            type: 'image'
+          }
+        }
+      }
+      return element
+    })
+    return game
   }
 }

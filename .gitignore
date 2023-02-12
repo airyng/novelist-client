@@ -90,3 +90,4 @@ sw.*
 # Vim swap files
 *.swp
 assets/images/character_parts_previews/Mouth/._.DS_Store
+.vscode/*

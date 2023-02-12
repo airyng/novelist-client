@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import { EventBus } from '~/plugins/event'
 import { ErrorMessage } from '~/plugins/toast'
 
 export const state = () => ({
@@ -37,8 +36,9 @@ export const getters = {
     }
   },
   getEmptyScene (state) {
+    const extremeSceneId = state.scenes.map(s => s.id).sort((a, b) => a - b)?.pop() || 0
     return () => {
-      const id = new Date().getTime()
+      const id = `s${extremeSceneId + 1}`
       const title = state.scenes.length ? 'Сцена ' + id : 'Старт'
       return {
         id, // Уникальный идентификатор сцены
@@ -56,11 +56,12 @@ export const getters = {
     }
   },
   getNewCharacter (state) {
+    const extremeCharacterId = state.characters.map(c => c.id).sort((a, b) => a - b)?.pop() || 0
     return () => {
-      const uid = new Date().getTime()
+      const uid = `c${extremeCharacterId + 1}`
       return {
         name: '',
-        id: '',
+        id: '', // Надо понять зачем нужен id, если есть uid. Уже не помню
         uid,
         userChoose: [],
         isMainCharacter: false
@@ -68,9 +69,10 @@ export const getters = {
     }
   },
   getNewAction (state) {
+    const extremeActionId = state.scenes.map(scene => scene.actions).flat().map(a => a.id).sort((a, b) => a - b)?.pop() || 0
     return (params) => {
       return {
-        id: new Date().getTime(),
+        id: `a${extremeActionId + 1}`,
         actionText: params.text || '',
         to: params.to || false,
         condition: params.condition || false
@@ -128,7 +130,6 @@ export const mutations = {
 
 export const actions = {
   setUnsavedChangesProp ({ commit }, bPayload) {
-    console.log('setUnsavedChangesProp', bPayload)
     commit('setProperty', ['hasUnsavedChanges', bPayload])
   },
   updateMainSettings ({ commit }, data) {
@@ -152,8 +153,6 @@ export const actions = {
     scenes.push(scene)
     commit('setProperty', ['scenes', scenes])
     commit('setProperty', ['hasUnsavedChanges', true])
-    // TODO: желательно отказаться от таких вызовов событий
-    EventBus.$emit('callToReinitSceneNetwork')
   },
   // TODO: уместно будет, чтобы этот метод назывался не update, а set
   updateProjectID ({ commit, state }, ID) {
@@ -170,22 +169,16 @@ export const actions = {
     })
     commit('setProperty', ['scenes', scenes])
     commit('setProperty', ['hasUnsavedChanges', true])
-    // TODO: желательно отказаться от таких вызовов событий
-    EventBus.$emit('callToReinitSceneNetwork')
   },
   // TODO: уместно будет, чтобы этот метод назывался не update, а set
   updateAllScenes ({ commit }, scenes) {
     commit('setProperty', ['scenes', scenes])
     commit('setProperty', ['hasUnsavedChanges', true])
-    // TODO: желательно отказаться от таких вызовов событий
-    EventBus.$emit('callToReinitSceneNetwork')
   },
   deleteScene ({ commit, state }, sceneID) {
     const scenes = state.scenes.filter(scene => scene.id !== sceneID)
     commit('setProperty', ['scenes', scenes])
     commit('setProperty', ['hasUnsavedChanges', true])
-    // TODO: желательно отказаться от таких вызовов событий
-    EventBus.$emit('callToReinitSceneNetwork')
   },
   copyScene ({ dispatch, getters }, { sceneToCopy, setTransition = false }) {
     if (!sceneToCopy) { return }

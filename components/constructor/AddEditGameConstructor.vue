@@ -204,12 +204,14 @@
       </div>
     </div>
 
-    <!-- <constructor-scene-network
+    <common-night-sky-canvas />
+
+    <constructor-scenes-network
+      class="fullsize pos-abs"
       @clicked="onSceneNetworkClicked"
       @zoom="hideContextCircle"
       @dragStart="hideContextCircle"
-    /> -->
-    <common-night-sky-canvas />
+    />
 
     <constructor-project-saver
       ref="projectSaver"
@@ -223,7 +225,6 @@
 </template>
 
 <script>
-// import { EventBus } from '@/plugins/event'
 import Swal from 'sweetalert2'
 import gameChecker from '@/plugins/gameChecker'
 
@@ -233,7 +234,6 @@ export default {
     return {
       selectedCharacter: false,
       selectedSceneID: false,
-      visScriptLoaded: false,
       contextCirclePos: false,
       preSelectedSceneID: false, // for contextMenu
       showPlayBtn: false
@@ -264,7 +264,11 @@ export default {
   methods: {
     boot () {
       this.$store.dispatch('constructorStorage/setStateToDefault')
-      this.addNewScene()
+
+      // Добавляем стартовую сцену, если это страница Add, а не Edit
+      if (!this.$route.params.id) {
+        this.addNewScene()
+      }
     },
     /**
      * Проверяем является ли переданная сцена(id) первой (стартовой)
@@ -312,13 +316,13 @@ export default {
       }
     },
     onSceneNetworkClicked (payload) {
-      this.hideContextCircle()
-      if (payload) {
-        setTimeout(() => {
-          this.contextCirclePos = payload.position
-          this.preSelectedSceneID = payload.sceneID
-        }, 0)
-      }
+    //   this.hideContextCircle()
+    //   if (payload) {
+    //     setTimeout(() => {
+    //       this.contextCirclePos = payload.position
+    //       this.preSelectedSceneID = payload.sceneID
+    //     }, 0)
+    //   }
       // console.log(payload)
     },
     hideContextCircle (params) {
@@ -402,13 +406,13 @@ export default {
   position: fixed
   z-index: 10
   left: 10px
-  bottom: 220px
+  bottom: 256px
   width: 100px
 
 .char-bar
   position: fixed
   left: 0
-  bottom: 0
+  bottom: 48px
   z-index: 10
 
 @keyframes move-bg-pos
