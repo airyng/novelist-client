@@ -106,6 +106,16 @@ export default function ({ $axios, store }, inject) {
         getPath: id => `${backendURL}users/${id}`,
         returnType: 'all'
       },
+      getScenesPositions: {
+        method: 'get',
+        getPath: gameId => `${backendURL}scenes-positions/${gameId}`,
+        returnType: 'all'
+      },
+      upsertScenesPositions: {
+        method: 'post',
+        getPath: () => `${backendURL}scenes-positions`,
+        returnType: 'all'
+      },
       getBackgrounds: {
         method: 'get',
         getPath: () => `${backendURL}backgrounds`

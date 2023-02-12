@@ -62,14 +62,20 @@ export default {
         status: this.mainInfo.status || 'draft'
       }
       if (this.id) { data._id = this.id }
-      // localStorage.setItem('game', JSON.stringify(data))
-      // console.log('saved')
+
       const response = data._id ? await this.$api.call('updateGame', data._id, data) : await this.$api.call('saveGame', null, data)
 
       if (![200, 201].includes(response.status)) {
         this.addError('Неизвестная ошибка. Проверьте все сцены на наличие ошибок.')
         this.showErrors()
         return false
+      }
+      if (typeof response.data._id === 'string') {
+        // Сохраняем позиции сцен
+        await this.$api.call('upsertScenesPositions', null, {
+          game_id: response.data._id,
+          value: this.$store.state.constructorStorage.scenesPositions
+        })
       }
 
       this.$store.dispatch('constructorStorage/setUnsavedChangesProp', false)

@@ -47,7 +47,6 @@ export default {
     return {
       scale: 1,
       dotsPositions: {},
-      scenesPositions: {},
       linesRenderKey: 0,
       cursorOffset: null,
       viewBoxPosition: { x: 0, y: 0 }
@@ -57,13 +56,16 @@ export default {
     scenes () {
       return this.$store.state.constructorStorage.scenes
     },
+    scenesPositions () {
+      return this.$store.state.constructorStorage.scenesPositions
+    },
     lines () {
       return this.scenes
         .map((scene) => {
           return scene.actions
             .filter((action) => {
-              const searchResult = action.to.match(/^s[0-9]*/gm) // проверка на соответствие идентификатора назначения формату
-              return Array.isArray(searchResult) && searchResult[0].length === action.to.length
+              const searchResult = action?.to?.match?.(/^s[0-9]*/gm) // проверка на соответствие идентификатора назначения формату
+              return Array.isArray(searchResult) && searchResult[0].length === action?.to?.length
             })
             .map(action => ({
               from: `${scene.id}_${action.id}`,
@@ -74,13 +76,21 @@ export default {
     }
   },
   watch: {
-    scenes: {
-      deep: true,
-      handler () {
+    scenes (newVal, oldVal) {
+      // Метод сработает только 1 раз после загрузки сцен
+      if (oldVal.length > 0) { return }
+      // Если ID у сцены еще не установлен, то для сцен необходимо задать дефолтные позиции
+      if (
+        this.$route.name.startsWith('games-id-edit') ||
+        (!this.$route.name.startsWith('games-id-edit') && !Object.keys(this.scenesPositions).length)
+      ) {
         // Устанавливаем дефолтные значения позиций сцен
         this.scenes.forEach((scene, index) => {
           if (!this.scenesPositions[scene.id]) {
-            this.scenesPositions[scene.id] = { x: 50 + (300 * index), y: 0 }
+            this.$store.dispatch('constructorStorage/addScenePosition', {
+              sceneId: scene.id,
+              payload: { x: 50 + (300 * index), y: 0 }
+            })
           }
         })
         this.linesRenderKey++
@@ -102,7 +112,7 @@ export default {
       if (this.scale < 0.42) { this.scale = 0.42 }
     },
     onUpdateScenePosition (id, payload) {
-      this.scenesPositions[id] = payload
+      this.$store.dispatch('constructorStorage/addScenePosition', { sceneId: id, payload })
     },
     onUpdatePositions (payload) {
       payload.forEach((item) => {

@@ -106,6 +106,13 @@ export default {
         if (!this.gameData) {
           this.gameData = await this.fetchDataFromServer()
         }
+        if (routeName.startsWith('games-id-edit') && this.gameData._id) {
+          // Подгружаем данные позиций сцен
+          const spResponse = await this.$api.call('getScenesPositions', this.gameData._id)
+          if (spResponse?.status === 200) {
+            this.$store.dispatch('constructorStorage/setScenesPositions', { ...spResponse.data })
+          }
+        }
         if (!this.user) {
           await this.$api.waitUntilRequestResolves('getProfile')
         }

@@ -26,7 +26,8 @@ export const state = () => ({
   characters: [],
   backgrounds: [],
   backgroundCategories: [],
-  hasUnsavedChanges: false
+  hasUnsavedChanges: false,
+  scenesPositions: {}
 })
 
 export const getters = {
@@ -125,10 +126,21 @@ export const getters = {
 export const mutations = {
   setProperty (state, payload) {
     state[payload[0]] = payload[1]
+  },
+  addScenePosition (state, { sceneId, payload }) {
+    state.scenesPositions[sceneId] = payload
   }
 }
 
 export const actions = {
+  addScenePosition ({ commit }, payload) {
+    commit('addScenePosition', payload)
+  },
+  setScenesPositions ({ commit }, { value }) {
+    Object.keys(value).forEach((key) => {
+      commit('addScenePosition', { sceneId: key, payload: value[key] })
+    })
+  },
   setUnsavedChangesProp ({ commit }, bPayload) {
     commit('setProperty', ['hasUnsavedChanges', bPayload])
   },
