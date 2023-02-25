@@ -39,7 +39,7 @@
                   </v-list-item-icon>
 
                   <v-list-item-content @click="setScene(_scene)">
-                    <v-list-item-title>{{ _scene.title }} - {{ excerpt(_scene.mainText, excerptLimit) }}</v-list-item-title>
+                    <v-list-item-title>{{ _scene.title || '...' }} - {{ _scene.mainText || '...' }}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
@@ -63,7 +63,6 @@
 </template>
 
 <script>
-import { excerpt } from '@/plugins/utils'
 export default {
   name: 'ScenePicker',
   props: {
@@ -72,7 +71,7 @@ export default {
   data () {
     return {
       searchKeyword: '',
-      excerptLimit: 30
+      excerptLimit: 50
     }
   },
   computed: {
@@ -94,9 +93,6 @@ export default {
     }
   },
   methods: {
-    excerpt (text, maxLength) {
-      return excerpt(text, maxLength)
-    },
     callToAddingScene () {
       const newScene = this.$store.getters['constructorStorage/getEmptyScene']()
       this.$store.dispatch('constructorStorage/addScene', newScene)

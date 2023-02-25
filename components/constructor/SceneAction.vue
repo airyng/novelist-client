@@ -64,25 +64,8 @@
         >
           mdi-arrow-right-bold
         </v-icon>
-        <v-tooltip v-if="typeof localAction.to == 'number'" top>
-          <template #activator="{ on, attrs }">
-            <v-chip
-              close
-              color="purple"
-              text-color="white"
-              v-bind="attrs"
-              class="mt-1 ml-1"
-              @click:close="clearActionToParam"
-              @click="OnGoToScene(localAction.to)"
-              v-on="on"
-            >
-              {{ excerpt(getSceneById(localAction.to).title, 15) }}
-            </v-chip>
-          </template>
-          <span>Переход на {{ getSceneById(localAction.to).title }}</span>
-        </v-tooltip>
 
-        <v-tooltip v-if="localAction.to == 'quit'" top>
+        <v-tooltip v-if="localAction.to === 'quit'" top>
           <template #activator="{ on, attrs }">
             <v-chip
               close
@@ -97,6 +80,24 @@
             </v-chip>
           </template>
           <span>Выход из новеллы</span>
+        </v-tooltip>
+
+        <v-tooltip v-if="checkIsActionId(localAction.to)" top>
+          <template #activator="{ on, attrs }">
+            <v-chip
+              close
+              color="purple"
+              text-color="white"
+              v-bind="attrs"
+              class="mt-1 ml-1"
+              @click:close="clearActionToParam"
+              @click="OnGoToScene(localAction.to)"
+              v-on="on"
+            >
+              {{ excerpt(getSceneById(localAction.to).title, 15) }}
+            </v-chip>
+          </template>
+          <span>Переход на {{ getSceneById(localAction.to).title || '...' }}</span>
         </v-tooltip>
 
         <v-menu left bottom>
@@ -182,33 +183,34 @@
       </div>
     </div>
 
-    <CustomDialog
+    <custom-dialog
       :toggler="scenePickerDialog"
       title="Выберите сцену"
       @onDialogStateChanged="onScenePickerDialogStateChanged"
     >
-      <ConstructorScenePicker
+      <constructor-scene-picker
         :scene="activeScene"
         @OnScenePicked="setAction"
       />
-    </CustomDialog>
+    </custom-dialog>
 
-    <CustomDialog
+    <custom-dialog
       :toggler="conditionPickerDialog"
       title="Укажите условие перехода на сцену"
       @onDialogStateChanged="onConditionPickerDialogStateChanged"
     >
-      <ConstructorConditionPicker
+      <constructor-condition-picker
         :scene="activeScene"
         :action="localAction"
         @OnConditionPicked="setCondition"
       />
-    </CustomDialog>
+    </custom-dialog>
   </div>
 </template>
 
 <script>
-import { excerpt } from '@/plugins/utils'
+import { excerpt, checkIsActionId } from '@/plugins/utils'
+
 export default {
   props: {
     scene: { type: Object, required: true },
@@ -256,6 +258,7 @@ export default {
     this.setLocalAction()
   },
   methods: {
+    checkIsActionId (payload) { return checkIsActionId(payload) },
     saveGoNextWithoutChoice () {
       this.$emit('onSaveSceneParams', { key: 'goNextWithoutChoice', value: this.activeScene.goNextWithoutChoice })
     },

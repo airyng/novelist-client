@@ -34,7 +34,7 @@ export const state = () => ({
 export const getters = {
   getSceneById (state) {
     return (id) => {
-      return state.scenes.filter(scene => scene.id === id)[0]
+      return state.scenes.find(scene => scene.id === id)
     }
   },
   getEmptyScene (state) {

@@ -37,6 +37,13 @@ const getGenderTranslation = (gender) => {
   return genders[gender]
 }
 
+// Проверяем является ли переданное значение каноническим идентификатором экшна
+const checkIsActionId = (value) => {
+  if (typeof value !== 'string') { return false }
+  const searchResult = value.match?.(/^s[0-9]*/gm) // проверка на соответствие идентификатора назначения формату
+  return Array.isArray(searchResult) && searchResult[0].length === value.length
+}
+
 const throttle = function (func, ms) {
   let isThrottled = false
   let savedArgs
@@ -108,5 +115,6 @@ export {
   getGenderTranslation,
   getGameBannerFromScenes,
   throttle,
-  debounce
+  debounce,
+  checkIsActionId
 }
