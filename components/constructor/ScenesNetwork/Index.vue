@@ -4,6 +4,7 @@
     v-pointerup-outside="stopDrag"
     :viewBox="`${viewBoxPosition.x} ${viewBoxPosition.y} ${900 * scale} ${900 * scale}`"
     class="noselect"
+    style="buffered-rendering: dynamic;"
     @pointerdown="startDrag"
     @pointerup="stopDrag"
     @pointerleave="stopDrag"
@@ -71,6 +72,12 @@ export default {
     }
   },
   watch: {
+    // Этот вотчер необходим чтобы обновлять линии
+    // после неочевидных изменений через сторедж, вроде удаления сцен
+    linesRenderKey () {
+      this.lines = {}
+      this.updateLines()
+    },
     scenes (newVal, oldVal) {
       // Метод сработает только 1 раз после загрузки сцен
       if (oldVal.length > 0) { return }
@@ -156,7 +163,7 @@ export default {
           this.dotsPositions[item.id] = item
           linesToUpdate.push(item.id)
         })
-        this.updateLinesById(linesToUpdate)
+        this.updateLines(linesToUpdate)
       } else if (payload.action === 'clear') {
         // Удаление точек и линий
         Object.keys(this.dotsPositions)
@@ -172,7 +179,7 @@ export default {
       }
       this.$forceUpdate()
     },
-    updateLinesById (ids = []) {
+    updateLines (ids = []) {
       this.scenes.forEach((scene) => {
         scene.actions
           .filter((action) => {
@@ -183,11 +190,15 @@ export default {
           .forEach((action) => {
             const from = `${scene.id}_${action.id}`
             const to = this.checkIsActionId(action.to) ? action.to : `${from}_spec`
-            if (!this.lines[`${from}_${to}`] || ids.includes(from) || ids.includes(to)) {
-              this.lines[`${from}_${to}`] = {
-                key: `${this.dotsPositions[from]?.x}_${this.dotsPositions[from]?.y}_${this.dotsPositions[to]?.x}_${this.dotsPositions[to]?.y}`,
+            const key = `${from}_${to}`
+            if (!this.lines[key]) {
+              this.lines[key] = {
+                key,
                 path: this.calcLinePath({ from, to })
               }
+            }
+            if (ids.includes(from) || ids.includes(to)) {
+              this.lines[key].path = this.calcLinePath({ from, to })
             }
           })
       })
@@ -196,10 +207,10 @@ export default {
       const from = this.dotsPositions[line.from]
       const to = this.dotsPositions[line.to]
       if (!from || !to) { return false }
-      return `M ${parseInt(from.x)}, ${parseInt(from.y)}
-              C ${parseInt(from.x + 100)}, ${parseInt(from.y)}
-                ${parseInt(to.x - 100)}, ${parseInt(to.y)}
-                ${parseInt(to.x)}, ${parseInt(to.y)}`
+      return `M ${from.x}, ${from.y}
+              C ${from.x + 100}, ${from.y}
+                ${to.x - 100}, ${to.y}
+                ${to.x}, ${to.y}`
     },
     startDrag () {
       document.addEventListener('pointermove', this.dragHandler)

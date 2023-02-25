@@ -7,15 +7,21 @@
         class="d-flex flex-column mt-1 mr-1"
       >
         <v-icon
-          class="curs-pointer"
           rounded
+          class="curs-pointer"
+          :class="{
+            disabled: action.sortIndex >= activeScene.actions.length - 1
+          }"
           @click="changeActionOrder('up')"
         >
           mdi-arrow-up-drop-circle-outline
         </v-icon>
         <v-icon
-          class="curs-pointer"
           rounded
+          class="curs-pointer"
+          :class="{
+            disabled: action.sortIndex === 0
+          }"
           @click="changeActionOrder('down')"
         >
           mdi-arrow-down-drop-circle-outline

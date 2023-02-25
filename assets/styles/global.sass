@@ -3,7 +3,6 @@
   scrollbar-width: thin
   scrollbar-color: $purpleColor rgba(255, 255, 255, 0)
   font-size: 16px
-
 *::-webkit-scrollbar,
 html *::-webkit-scrollbar 
   height: 6px
@@ -19,6 +18,7 @@ html *::-webkit-scrollbar-thumb
   border-radius: 5px
   border: 1px solid rgba(255, 255, 255, 0)
 // Scrollbar styles - end
+
 body  
   background-color: $mainBackColor
 
@@ -227,6 +227,14 @@ header a
 
 .pos-abs
   position: absolute
+
+@keyframes move-bg-pos
+  0%
+    background-position: 0% 50%
+  50%
+    background-position: 100% 50%
+  100%
+    background-position: 0% 50%
 
 
 @keyframes move-bg-vertically

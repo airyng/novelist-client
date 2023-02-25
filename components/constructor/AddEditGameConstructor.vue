@@ -1,5 +1,5 @@
 <template>
-  <div class="fill-in-height position-relative">
+  <div class="game-constructor fill-in-height position-relative">
     <constructor-popup
       v-model="isScenePopupShow"
       @onClose="closeSceneEditor"
@@ -8,7 +8,7 @@
         ref="sceneEditor"
         :key="selectedSceneID"
         :scene-id="selectedSceneID"
-        @moveToScene="onSceneSelected"
+        @moveToScene="selectScene"
       />
     </constructor-popup>
 
@@ -20,27 +20,7 @@
       <common-character-generator :char="selectedCharacter" @onCharSaved="closeCharacterEditor" />
     </constructor-popup>
 
-    <!-- <constructor-context-circle :position="contextCirclePos">
-      <template #zero>
-        <v-tooltip top>
-          <template #activator="{ on, attrs }">
-            <v-btn
-              rounded
-              fab
-              dark
-              depressed
-              v-bind="attrs"
-              v-on="on"
-              @click="onSceneSelected(preSelectedSceneID)"
-            >
-              <v-icon small rounded>
-                mdi-open-in-new
-              </v-icon>
-            </v-btn>
-          </template>
-          <span>Править сцену</span>
-        </v-tooltip>
-      </template>
+    <!--
 
       <template #first>
         <v-tooltip top>
@@ -83,28 +63,7 @@
           <span>Дублировать</span>
         </v-tooltip>
       </template>
-
-      <template #third>
-        <v-tooltip top>
-          <template #activator="{ on, attrs }">
-            <v-btn
-              rounded
-              fab
-              dark
-              depressed
-              :disabled="isFirstScene(preSelectedSceneID)"
-              v-bind="attrs"
-              v-on="on"
-              @click="callToDeleteScene(preSelectedSceneID)"
-            >
-              <v-icon rounded>
-                mdi-delete-outline
-              </v-icon>
-            </v-btn>
-          </template>
-          <span>Удалить</span>
-        </v-tooltip>
-      </template> -->
+ -->
 
     <!-- <template #fourth>
         <v-tooltip top>
@@ -233,7 +192,6 @@ export default {
       selectedCharacter: false,
       selectedSceneID: false,
       contextCirclePos: false,
-      // preSelectedSceneID: false, // for contextMenu
       showPlayBtn: false
     }
   },
@@ -254,11 +212,7 @@ export default {
   },
   mounted () {
     this.boot()
-    // EventBus.$on('onAddSceneAndLinkAndGo', this.addSceneAndLinkToActAndOpen)
   },
-  // beforeDestroy () {
-  // EventBus.$off('onAddSceneAndLinkAndGo', this.addSceneAndLinkToActAndOpen)
-  // },
   methods: {
     boot () {
       this.$store.dispatch('constructorStorage/setStateToDefault')
@@ -267,15 +221,6 @@ export default {
       if (!this.$route.params.id) {
         this.addNewScene()
       }
-    },
-    /**
-     * Проверяем является ли переданная сцена(id) первой (стартовой)
-     * @param {Number} sceneID Идентификатор сцены
-     * @returns {Boolean}
-     */
-    isFirstScene (sceneID) {
-      const index = this.scenes.findIndex(item => item.id === sceneID)
-      return index === 0
     },
     addNewScene () { // Создаем новую сцену и возвращаем ее
       const newScene = this.$store.getters['constructorStorage/getEmptyScene']()
@@ -287,12 +232,9 @@ export default {
       // затем, чтобы обновился кеш и подтянулись свежие изменения
       window.location = '/games/' + this.$route.params.id + '/play'
     },
-    onSceneSelected (id) {
+    selectScene (id) {
       this.closeSceneEditor(false)
       this.selectedSceneID = id
-      // setTimeout(() => {
-      //   this.hideContextCircle()
-      // }, 500)
     },
     closeSceneEditor (doAutoSave = true) {
       this.$refs.sceneEditor?.save()
@@ -314,23 +256,10 @@ export default {
       }
     },
     onSceneButtonClick ({ type, sceneId }) {
-      if (type === 'open') { this.onSceneSelected(sceneId) }
+      if (type === 'open') { this.selectScene(sceneId) }
+      if (type === 'delete') { this.deleteSceneHandler(sceneId) }
     },
-    // onSceneNetworkClicked (payload) {
-    //   this.hideContextCircle()
-    //   if (payload) {
-    //     setTimeout(() => {
-    //       this.contextCirclePos = payload.position
-    //       this.preSelectedSceneID = payload.sceneID
-    //     }, 0)
-    //   }
-    // console.log(payload)
-    // },
-    // hideContextCircle (params) {
-    // this.contextCirclePos = false
-    // this.contextCircleScale = false
-    // },
-    callToDeleteScene (sceneID) {
+    deleteSceneHandler (sceneID) {
       Swal.fire({
         title: 'Вы действительно хотите удалить сцену "' + this.getSceneById(sceneID).title + '"?',
         text: 'Все действия ведущие на эту сцену будут также удалены.',
@@ -349,7 +278,7 @@ export default {
       return { ...this.$store.getters['constructorStorage/getSceneById'](id) }
     },
     deleteScene (sceneID) {
-      this.hideContextCircle()
+      // this.hideContextCircle()
       this.$store.dispatch('constructorStorage/deleteScene', sceneID)
       this.$store.dispatch('constructorStorage/deleteActionToScene', sceneID)
     },
@@ -403,6 +332,9 @@ export default {
 </script>
 
 <style lang="sass">
+.game-constructor
+  background-color: #696969
+
 .bottom-bar
   position: fixed
   z-index: 10
@@ -415,14 +347,6 @@ export default {
   left: 0
   bottom: 48px
   z-index: 10
-
-@keyframes move-bg-pos
-  0%
-    background-position: 0% 50%
-  50%
-    background-position: 100% 50%
-  100%
-    background-position: 0% 50%
 
 .v-menu__content
   z-index: 999!important

@@ -65,7 +65,7 @@ export default {
   height: 200px
 
 .charPreview
-  display: flex
+  display: flex!important
   width: 150px
   justify-content: center
   align-items: center
@@ -73,7 +73,7 @@ export default {
   flex-direction: column
   border-radius: 12px
   border: 1px solid transparent
-  height: 190px
+  height: 100%
   &:hover
     border: 1px solid white
 

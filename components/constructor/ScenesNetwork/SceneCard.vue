@@ -35,6 +35,15 @@
             </span>
           </div>
           <div class="buttons" :style="`height: ${transform.buttons.height}px`">
+            <div
+              class="button"
+              :class="{ disabled: isFirstScene(scene.id) }"
+              @click="onButtonClick('delete')"
+            >
+              <v-icon>
+                mdi-trash-can-outline
+              </v-icon>
+            </div>
             <div class="button" @click="onButtonClick('open')">
               Открыть
             </div>
@@ -99,6 +108,9 @@ export default {
     }
   },
   computed: {
+    scenes () {
+      return this.$store.state.constructorStorage.scenes
+    },
     sceneDotPosition () {
       return {
         id: this.scene.id,
@@ -175,6 +187,15 @@ export default {
     },
     onButtonClick (type) {
       this.$emit('buttonClick', { type, sceneId: this.scene.id })
+    },
+    /**
+     * Проверяем является ли переданная сцена(id) первой (стартовой)
+     * @param {Number} sceneID Идентификатор сцены
+     * @returns {Boolean}
+     */
+    isFirstScene (sceneID) {
+      const index = this.scenes.findIndex(item => item.id === sceneID)
+      return index === 0
     }
   }
 }
@@ -183,7 +204,7 @@ export default {
 <style lang="sass">
 .sceneCard
   background: rgba(0, 0, 0, .7)
-  border: 2px solid rgba(255, 255, 255, .7)
+  // border: 2px solid rgba(255, 255, 255, .7)
   border-radius: 12px
   overflow: hidden
   display: flex
