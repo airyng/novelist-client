@@ -26,13 +26,17 @@ export default {
       if (typeof scene.id === 'number') {
         scene.id = `s${scene.id}`
       }
-      scene.actions.forEach((action) => {
+      scene.actions.forEach((action, index) => {
         // Обновление формата id экшенов
         if (typeof action.id === 'number') {
           action.id = `a${action.id}`
         }
         if (typeof action.to === 'number') {
           action.to = `s${action.to}`
+        }
+        // Устанавливаем некое дефолтное значение, если его не было
+        if (typeof action.sortIndex !== 'number') {
+          action.sortIndex = scene.actions.length - (index + 1)
         }
       })
     })

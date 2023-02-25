@@ -7,7 +7,7 @@
       <constructor-scene-editor
         ref="sceneEditor"
         :key="selectedSceneID"
-        :sceneid="selectedSceneID"
+        :scene-id="selectedSceneID"
         @moveToScene="onSceneSelected"
       />
     </constructor-popup>
@@ -208,9 +208,7 @@
 
     <constructor-scenes-network
       class="fullsize pos-abs"
-      @clicked="onSceneNetworkClicked"
-      @zoom="hideContextCircle"
-      @dragStart="hideContextCircle"
+      @buttonClick="onSceneButtonClick"
     />
 
     <constructor-project-saver
@@ -235,7 +233,7 @@ export default {
       selectedCharacter: false,
       selectedSceneID: false,
       contextCirclePos: false,
-      preSelectedSceneID: false, // for contextMenu
+      // preSelectedSceneID: false, // for contextMenu
       showPlayBtn: false
     }
   },
@@ -292,9 +290,9 @@ export default {
     onSceneSelected (id) {
       this.closeSceneEditor(false)
       this.selectedSceneID = id
-      setTimeout(() => {
-        this.hideContextCircle()
-      }, 500)
+      // setTimeout(() => {
+      //   this.hideContextCircle()
+      // }, 500)
     },
     closeSceneEditor (doAutoSave = true) {
       this.$refs.sceneEditor?.save()
@@ -315,7 +313,10 @@ export default {
         this.$refs.mainSceneInfo?.setDataFromProps?.()
       }
     },
-    onSceneNetworkClicked (payload) {
+    onSceneButtonClick ({ type, sceneId }) {
+      if (type === 'open') { this.onSceneSelected(sceneId) }
+    },
+    // onSceneNetworkClicked (payload) {
     //   this.hideContextCircle()
     //   if (payload) {
     //     setTimeout(() => {
@@ -323,12 +324,12 @@ export default {
     //       this.preSelectedSceneID = payload.sceneID
     //     }, 0)
     //   }
-      // console.log(payload)
-    },
-    hideContextCircle (params) {
-      this.contextCirclePos = false
-      // this.contextCircleScale = false
-    },
+    // console.log(payload)
+    // },
+    // hideContextCircle (params) {
+    // this.contextCirclePos = false
+    // this.contextCircleScale = false
+    // },
     callToDeleteScene (sceneID) {
       Swal.fire({
         title: 'Вы действительно хотите удалить сцену "' + this.getSceneById(sceneID).title + '"?',

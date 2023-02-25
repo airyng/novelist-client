@@ -1,21 +1,23 @@
 <template>
   <div
-    v-if="sceneid && scene"
+    v-if="sceneId && scene"
     class="d-flex flex-column fullsize position-relative scene-container"
     :style="backgroundStyle"
   >
     <v-container fluid>
       <v-row justify="center">
         <v-col cols="12">
-          <h1 class="d-inline-block py-2 big-white-txt-shadow" style="outline: none" contenteditable="true">
+          <h1
+            class="d-inline-block py-2 big-white-txt-shadow c-pointer"
+            @click="selectTitleInput"
+          >
             <input
-              v-if="scene.title"
+              ref="titleInput"
               v-model="scene.title"
               type="text"
               name="sceneTitle"
               onFocus="this.select()"
               :maxlength="settings.maxSceneTitleLength"
-              :style="'outline: none; width:' + (scene.title.length * 20) + 'px; cursor: pointer; min-width: 50px!important'"
             >
           </h1>
         </v-col>
@@ -24,7 +26,7 @@
 
     <v-container class="d-flex flex-column fullsize" style="max-width: 1200px">
       <v-row class="text-blocks">
-        <CharacterCanvas
+        <character-canvas
           v-if="character"
           :updated-at="charUpdatedAt"
           :char-id="character.id"
@@ -35,12 +37,12 @@
         />
         <v-col class="d-flex flex-column justify-end" cols="12">
           <div
-            v-for="(action, index) in scene.actions"
-            :key="index"
+            v-for="action in [...scene.actions].sort((a, b) => b.sortIndex - a.sortIndex)"
+            :key="action.id"
             cols="12"
             class="scene-action-col"
           >
-            <ConstructorSceneAction
+            <constructor-scene-action
               class="pb-0"
               :action="action"
               :scene="scene"
@@ -83,7 +85,7 @@
     </v-container>
 
     <div class="btns-container">
-      <CustomDialog
+      <custom-dialog
         title="Выбрать фон"
       >
         <template #toggler>
@@ -107,15 +109,15 @@
           </v-tooltip>
         </template>
 
-        <ConstructorBackgroundPicker
+        <constructor-background-picker
           v-if="scene.background"
           :value="scene.background.value"
           :active-type="scene.background.type"
           @OnBackChanged="setBackground"
         />
-      </CustomDialog>
+      </custom-dialog>
 
-      <CustomDialog
+      <custom-dialog
         v-show="!character"
         ref="characterPickerDialog"
         title="Добавить персонажа"
@@ -141,8 +143,8 @@
           </v-tooltip>
         </template>
 
-        <ConstructorCharacterPicker @onCharacterPicked="addCharacter" />
-      </CustomDialog>
+        <constructor-character-picker @onCharacterPicked="addCharacter" />
+      </custom-dialog>
 
       <div v-show="character">
         <v-tooltip top>
@@ -192,11 +194,9 @@
 </template>
 
 <script>
-import { moveArrElem } from '@/plugins/utils'
-
 export default {
   props: {
-    sceneid: { type: [Number, Boolean], default: false }
+    sceneId: { type: String, default: null }
   },
   data () {
     return {
@@ -245,6 +245,9 @@ export default {
     }
   },
   methods: {
+    selectTitleInput () {
+      this.$refs.titleInput.select()
+    },
     // Изменяем поле по ключу key значением value внутри объекта scene
     saveSceneParams (payload) {
       // if (Object.prototype.hasOwnProperty.call(this.scene, payload.key)) {
@@ -268,7 +271,7 @@ export default {
       this.save(this.scene)
     },
     getSceneFromStorage () {
-      this.scene = { ...this.$store.getters['constructorStorage/getSceneById'](this.sceneid) }
+      this.scene = { ...this.$store.getters['constructorStorage/getSceneById'](this.sceneId) }
     },
     save (scene) {
       const _scene = scene || this.scene
@@ -299,26 +302,20 @@ export default {
       this.getSceneFromStorage()
     },
     changeActionOrder (payload) {
-      let actionIndex = false
-      for (let index = 0; index < this.scene.actions.length; index++) {
-        const element = this.scene.actions[index]
-        if (element.id === payload.id) {
-          actionIndex = index
-          break
-        }
-      }
+      let _actions = JSON.parse(JSON.stringify(this.scene.actions))
 
-      if (actionIndex === false) { return }
-      if (payload.direction === 'up') {
-        this.scene.actions = moveArrElem([...this.scene.actions], actionIndex, actionIndex - 1)
-      }
+      _actions = _actions.sort((a, b) => a.sortIndex - b.sortIndex)
 
-      if (payload.direction === 'down') {
-        // нельзя уйти ниже последнего значения
-        if (actionIndex >= this.scene.actions.length - 1) { return }
+      const actionIndex = _actions.findIndex(action => action.id === payload.id)
+      const direction = payload.direction === 'up' ? 1 : -1
+      if (payload.direction === 'up' && actionIndex + direction > this.scene.actions.length - 1) { return }
+      if (payload.direction === 'down' && actionIndex - 1 < 0) { return }
 
-        this.scene.actions = moveArrElem([...this.scene.actions], actionIndex, actionIndex + 1)
-      }
+      const temp = _actions[actionIndex].sortIndex
+      _actions[actionIndex].sortIndex = _actions[actionIndex + direction].sortIndex
+      _actions[actionIndex + direction].sortIndex = temp
+
+      this.scene.actions = _actions
     },
     setBackground (backObj) {
       this.scene.background = backObj || false
@@ -327,7 +324,17 @@ export default {
 }
 </script>
 
-<style lang="sass" soped>
+<style lang="sass">
+// TODO: Нужно сделать этот блок стилей в скоупе
+h1
+  outline: none
+  width: 40%
+  white-space: nowrap
+  position: relative
+  text-overflow: ellipsis
+  input
+    outline: none
+    width: 100%
 .scene-container
   background-size: cover
   background-position: center

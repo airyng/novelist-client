@@ -14,7 +14,7 @@
         <div class="w-100 d-flex flex-column">
           <span
             v-pointerup-outside="stopDrag"
-            class="title w-100"
+            class="sTitle w-100"
             @pointerdown="startDrag"
             @pointerup="stopDrag"
           >
@@ -24,23 +24,39 @@
             {{ excerpt(scene.mainText, 55) }}
           </div>
         </div>
-        <div class="actions">
-          <span
-            v-for="action in scene.actions"
-            :key="action.id"
-            class="action mt-1"
-          >
-            {{ excerpt(action.actionText, 24) }}
-          </span>
+        <div>
+          <div class="actions">
+            <span
+              v-for="action in [...scene.actions].sort((a, b) => b.sortIndex - a.sortIndex)"
+              :key="action.id"
+              class="action mt-1"
+            >
+              {{ excerpt(action.actionText, 24) }}
+            </span>
+          </div>
+          <div class="buttons" :style="`height: ${transform.buttons.height}px`">
+            <div class="button" @click="onButtonClick('open')">
+              Открыть
+            </div>
+          </div>
         </div>
       </div>
     </foreignObject>
     <!-- Actions points -->
     <circle
-      v-for="(action, aIndex) in scene.actions"
-      :key="aIndex"
-      :cx="calcActionPosition(aIndex).x"
-      :cy="calcActionPosition(aIndex).y"
+      v-for="action in scene.actions"
+      :key="action.id"
+      :cx="calcActionPosition(action.id).x"
+      :cy="calcActionPosition(action.id).y"
+      :r="transform.action.r"
+      fill="white"
+    />
+    <!-- Actions points -->
+    <circle
+      v-for="item in specialActionsFunctions"
+      :key="item.id"
+      :cx="item.x"
+      :cy="item.y"
       :r="transform.action.r"
       fill="white"
     />
@@ -51,13 +67,20 @@
       :r="transform.action.r"
       fill="white"
     />
+    <special-action-function-card
+      v-for="item in specialActionsFunctions"
+      :key="`card_${item.id}`"
+      :item="item"
+    />
   </g>
 </template>
 
 <script>
 import { excerpt } from '@/plugins/utils'
+import SpecialActionFunctionCard from '@/components/constructor/ScenesNetwork/SpecialActionFunctionCard'
 
 export default {
+  components: { SpecialActionFunctionCard },
   props: {
     scene: { type: Object, required: true },
     position: { type: Object, default: () => ({ x: 0, y: 0 }) },
@@ -68,9 +91,10 @@ export default {
       cursorOffset: null,
       transform: {
         width: 220,
-        height: 280,
+        height: 305,
         title: { x: 15, y: 30 },
-        action: { x: 15, y: 30, r: 4 }
+        action: { x: 15, y: 30, r: 4 },
+        buttons: { height: 35 }
       }
     }
   },
@@ -81,13 +105,36 @@ export default {
         x: this.position.x,
         y: this.position.y + (this.transform.height / 2) + this.transform.action.r
       }
+    },
+    specialActionsFunctions () {
+      return this.scene.actions
+        // Отфильтровываем функции экшнов (выход и т.п.)
+        .filter((action) => {
+          if (!action?.to) { return false }
+          const searchResult = action?.to?.match?.(/^s[0-9]*/gm) // Проверка на соответствие идентификатора назначения формату
+          return !(Array.isArray(searchResult) && searchResult[0].length === action?.to?.length)
+        })
+        .map((action) => {
+          const coords = this.calcActionPosition(action.id)
+          return {
+            id: `${coords.id}_spec`,
+            type: action.to,
+            x: coords.x + 50,
+            y: coords.y
+          }
+        })
     }
   },
   mounted () {
-    this.$emit('updateDotsPositions', this.scene.actions.map((action, i) => this.calcActionPosition(i)))
-    this.$emit('updateDotsPositions', [this.sceneDotPosition])
+    this.emitDotsPositions()
   },
   methods: {
+    emitDotsPositions () {
+      this.$emit('updateDotsPositions', { sceneId: this.scene.id, action: 'clear' })
+      this.$emit('updateDotsPositions', { sceneId: this.scene.id, action: 'add', dots: this.scene.actions.map(action => this.calcActionPosition(action.id)) })
+      this.$emit('updateDotsPositions', { sceneId: this.scene.id, action: 'add', dots: [this.sceneDotPosition] })
+      this.$emit('updateDotsPositions', { sceneId: this.scene.id, action: 'add', dots: this.specialActionsFunctions })
+    },
     startDrag () {
       document.addEventListener('pointermove', this.dragHandler)
     },
@@ -104,9 +151,11 @@ export default {
         newCursorPos.x -= this.cursorOffset.x
         newCursorPos.y -= this.cursorOffset.y
 
-        this.$emit('updateScenePosition', { x: newCursorPos.x, y: newCursorPos.y })
-        this.$emit('updateDotsPositions', this.scene.actions.map((action, i) => this.calcActionPosition(i)))
-        this.$emit('updateDotsPositions', [this.sceneDotPosition])
+        this.$store.dispatch('constructorStorage/addScenePosition', {
+          sceneId: this.scene.id,
+          payload: { x: newCursorPos.x, y: newCursorPos.y }
+        })
+        this.emitDotsPositions()
       } catch (e) {
         this.stopDrag()
         // eslint-disable-next-line no-console
@@ -116,12 +165,16 @@ export default {
     excerpt (text, length) {
       return excerpt(text, length)
     },
-    calcActionPosition (actionIndex) {
+    calcActionPosition (actionId) {
+      const action = this.scene.actions.find(a => a.id === actionId)
       return {
-        id: `${this.scene.id}_${this.scene.actions[actionIndex].id}`,
+        id: `${this.scene.id}_${actionId}`,
         x: this.position.x + this.transform.width,
-        y: this.position.y + this.transform.height - this.transform.action.y * (actionIndex + 1) + this.transform.action.r
+        y: this.position.y + this.transform.height - this.transform.buttons.height - this.transform.action.y * (action.sortIndex + 1) + this.transform.action.r
       }
+    },
+    onButtonClick (type) {
+      this.$emit('buttonClick', { type, sceneId: this.scene.id })
     }
   }
 }
@@ -130,20 +183,25 @@ export default {
 <style lang="sass">
 .sceneCard
   background: rgba(0, 0, 0, .7)
-  border: 1px solid rgba(255, 255, 255, .7)
+  border: 2px solid rgba(255, 255, 255, .7)
   border-radius: 12px
   overflow: hidden
   display: flex
   flex-direction: column
   justify-content: space-between
   cursor: default
-  & .title
-    font-size: 18px
+  & .sTitle
+    font-size: 20px
     color: white
     background: rgba(255, 255, 255, .1)
     width: 100%
     padding: 10px
     cursor: grab
+    white-space: nowrap
+    text-overflow: ellipsis
+    overflow-x: hidden
+    &:hover
+      background: rgba(255, 255, 255, .2)
   & .text
     font-size: 16px
     color: white
@@ -166,4 +224,16 @@ export default {
       text-align: right
       border-radius: 12px
       transform: translateX(20px)
+  & .buttons
+    width: 100%
+    border-top: 1px solid rgba(255, 255, 255, .5)
+    display: flex
+    align-items: center
+    justify-content: flex-end
+    & .button
+      padding: 5px
+      border-left: 1px solid rgba(255, 255, 255, .5)
+      cursor: pointer
+      &:hover
+        background-color: rgba(255, 255, 255, .1)
 </style>

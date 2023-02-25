@@ -123,6 +123,9 @@ header a
 .curs-pointer
   cursor: pointer
 
+.curs-default
+  cursor: default
+
 .disabled
   pointer-events: none
   opacity: 0.6
@@ -149,13 +152,15 @@ header a
 
 .constructor h1:before
   width: 500px
-  transform: translateX(calc(-100% + 1px))
+  transform: translateX(calc(-99.9%))
 
 
 .constructor h1:after
   width: 120px
-  transform: translateX(-1px)
-  background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5466561624649859) 45%, rgba(255,255,255,0) 90%, rgba(255,255,255,0) 100%)
+  transform: translateX(99.9%)
+  position: absolute
+  background: linear-gradient(90deg, white 0%, rgba(255, 255, 255, 0.5466561625) 45%, rgba(255, 255, 255, 0) 90%, rgba(255, 255, 255, 0) 100%)
+  right: 0
 
 .left-right-stroke
   position: relative

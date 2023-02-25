@@ -27,7 +27,8 @@ export const state = () => ({
   backgrounds: [],
   backgroundCategories: [],
   hasUnsavedChanges: false,
-  scenesPositions: {}
+  scenesPositions: {},
+  renderKey: 0
 })
 
 export const getters = {
@@ -37,7 +38,7 @@ export const getters = {
     }
   },
   getEmptyScene (state) {
-    const extremeSceneId = state.scenes.map(s => s.id).sort((a, b) => a - b)?.pop() || 0
+    const extremeSceneId = state.scenes.map(s => parseInt(s.id.slice(1)))?.sort((a, b) => a - b)?.pop() || 0
     return () => {
       const id = `s${extremeSceneId + 1}`
       const title = state.scenes.length ? 'Сцена ' + id : 'Старт'
@@ -57,7 +58,7 @@ export const getters = {
     }
   },
   getNewCharacter (state) {
-    const extremeCharacterId = state.characters.map(c => c.id).sort((a, b) => a - b)?.pop() || 0
+    const extremeCharacterId = state.characters.map(c => parseInt(c.id.slice(1)))?.sort((a, b) => a - b)?.pop() || 0
     return () => {
       const uid = `c${extremeCharacterId + 1}`
       return {
@@ -70,12 +71,13 @@ export const getters = {
     }
   },
   getNewAction (state) {
-    const extremeActionId = state.scenes.map(scene => scene.actions).flat().map(a => a.id).sort((a, b) => a - b)?.pop() || 0
+    const extremeActionId = state.scenes.map(scene => scene.actions)?.flat()?.map(a => parseInt(a.id.slice(1)))?.sort((a, b) => a - b)?.pop() || 0
     return (params) => {
       return {
         id: `a${extremeActionId + 1}`,
         actionText: params.text || '',
         to: params.to || false,
+        sortIndex: 0,
         condition: params.condition || false
       }
     }
@@ -133,10 +135,10 @@ export const mutations = {
 }
 
 export const actions = {
-  addScenePosition ({ commit }, payload) {
+  addScenePosition ({ commit, state }, payload) {
     commit('addScenePosition', payload)
   },
-  setScenesPositions ({ commit }, { value }) {
+  setScenesPositions ({ commit, state }, { value }) {
     Object.keys(value).forEach((key) => {
       commit('addScenePosition', { sceneId: key, payload: value[key] })
     })
@@ -165,6 +167,7 @@ export const actions = {
     scenes.push(scene)
     commit('setProperty', ['scenes', scenes])
     commit('setProperty', ['hasUnsavedChanges', true])
+    commit('setProperty', ['renderKey', state.renderKey + 1])
   },
   // TODO: уместно будет, чтобы этот метод назывался не update, а set
   updateProjectID ({ commit, state }, ID) {
@@ -181,16 +184,19 @@ export const actions = {
     })
     commit('setProperty', ['scenes', scenes])
     commit('setProperty', ['hasUnsavedChanges', true])
+    commit('setProperty', ['renderKey', state.renderKey + 1])
   },
   // TODO: уместно будет, чтобы этот метод назывался не update, а set
-  updateAllScenes ({ commit }, scenes) {
+  updateAllScenes ({ commit, state }, scenes) {
     commit('setProperty', ['scenes', scenes])
     commit('setProperty', ['hasUnsavedChanges', true])
+    commit('setProperty', ['renderKey', state.renderKey + 1])
   },
   deleteScene ({ commit, state }, sceneID) {
     const scenes = state.scenes.filter(scene => scene.id !== sceneID)
     commit('setProperty', ['scenes', scenes])
     commit('setProperty', ['hasUnsavedChanges', true])
+    commit('setProperty', ['renderKey', state.renderKey + 1])
   },
   copyScene ({ dispatch, getters }, { sceneToCopy, setTransition = false }) {
     if (!sceneToCopy) { return }
@@ -223,6 +229,11 @@ export const actions = {
   addAction ({ dispatch, state, getters }, { scene, actionParams }) {
     if (state.settings.maxActionsLength > scene.actions.length) {
       const _scene = JSON.parse(JSON.stringify(scene))
+      // Увеличиваем индекс сортировки всех экшнов, чтобы
+      // подготовить место под новый элемент
+      _scene.actions.forEach((action) => {
+        action.sortIndex++
+      })
       _scene.actions.push(getters.getNewAction(actionParams || {}))
       dispatch('updateScene', _scene)
     } else {
