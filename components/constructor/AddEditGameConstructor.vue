@@ -20,73 +20,6 @@
       <common-character-generator :char="selectedCharacter" @onCharSaved="closeCharacterEditor" />
     </constructor-popup>
 
-    <!--
-
-      <template #first>
-        <v-tooltip top>
-          <template #activator="{ on, attrs }">
-            <v-btn
-              rounded
-              fab
-              dark
-              depressed
-              v-bind="attrs"
-              v-on="on"
-              @click="duplicateScene(preSelectedSceneID)"
-            >
-              <v-icon rounded>
-                mdi-content-duplicate
-              </v-icon>
-            </v-btn>
-          </template>
-          <span>Дублировать c переходом</span>
-        </v-tooltip>
-      </template>
-
-      <template #second>
-        <v-tooltip top>
-          <template #activator="{ on, attrs }">
-            <v-btn
-              rounded
-              fab
-              dark
-              depressed
-              v-bind="attrs"
-              v-on="on"
-              @click="duplicateScene(preSelectedSceneID, false)"
-            >
-              <v-icon rounded>
-                mdi-content-copy
-              </v-icon>
-            </v-btn>
-          </template>
-          <span>Дублировать</span>
-        </v-tooltip>
-      </template>
- -->
-
-    <!-- <template #fourth>
-        <v-tooltip top>
-          <template #activator="{ on, attrs }">
-            <v-btn
-              rounded
-              fab
-              dark
-              disabled
-              depressed
-              v-bind="attrs"
-              v-on="on"
-            >
-              <v-icon rounded>
-                mdi-cog-outline
-              </v-icon>
-            </v-btn>
-          </template>
-          <span>Основная информация</span>
-        </v-tooltip>
-      </template> -->
-    <!-- </constructor-context-circle> -->
-
     <div class="bottom-bar">
       <v-tooltip v-if="showPlayBtn" top>
         <template #activator="{ on, attrs }">
@@ -256,8 +189,13 @@ export default {
       }
     },
     onSceneButtonClick ({ type, sceneId }) {
-      if (type === 'open') { this.selectScene(sceneId) }
-      if (type === 'delete') { this.deleteSceneHandler(sceneId) }
+      const behaviors = {
+        open: () => this.selectScene(sceneId),
+        delete: () => this.deleteSceneHandler(sceneId),
+        'duplicate-with-transition': () => this.duplicateScene(sceneId),
+        duplicate: () => this.duplicateScene(sceneId, false)
+      }
+      behaviors[type]?.()
     },
     deleteSceneHandler (sceneID) {
       Swal.fire({
@@ -278,9 +216,8 @@ export default {
       return { ...this.$store.getters['constructorStorage/getSceneById'](id) }
     },
     deleteScene (sceneID) {
-      // this.hideContextCircle()
       this.$store.dispatch('constructorStorage/deleteScene', sceneID)
-      this.$store.dispatch('constructorStorage/deleteActionToScene', sceneID)
+      this.$store.dispatch('constructorStorage/deleteSceneIdFromActions', sceneID)
     },
     duplicateScene (sceneID, setTransition = true) {
       const sceneCopy = { ...this.scenes.find(scene => scene.id === sceneID) }
@@ -289,8 +226,6 @@ export default {
         sceneCopy.goNextWithoutChoice = false
         this.$store.dispatch('constructorStorage/updateScene', sceneCopy)
       }
-
-      this.hideContextCircle()
       this.$store.dispatch('constructorStorage/copyScene', { sceneToCopy: sceneCopy, setTransition })
     },
     saveProject () {

@@ -44,6 +44,27 @@
                 mdi-trash-can-outline
               </v-icon>
             </div>
+
+            <v-spacer />
+
+            <div
+              class="button"
+              @click="onButtonClick('duplicate')"
+            >
+              <v-icon size="19px">
+                mdi-content-copy
+              </v-icon>
+            </div>
+
+            <div
+              class="button"
+              @click="onButtonClick('duplicate-with-transition')"
+            >
+              <v-icon size="19px">
+                mdi-content-duplicate
+              </v-icon>
+            </div>
+
             <div class="button" @click="onButtonClick('open')">
               Открыть
             </div>
@@ -251,10 +272,14 @@ export default {
     display: flex
     align-items: center
     justify-content: flex-end
+    transition: opacity .1s ease
     & .button
       padding: 5px
       border-left: 1px solid rgba(255, 255, 255, .5)
       cursor: pointer
+      &:first-child
+        border-left: none
+        border-right: 1px solid rgba(255, 255, 255, .5)
       &:hover
         background-color: rgba(255, 255, 255, .1)
 </style>

@@ -52,6 +52,9 @@ let cursorOffset = null
 export default {
   components: { SceneCard },
   mixins: [svgHelper],
+  beforeRouteLeave () {
+    this.$store.dispatch('constructorStorage/updateAllScenes', [])
+  },
   data () {
     return {
       ready: false,
@@ -76,6 +79,16 @@ export default {
     // Этот вотчер необходим чтобы обновлять линии
     // после неочевидных изменений через сторедж, вроде удаления сцен
     linesRenderKey () {
+      // Находим точки с идентификаторами сцен, которых уже нет и удаляем их
+      Object.keys(this.dotsPositions)
+        .forEach((key) => {
+          const sceneId = key.split('_')[0]
+          const sceneIndex = this.scenes.findIndex(scene => scene.id === sceneId)
+          if (sceneIndex < 0) {
+            delete this.dotsPositions[key]
+          }
+        })
+      // Генерируем линии заново
       this.lines = {}
       this.updateLines()
     },
@@ -116,7 +129,6 @@ export default {
   },
   beforeDestroy () {
     this.$refs.svg.removeEventListener('wheel', this.onWheelEventHandler)
-    this.$store.dispatch('constructorStorage/updateAllScenes', [])
   },
   methods: {
     focusViewOnScene (scene) {

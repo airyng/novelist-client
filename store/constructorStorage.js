@@ -131,6 +131,9 @@ export const mutations = {
   },
   addScenePosition (state, { sceneId, payload }) {
     state.scenesPositions[sceneId] = payload
+  },
+  deleteScenePosition (state, sceneId) {
+    delete state.scenesPositions[sceneId]
   }
 }
 
@@ -178,11 +181,10 @@ export const actions = {
     }
   },
   updateScene ({ commit, state }, scene) {
-    const scenes = state.scenes.map((item) => {
-      if (item.id === scene.id) { item = scene }
-      return item
-    })
-    commit('setProperty', ['scenes', scenes])
+    const sceneIndex = state.scenes.findIndex(_scene => _scene.id === scene.id)
+    const _scenes = [...state.scenes]
+    _scenes[sceneIndex] = scene
+    commit('setProperty', ['scenes', _scenes])
     commit('setProperty', ['hasUnsavedChanges', true])
     commit('setProperty', ['renderKey', state.renderKey + 1])
   },
@@ -194,6 +196,8 @@ export const actions = {
   },
   deleteScene ({ commit, state }, sceneID) {
     const scenes = state.scenes.filter(scene => scene.id !== sceneID)
+    console.log('delete', sceneID)
+    commit('deleteScenePosition', sceneID)
     commit('setProperty', ['scenes', scenes])
     commit('setProperty', ['hasUnsavedChanges', true])
     commit('setProperty', ['renderKey', state.renderKey + 1])
@@ -213,18 +217,18 @@ export const actions = {
       dispatch('addAction', { scene: sceneToCopy, actionParams: { text: 'Далее...', to: newScene.id } })
     }
   },
-  // TODO: надо переименовать этот метод на deleteActionFromScene
-  deleteActionToScene ({ dispatch, state }, sceneID) {
-    for (let index = 0; index < state.scenes.length; index++) {
-      const scene = state.scenes[index]
-      const actionToThisScene = scene.actions.find(action => action.to === sceneID)
-      if (actionToThisScene) {
-        const sceneWithoutThisAction = { ...scene }
-        sceneWithoutThisAction.actions = sceneWithoutThisAction.actions.filter(action => action.id !== actionToThisScene.id)
-        dispatch('updateScene', sceneWithoutThisAction)
-        break
+  deleteSceneIdFromActions ({ dispatch, state }, sceneId) {
+    state.scenes.forEach((scene) => {
+      const hasTransitionToDesiredScene = scene.actions.findIndex(action => action.to === sceneId) >= 0
+      if (hasTransitionToDesiredScene) {
+        const _scene = JSON.parse(JSON.stringify(scene))
+        _scene.actions = _scene.actions.map((action) => {
+          if (action.to === sceneId) { action.to = false }
+          return action
+        })
+        dispatch('updateScene', _scene)
       }
-    }
+    })
   },
   addAction ({ dispatch, state, getters }, { scene, actionParams }) {
     if (state.settings.maxActionsLength > scene.actions.length) {
