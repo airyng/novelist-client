@@ -52,9 +52,6 @@ let cursorOffset = null
 export default {
   components: { SceneCard },
   mixins: [svgHelper],
-  beforeRouteLeave () {
-    this.$store.dispatch('constructorStorage/updateAllScenes', [])
-  },
   data () {
     return {
       ready: false,
@@ -186,6 +183,7 @@ export default {
           })
       }
       this.$forceUpdate()
+      this.$store.dispatch('constructorStorage/calcViewportLimits')
     },
     updateLines (ids = []) {
       this.scenes.forEach((scene) => {
@@ -229,6 +227,7 @@ export default {
     },
     dragHandler (e) {
       try {
+        const viewportLimits = this.$store.state.constructorStorage.viewportLimits
         const newCursorPos = this.transformCoordsFunc(e.clientX, e.clientY)
         if (cursorOffset === null) {
           cursorOffset = { x: newCursorPos.x, y: newCursorPos.y }
@@ -238,6 +237,12 @@ export default {
 
         this.viewBoxPosition.x += newCursorPos.x / -2
         this.viewBoxPosition.y += newCursorPos.y / -2
+
+        // Handle the limits
+        if (this.viewBoxPosition.x > viewportLimits.right) { this.viewBoxPosition.x = viewportLimits.right }
+        if (this.viewBoxPosition.x < viewportLimits.left) { this.viewBoxPosition.x = viewportLimits.left }
+        if (this.viewBoxPosition.y > viewportLimits.bottom) { this.viewBoxPosition.y = viewportLimits.bottom }
+        if (this.viewBoxPosition.y < viewportLimits.top) { this.viewBoxPosition.y = viewportLimits.top }
       } catch (e) {
         this.stopDrag()
         // eslint-disable-next-line no-console

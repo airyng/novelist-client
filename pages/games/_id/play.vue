@@ -30,6 +30,9 @@ import gameChecker from '@/plugins/gameChecker'
 import GameAutoSaveManager from '@/plugins/gameAutoSaveManager'
 
 export default {
+  beforeRouteLeave (to, from, next) {
+    this.$store.dispatch('constructorStorage/resetState')
+  },
   middleware: ['authenticated'],
   async asyncData ({ $api, params, error, store }) {
     let loadedItem = false

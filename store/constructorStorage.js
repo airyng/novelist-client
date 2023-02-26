@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { ErrorMessage } from '~/plugins/toast'
 
-export const state = () => ({
+const getDefaultState = () => ({
   settings: { // настройки редактора
     mainTextMaxLength: 500,
     mainTextMinLength: 3, // Минимальное кол-во текста в основном текстбоксе
@@ -28,8 +28,11 @@ export const state = () => ({
   backgroundCategories: [],
   hasUnsavedChanges: false,
   scenesPositions: {},
+  viewportLimits: { top: 0, bottom: 0, left: 0, right: 0 },
   renderKey: 0
 })
+
+export const state = () => getDefaultState()
 
 export const getters = {
   getSceneById (state) {
@@ -126,6 +129,14 @@ export const getters = {
 
 // TODO: мутации можно вынести в отдельный миксин, так как они везде повторяются
 export const mutations = {
+  resetState (state) {
+    const newState = getDefaultState()
+    for (const key in state) {
+      if (Object.hasOwnProperty.call(state, key)) {
+        state[key] = newState[key]
+      }
+    }
+  },
   setProperty (state, payload) {
     state[payload[0]] = payload[1]
   },
@@ -134,10 +145,31 @@ export const mutations = {
   },
   deleteScenePosition (state, sceneId) {
     delete state.scenesPositions[sceneId]
+  },
+  calcViewportLimits (state) {
+    const extraOffset = 300
+    const xValues = []
+    const yValues = []
+    for (const key in state.scenesPositions) {
+      if (Object.hasOwnProperty.call(state.scenesPositions, key)) {
+        const element = state.scenesPositions[key]
+        xValues.push(element.x)
+        yValues.push(element.y)
+      }
+    }
+    state.viewportLimits = {
+      top: Math.min(...yValues) - extraOffset,
+      bottom: Math.max(...yValues) + extraOffset,
+      left: Math.min(...xValues) - extraOffset,
+      right: Math.max(...xValues) + extraOffset
+    }
   }
 }
 
 export const actions = {
+  resetState ({ commit }) {
+    commit('resetState')
+  },
   addScenePosition ({ commit, state }, payload) {
     commit('addScenePosition', payload)
   },
@@ -196,11 +228,13 @@ export const actions = {
   },
   deleteScene ({ commit, state }, sceneID) {
     const scenes = state.scenes.filter(scene => scene.id !== sceneID)
-    console.log('delete', sceneID)
     commit('deleteScenePosition', sceneID)
     commit('setProperty', ['scenes', scenes])
     commit('setProperty', ['hasUnsavedChanges', true])
     commit('setProperty', ['renderKey', state.renderKey + 1])
+  },
+  calcViewportLimits ({ commit }) {
+    commit('calcViewportLimits')
   },
   copyScene ({ dispatch, getters }, { sceneToCopy, setTransition = false }) {
     if (!sceneToCopy) { return }

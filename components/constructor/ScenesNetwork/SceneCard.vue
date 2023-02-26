@@ -156,6 +156,9 @@ export default {
             y: coords.y
           }
         })
+    },
+    scenesPositions () {
+      return this.$store.state.constructorStorage.scenesPositions
     }
   },
   mounted () {
