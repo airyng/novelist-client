@@ -315,6 +315,7 @@ export const actions = {
     const result = await this.$api.call('getBackgrounds')
     for (let index = 0; index < result.length; index++) {
       const item = result[index]
+      // TODO: Переписать на Promise.all
       item.url = await dispatch('imagesRepository/linkFetch', item.image_id, { root: true })
     }
     commit('setProperty', ['backgrounds', result])

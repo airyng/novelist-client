@@ -10,9 +10,10 @@ export default {
     if (this.$store.state.constructorStorage.hasUnsavedChanges) {
       canRedirect = confirm('Внимание! Все несохраненные изменения будут потеряны. Все равно перейти?')
     }
-
-    this.$store.dispatch('constructorStorage/resetState')
-    if (canRedirect) { next() }
+    if (canRedirect) {
+      this.$store.dispatch('constructorStorage/resetState')
+      next()
+    }
   },
   middleware: ['authenticated'],
   head: {

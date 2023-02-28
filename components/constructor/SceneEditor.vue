@@ -113,7 +113,7 @@
           v-if="scene.background"
           :value="scene.background.value"
           :active-type="scene.background.type"
-          @OnBackChanged="setBackground"
+          @onBackChanged="setBackground"
         />
       </custom-dialog>
 
@@ -200,6 +200,7 @@ export default {
   },
   data () {
     return {
+      updateIndex: 0,
       scene: false,
       charUpdatedAt: 0,
       characterHeight: 0
@@ -209,14 +210,20 @@ export default {
     back () {
       return this.scene?.background?.value
     },
+    backgroundImageLink () {
+      // eslint-disable-next-line no-unused-expressions
+      this.updateIndex
+      if (this.scene?.background?.type !== 'image') { return false }
+      return this.$store.state.imagesRepository.list[this.back] || false
+    },
     backgroundStyle () {
       const defaultStyle = 'background-color: #333'
       if (!this.scene.background) {
         return defaultStyle
       } else if (this.scene.background.type === 'color') {
         return 'background-color: ' + this.scene.background.value
-      } else if (this.scene.background.type === 'image') {
-        return 'background-image: url(' + this.scene.background.value + ')'
+      } else if (this.scene.background.type === 'image' && this.backgroundImageLink) {
+        return `background-image: url('${this.backgroundImageLink}')`
       } else {
         return defaultStyle
       }
@@ -242,6 +249,11 @@ export default {
         value: 'background-color: #333',
         type: 'color'
       }
+    }
+    if (this.scene.background.type === 'image') {
+      // Загружаем фоновое изображение, если еще не загружено
+      this.$store.dispatch('imagesRepository/linkFetch', this.scene.background.value)
+        .then(() => { this.updateIndex++ })
     }
   },
   methods: {

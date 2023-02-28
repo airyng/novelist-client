@@ -44,7 +44,7 @@
 */
 import SceneCard from '@/components/constructor/ScenesNetwork/SceneCard'
 import svgHelper from '@/mixins/svgHelper'
-import { checkIsActionId } from '@/plugins/utils'
+import { checkIsSceneId } from '@/plugins/utils'
 
 const scrollSpeed = 500
 let cursorOffset = null
@@ -190,12 +190,12 @@ export default {
         scene.actions
           .filter((action) => {
             const from = `${scene.id}_${action.id}`
-            const to = checkIsActionId(action.to) ? action.to : `${from}_spec`
+            const to = checkIsSceneId(action.to) ? action.to : `${from}_spec`
             return this.dotsPositions[from] && this.dotsPositions[to]
           })
           .forEach((action) => {
             const from = `${scene.id}_${action.id}`
-            const to = checkIsActionId(action.to) ? action.to : `${from}_spec`
+            const to = checkIsSceneId(action.to) ? action.to : `${from}_spec`
             const key = `${from}_${to}`
             if (!this.lines[key]) {
               this.lines[key] = {

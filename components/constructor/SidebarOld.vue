@@ -1,6 +1,6 @@
 <template>
   <div class="floating-sidebar left">
-    <CustomDialog
+    <custom-dialog
       title="Выберите фон"
     >
       <template #toggler>
@@ -25,11 +25,11 @@
       </template>
 
       <background-picker
-        @OnBackChanged="OnBackChanged"
+        @onBackChanged="onBackChanged"
       />
-    </CustomDialog>
+    </custom-dialog>
 
-    <CustomDialog
+    <custom-dialog
       v-if="scenes"
       ref="sceneNetworkDialog"
       title="Схема сцен"
@@ -58,12 +58,12 @@
         </v-tooltip>
       </template>
 
-      <ConstructorSceneNetwork
+      <constructor-scene-network
         v-if="sceneNetworkDialogActive"
         :scenes="scenes"
         @selectedSceneID="OnSelectedSceneID"
       />
-    </CustomDialog>
+    </custom-dialog>
 
     <v-tooltip top>
       <template #activator="{ on, attrs }">
@@ -86,7 +86,7 @@
       <span>Вернуться на предыдущую сцену</span>
     </v-tooltip>
 
-    <CustomDialog
+    <custom-dialog
       title="Основная информация"
     >
       <template #toggler>
@@ -110,11 +110,11 @@
         </v-tooltip>
       </template>
 
-      <ConstructorMainSceneInfo
+      <constructor-main-scene-info
         v-model="localMainInfo"
         :settings="settings.mainInfo"
       />
-    </CustomDialog>
+    </custom-dialog>
 
     <v-tooltip top>
       <template #activator="{ on, attrs }">
@@ -174,8 +174,8 @@ export default {
     goToScene (scene) {
       this.$emit('OnBackToPrevScene', scene)
     },
-    OnBackChanged (data) {
-      this.$emit('OnBackChanged', data)
+    onBackChanged (data) {
+      this.$emit('onBackChanged', data)
     },
     onNetworkDialogStateChanged (data) {
       this.sceneNetworkDialogActive = data

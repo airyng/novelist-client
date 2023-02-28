@@ -25,17 +25,9 @@
     </v-list-item>
 
     <nuxt-link :to="'/games/'+ item._id">
-      <v-img
-        v-if="itemBanner.indexOf('http') === 0"
-        :src="itemBanner"
-        height="200"
-      />
       <div
-        v-else
-        :style="{
-          height: '200px',
-          background: itemBanner
-        }"
+        class="itemBanner"
+        :style="itemBanner"
       />
       <v-card-text>
         <div>{{ itemExcerpt }}</div>
@@ -67,7 +59,7 @@
 </template>
 
 <script>
-import { excerpt, getGameBannerFromScenes } from '@/plugins/utils'
+import { excerpt } from '@/plugins/utils'
 import { screen } from '@/mixins/screen'
 import gameChecker from '@/plugins/gameChecker'
 
@@ -76,19 +68,27 @@ export default {
   props: {
     item: { type: Object, required: true }
   },
+  data () {
+    return {
+      itemBanner: null
+    }
+  },
   computed: {
     jsonData () {
       return gameChecker.updateGameToLatestVersion(JSON.parse(this.item.json))
+    },
+    scenes () {
+      return this.jsonData.scenes
     },
     author () {
       return this.item.author
     },
     itemExcerpt () {
       return excerpt(this.item.description, 120)
-    },
-    itemBanner () {
-      return getGameBannerFromScenes(this.jsonData.scenes)
     }
+  },
+  async mounted () {
+    this.itemBanner = await this.getGameBannerFromScenes()
   },
   methods: {
     excerpt (text, maxLength) {
@@ -98,6 +98,20 @@ export default {
       if (typeof author === 'string') { return author }
       if (typeof author === 'object' && author !== null) { return author?._id }
       return false
+    },
+    async getGameBannerFromScenes () {
+      const type = this.scenes?.[0]?.background?.type || 'color'
+      const value = this.scenes?.[0]?.background?.value
+      const defaultStyle = 'background-color: #333'
+      if (!value) {
+        return defaultStyle
+      } else if (type === 'color') {
+        return 'background-color: ' + value
+      } else if (type === 'image') {
+        const link = await this.$store.dispatch('imagesRepository/linkFetch', value)
+        return `background-image: url('${link}')`
+      }
+      return defaultStyle
     }
   }
 }
@@ -107,6 +121,9 @@ export default {
 .novella-item
   color: $mainTextColor
   background-color: $subBackColor
+  .itemBanner
+    height: 200px
+    background-size: cover
   & .v-list-item__subtitle, & .v-list-item__title
     color: $mainTextColor
   .more-button

@@ -1,27 +1,27 @@
 <template>
   <div>
-    <GameLoadingScreen v-if="!loaded" />
-    <GameStartScreen
-      v-else-if="gameStage === 'startScreen'"
+    <game-loading-screen v-if="!loaded" />
+    <game-start-screen
+      v-else-if="gameStage === gameStages.startScreen"
       :game="loadedItem"
       @callToStart="onStartNew"
       @loadGame="onLoadGame"
     />
-    <GameCharactersSetup
-      v-else-if="gameStage === 'charactersSetup'"
+    <game-characters-setup
+      v-else-if="gameStage === gameStages.charactersSetup"
       :characters="characters"
       @characterUpdated="onCharacterUpdated"
       @setupFinished="onCharactersSetupFinished"
     />
-    <GamePlayProcess
-      v-else-if="gameStage === 'playProcess'"
+    <game-play-process
+      v-else-if="gameStage === gameStages.playProcess"
       ref="playProcess"
       :scenes="scenes"
       :characters="characters"
       :start-on-scene="lastActiveScene"
       @gameOver="onGameOver"
     />
-    <GameFinalScreen v-else-if="gameStage === 'gameOver'" :game="loadedItem" @callToRestart="restart" />
+    <game-final-screen v-else-if="gameStage === gameStages.gameOver" :game="loadedItem" @callToRestart="restart" />
   </div>
 </template>
 
@@ -32,6 +32,7 @@ import GameAutoSaveManager from '@/plugins/gameAutoSaveManager'
 export default {
   beforeRouteLeave (to, from, next) {
     this.$store.dispatch('constructorStorage/resetState')
+    next()
   },
   middleware: ['authenticated'],
   async asyncData ({ $api, params, error, store }) {
@@ -67,12 +68,12 @@ export default {
   },
   computed: {
     gameStages () {
-      return [
-        'startScreen',
-        'charactersSetup',
-        'playProcess',
-        'gameOver'
-      ]
+      return {
+        startScreen: 'startScreen',
+        charactersSetup: 'charactersSetup',
+        playProcess: 'playProcess',
+        gameOver: 'gameOver'
+      }
     }
   },
   mounted () {
@@ -97,7 +98,7 @@ export default {
       console.log('Game booted.')
     },
     onStartNew () {
-      this.gameStage = this.gameStages[1]
+      this.gameStage = this.gameStages.charactersSetup
     },
     onLoadGame (saveObj) {
       this.lastActiveScene = saveObj.lastSceneID
@@ -115,7 +116,7 @@ export default {
       if (!notConfiguredCharacters.length) {
         this.onCharactersSetupFinished()
       } else {
-        this.gameStage = this.gameStages[1]
+        this.gameStage = this.gameStages.charactersSetup
       }
     },
     onCharacterUpdated (char) {
@@ -129,14 +130,14 @@ export default {
     onRestoreState (gameData) {
       this.projectID = gameData.id
       this.scenes = JSON.parse(gameData.json)
-      // this.goToScene(this.scenes[0])
+      // this.goToScene(this.scenes.startScreen)
     },
     onCharactersSetupFinished () {
-      this.gameStage = this.gameStages[2]
+      this.gameStage = this.gameStages.playProcess
       this.$refs.playProcess?.goToStart()
     },
     onGameOver () {
-      this.gameStage = this.gameStages[3]
+      this.gameStage = this.gameStages.gameOver
     }
   }
 }

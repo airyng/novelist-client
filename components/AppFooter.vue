@@ -9,7 +9,7 @@
       </span>
     </footer>
 
-    <CustomDialog
+    <custom-dialog
       v-if="user && isNotGame"
       ref="reportForm"
       title="Сообщить о проблеме"
@@ -20,6 +20,7 @@
             <v-btn
               class="report-btn"
               color="deep-purple"
+              small
               fab
               depressed
               dark
@@ -33,8 +34,8 @@
         </v-tooltip>
       </template>
 
-      <FormReport @onFormSent="closeReportDialog" />
-    </CustomDialog>
+      <form-report @onFormSent="closeReportDialog" />
+    </custom-dialog>
   </v-container>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="game" :style="backgroundStyle">
     <v-container class="d-flex flex-column fullsize" style="max-width: 1200px">
-      <CharacterCanvas
+      <character-canvas
         v-if="character"
         ref="character"
         :updated-at="charUpdatedAt"
@@ -25,7 +25,7 @@
                 :class="getClassesForCondition(action)"
                 @click="goToScene(action.to)"
               >
-                <v-icon v-if="typeof action.to == 'number'" color="white">
+                <v-icon v-if="checkIsSceneId(action.to)" color="white">
                   mdi-chevron-right
                 </v-icon>
                 <v-icon v-if="action.to == 'quit'" color="white">
@@ -59,6 +59,8 @@
 <script>
 // Менеджер автосохранений игрового процесса
 import GameAutoSaveManager from '@/plugins/gameAutoSaveManager'
+import { checkIsSceneId } from '@/plugins/utils'
+
 export default {
   props: {
     scenes: { type: Array, required: true },
@@ -67,6 +69,7 @@ export default {
   },
   data () {
     return {
+      updateIndex: 0,
       activeScene: false, // текущая сцена
       charUpdatedAt: 0,
       characterHeight: 0,
@@ -78,19 +81,25 @@ export default {
     }
   },
   computed: {
+    back () {
+      return this.activeScene?.background?.value
+    },
+    backgroundImageLink () {
+      // eslint-disable-next-line no-unused-expressions
+      this.updateIndex
+      if (this.activeScene?.background?.type !== 'image') { return false }
+      return this.$store.state.imagesRepository.list[this.back] || false
+    },
     backgroundStyle () {
-      if (!this.activeScene.background) { return '' }
-
-      if (this.activeScene.background.type === 'image') {
-        let url = this.activeScene.background.value
-        if (!url.includes('http')) {
-          url = process.env.BACKEND_URL + url
-        }
-        return 'background-image: url(' + url + ');'
+      const defaultStyle = 'background-color: #333'
+      if (!this.activeScene.background) {
+        return defaultStyle
       } else if (this.activeScene.background.type === 'color') {
-        return 'background-color: ' + this.activeScene.background.value
+        return 'background-color: ' + this.back
+      } else if (this.activeScene.background.type === 'image' && this.backgroundImageLink) {
+        return `background-image: url('${this.backgroundImageLink}')`
       } else {
-        return 'background-color: #333'
+        return defaultStyle
       }
     },
     character () {
@@ -120,6 +129,9 @@ export default {
     this.goToStart()
   },
   methods: {
+    checkIsSceneId (payload) {
+      return checkIsSceneId(payload)
+    },
     onClickToMainText () {
       // При если текст весь выведен и есть возможность перейти дальше без выбора, то переходим
       // Иначе сбрасываем анимацию текста
@@ -144,9 +156,9 @@ export default {
     async goToScene (elem) {
       let nextScene = null
 
-      if (typeof elem === 'number') {
+      if (checkIsSceneId(elem)) {
         nextScene = this.getSceneById(elem)
-      } else if (typeof elem === 'object' && typeof elem.id === 'number') {
+      } else if (typeof elem === 'object' && checkIsSceneId(elem.id)) {
         nextScene = this.getSceneById(elem.id)
       } else if (elem === 'quit') {
         this.$emit('gameOver')
@@ -158,6 +170,12 @@ export default {
         if (nextScene.character !== this.activeScene.character) {
           await this.$refs.character.hideCharacter()
         }
+      }
+
+      if (nextScene?.background?.type === 'image') {
+        // Загружаем фоновое изображение, если еще не загружено
+        this.$store.dispatch('imagesRepository/linkFetch', nextScene.background.value)
+          .then(() => { this.updateIndex++ })
       }
 
       this.activeScene = nextScene

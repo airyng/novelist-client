@@ -169,14 +169,14 @@ export default {
   methods: {
     setActiveBackground () {
       if (this.value) {
-        this.activeBack = this.backs.find(back => this.value.includes(back.url))
+        this.activeBack = this.backs.find(back => this.value === back.image_id)
       }
     },
     changeBack (back) {
-      const value = back.url
+      const value = back.image_id
       lsm.state.lastSelectedBack = { type: 'image', value }
       lsm.save()
-      this.$emit('OnBackChanged', value)
+      this.$emit('changeBack', value)
     },
     async loadBacks () {
       if (!this.backs.length) {

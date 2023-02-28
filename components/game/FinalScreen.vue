@@ -48,7 +48,7 @@ export default {
     },
     goBackToIntro () {
       //
-      this.$router.push('/games/' + this.game.id)
+      this.$router.push('/games/' + this.game._id)
     },
     goHome () {
       // InfoMessage('Игра окончена')

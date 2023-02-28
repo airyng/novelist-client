@@ -2,7 +2,11 @@
   <v-row>
     <v-col v-if="!!lastSelectedBack && lastSelectedBack.value" class="pb-0" cols="12">
       <div class="lastBackground d-flex">
-        <img v-if="lastSelectedBack && lastSelectedBack.type === 'image'" class="backPreview" :src="lastSelectedBack.value">
+        <img
+          v-if="lastSelectedBack && lastSelectedBack.type === 'image'"
+          class="backPreview"
+          :src="$store.state.imagesRepository.list[lastSelectedBack.value]"
+        >
         <div
           v-else
           class="backPreview"
@@ -28,17 +32,17 @@
       <span v-else class="curs-pointer" @click="isBackImageType = !isBackImageType"><b>Цвет</b> / Изображение</span>
     </v-col>
     <v-col class="pt-0 d-flex justify-center" cols="12">
-      <ConstructorColorPalette
+      <constructor-color-palette
         v-if="!isBackImageType"
         :value="value"
         class="pt-0"
         @onValueChanged="colorPicked"
       />
-      <ConstructorBackgroundImagePicker
+      <constructor-background-image-picker
         v-else
         :value="value"
-        class="pt-0"
-        @OnBackChanged="imagePicked"
+        class="w-100 pt-0"
+        @changeBack="imagePicked"
       />
     </v-col>
   </v-row>
@@ -84,15 +88,15 @@ export default {
     },
     colorPicked (value) {
       if (!value.includes('http')) {
-        this.OnBackChanged({ type: 'color', value })
+        this.onBackChanged({ type: 'color', value })
       }
     },
     imagePicked (value) {
-      this.OnBackChanged({ type: 'image', value })
+      this.onBackChanged({ type: 'image', value })
     },
-    OnBackChanged (styleObj) {
+    onBackChanged (styleObj) {
       this.updateIndex++
-      this.$emit('OnBackChanged', styleObj)
+      this.$emit('onBackChanged', styleObj)
     }
   }
 }

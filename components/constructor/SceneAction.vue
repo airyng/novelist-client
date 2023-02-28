@@ -82,7 +82,7 @@
           <span>Выход из новеллы</span>
         </v-tooltip>
 
-        <v-tooltip v-if="checkIsActionId(localAction.to)" top>
+        <v-tooltip v-if="checkIsSceneId(localAction.to)" top>
           <template #activator="{ on, attrs }">
             <v-chip
               close
@@ -209,7 +209,7 @@
 </template>
 
 <script>
-import { excerpt, checkIsActionId } from '@/plugins/utils'
+import { excerpt, checkIsSceneId } from '@/plugins/utils'
 
 export default {
   props: {
@@ -258,7 +258,7 @@ export default {
     this.setLocalAction()
   },
   methods: {
-    checkIsActionId (payload) { return checkIsActionId(payload) },
+    checkIsSceneId (payload) { return checkIsSceneId(payload) },
     saveGoNextWithoutChoice () {
       this.$emit('onSaveSceneParams', { key: 'goNextWithoutChoice', value: this.activeScene.goNextWithoutChoice })
     },

@@ -9,12 +9,6 @@ const moveArrElem = (arr, oldIndex, newIndex) => {
   return arr
 }
 
-const getGameBannerFromScenes = (scenes) => {
-  const background = scenes?.[0]?.background?.url || scenes?.[0]?.background?.value
-  if (!background) { return 'black' }
-  return background
-}
-
 const excerpt = (text, maxLength) => {
   if (!text || !text.length) { return '...' }
   if (text.length <= maxLength) {
@@ -37,8 +31,8 @@ const getGenderTranslation = (gender) => {
   return genders[gender]
 }
 
-// Проверяем является ли переданное значение каноническим идентификатором экшна
-const checkIsActionId = (value) => {
+// Проверяем является ли переданное значение каноническим идентификатором сцены
+const checkIsSceneId = (value) => {
   if (typeof value !== 'string') { return false }
   const searchResult = value.match?.(/^s[0-9]*/gm) // проверка на соответствие идентификатора назначения формату
   return Array.isArray(searchResult) && searchResult[0].length === value.length
@@ -113,8 +107,7 @@ export {
   moveArrElem,
   sleep,
   getGenderTranslation,
-  getGameBannerFromScenes,
   throttle,
   debounce,
-  checkIsActionId
+  checkIsSceneId
 }

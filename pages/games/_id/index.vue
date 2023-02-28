@@ -3,7 +3,7 @@
     <v-row>
       <v-col>
         <template v-if="item">
-          <div class="banner rounded" :style="'background-image: url('+itemBanner+')'" :alt="item.title">
+          <div class="banner rounded" :style="itemBanner" :alt="item.title">
             <h1 class="mt-2">
               {{ excerpt(item.title, 100) }}
             </h1>
@@ -36,7 +36,7 @@
 
           <div>{{ item.description }}</div>
 
-          <nuxt-link :to="'/games/'+ item._id + '/play'">
+          <nuxt-link :to="`/games/${item._id}/play`">
             <v-btn
               text
               depressed
@@ -55,8 +55,9 @@
 </template>
 
 <script>
-import { excerpt, getGameBannerFromScenes } from '@/plugins/utils'
+import { excerpt } from '@/plugins/utils'
 import GameAutoSaveManager from '@/plugins/gameAutoSaveManager'
+
 export default {
   async asyncData ({ $api, params, error, store }) {
     let item = false
@@ -71,12 +72,13 @@ export default {
   },
   data () {
     return {
-      item: false
+      item: false,
+      itemBanner: null
     }
   },
   computed: {
     scenes () {
-      return typeof this.item.json === 'string' ? JSON.parse(this.item.json) : this.item.json
+      return (typeof this.item.json === 'string' ? JSON.parse(this.item.json) : this.item.json)?.scenes
     },
     authorAvatar () {
       return process.env.BACKEND_URL + '/storage/' + this.item.authorAvatar
@@ -86,19 +88,16 @@ export default {
     },
     gameLength () {
       const length = this.scenes.length
-      if (length >= 500) {
+      if (length >= 250) {
         return 'Эпический'
-      } else if (length >= 250) {
+      } else if (length >= 150) {
         return 'Большой'
-      } else if (length >= 100) {
-        return 'Средний'
       } else if (length >= 50) {
+        return 'Средний'
+      } else if (length >= 20) {
         return 'Небольшой'
       }
       return 'Скромный'
-    },
-    itemBanner () {
-      return getGameBannerFromScenes(this.scenes)
     },
     hasAutosave () {
       if (process.server) { return false }
@@ -106,9 +105,28 @@ export default {
       return gameAutoSaveManager.getSave(this.$route.params.id)
     }
   },
+  async mounted () {
+    this.itemBanner = await this.getGameBannerFromScenes()
+  },
   methods: {
     excerpt (text, maxLength) {
       return excerpt(text, maxLength)
+    },
+    // TODO: метод с таким функционалом и названием повторяется в разных файлах
+    // Нужно как-то это объединить
+    async getGameBannerFromScenes () {
+      const type = this.scenes?.[0]?.background?.type || 'color'
+      const value = this.scenes?.[0]?.background?.value
+      const defaultStyle = 'background-color: #333'
+      if (!value) {
+        return defaultStyle
+      } else if (type === 'color') {
+        return 'background-color: ' + value
+      } else if (type === 'image') {
+        const link = await this.$store.dispatch('imagesRepository/linkFetch', value)
+        return `background-image: url('${link}')`
+      }
+      return defaultStyle
     }
   }
 }
@@ -141,7 +159,7 @@ h1
   height: 200px
   width: 100%
   position: relative
-  animation: move-bg-vertically 60s ease infinite
+  animation: move-bg-vertically 40s ease infinite
   @media (min-width: 500px)
     height: 300px
   @media (min-width: 1200px)

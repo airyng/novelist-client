@@ -11,6 +11,8 @@
 
 <script>
 import { SuccessMessage, ErrorMessages } from '@/plugins/toast'
+import { checkIsSceneId } from '@/plugins/utils'
+
 export default {
   data () {
     return {
@@ -126,7 +128,7 @@ export default {
         const scene = this.scenes[index]
 
         if (scene.mainText.length < this.settings.mainTextMinLength) {
-          this.addError('Минимальная длина текстового блока - ' + this.settings.mainTextMinLength + ' символов. Проблема на ' + scene.title)
+          this.addError('Минимальная длина текстового блока - ' + this.settings.mainTextMinLength + ' символа. Проблема на ' + scene.title)
           return false
         }
 
@@ -254,7 +256,7 @@ export default {
         for (let actionIndex = 0; actionIndex < scene.actions.length; actionIndex++) {
           const action = scene.actions[actionIndex]
 
-          if (action.to && typeof action.to === 'number') { sceneIDs.push(action.to) }
+          if (action.to && checkIsSceneId(action.to)) { sceneIDs.push(action.to) }
         }
       }
       return sceneIDs

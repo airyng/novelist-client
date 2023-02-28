@@ -1,5 +1,5 @@
 <template>
-  <div class="banner flex-wrap d-flex align-end flex-column justify-end" :style="item ? 'background-image: url('+itemBanner+')' : 'background-color: black'">
+  <div class="banner flex-wrap d-flex align-end flex-column justify-end" :style="itemBanner">
     <div class="novella-info">
       <v-chip
         v-show="item"
@@ -12,13 +12,13 @@
         </v-icon>
       </v-chip>
       <template v-if="item">
-        <nuxt-link :to="'/games/'+ item.id">
+        <nuxt-link :to="'/games/'+ item._id">
           <h1 class="mt-2">
             {{ excerpt(item.title, 100) }}
           </h1>
           <div>{{ excerpt(item.description, 200) }}</div>
         </nuxt-link>
-        <nuxt-link :to="'/games/'+ item.id + '/play'">
+        <nuxt-link :to="'/games/'+ item._id + '/play'">
           <v-btn
             text
             depressed
@@ -37,7 +37,7 @@
 import { excerpt } from '@/plugins/utils'
 
 // Список id новелл, которые будем показывать в слайдере
-const favoriteGamesID = [] // [3, 21]
+const favoriteGamesID = ['63237eb6cc8eb2fa2d2b3fcb']
 const secForSwap = 15 // Секунд для каждого перелистывания
 
 export default {
@@ -45,23 +45,16 @@ export default {
     return {
       currentItemIndex: -1, // -1 - это стартовое значение, которое изменится на ноль при инициализации компонента
       item: false,
-      progress: 0
+      progress: 0,
+      itemBanner: null
     }
   },
   computed: {
     novellaData () {
       return this.item?.json ? JSON.parse(this.item.json) : null
     },
-    itemBanner () {
-      const scenes = this.novellaData?.scenes || this.novellaData
-      // Ссылка на фон сцены может быть в старом формате (.url) или новом (.value)
-      if (scenes && scenes[0] && scenes[0]?.background?.value) {
-        return scenes[0].background.value
-      } else if (scenes && scenes[0] && scenes[0]?.background?.url) {
-        return process.env.BACKEND_URL + scenes[0].background.url
-      } else {
-        return process.env.BACKEND_URL + '/storage/backgrounds/default.jpg'
-      }
+    scenes () {
+      return this.novellaData?.scenes
     }
   },
   mounted () {
@@ -89,17 +82,33 @@ export default {
 
       // Получаем данные новеллы из хранилища
       if (this.$store.state.latestGames.length) {
-        this.item = this.$store.state.latestGames.find(item => item.id === Number(gameID))
+        this.item = this.$store.state.latestGames.find(item => item._id === gameID)
       }
       // Или, если данные не были получены ранее, то загружаем их отдельно
       if (!this.item) {
         this.item = await this.$api.call('getGameByID', gameID)
       }
+      this.itemBanner = await this.getGameBannerFromScenes(this.item)
       // Обнуляем прогресс-бар
       this.progress = 0
     },
     excerpt (text, maxLength) {
       return excerpt(text, maxLength)
+    },
+    async getGameBannerFromScenes (item) {
+      const scenes = JSON.parse(item.json)?.scenes || null
+      const type = scenes?.[0]?.background?.type || 'color'
+      const value = scenes?.[0]?.background?.value
+      const defaultStyle = 'background-color: #333'
+      if (!value) {
+        return defaultStyle
+      } else if (type === 'color') {
+        return 'background-color: ' + value
+      } else if (type === 'image') {
+        const link = await this.$store.dispatch('imagesRepository/linkFetch', value)
+        return `background-image: url('${link}')`
+      }
+      return defaultStyle
     }
   }
 }
@@ -120,7 +129,7 @@ export default {
   background-size: cover
   min-height: 200px
   width: 100%
-  animation: move-bg-vertically 60s ease infinite
+  animation: move-bg-vertically 40s ease infinite
   border-radius: 16px!important
   overflow: hidden
   @media (min-width: 500px)

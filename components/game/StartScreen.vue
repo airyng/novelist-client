@@ -29,7 +29,7 @@
           outlined
           color="white"
           class="mt-5"
-          @click="goBackToIntro"
+          :to="`/games/${game._id}`"
         >
           Вернуться на страницу новеллы
         </v-btn>
@@ -66,9 +66,6 @@ export default {
   methods: {
     startNew () {
       this.$emit('callToStart')
-    },
-    goBackToIntro () {
-      this.$router.push('/games/' + this.game._id)
     },
     continueLastGame () {
       if (!this.saveObj) { return }
